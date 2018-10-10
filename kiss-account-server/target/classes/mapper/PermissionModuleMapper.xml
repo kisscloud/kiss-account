@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 定义一个映射配置文件的根节点 -->
+<!-- namespace 属性用来定义配置命名空间， 主要进行 session 级别的缓存管理 -->
+<!-- namespace 默认使用当前操作实体类的全路径 -->
+<mapper namespace="com.kiss.account.mapper.PermissionModuleMapper">
+
+    <insert id="createPermissionModule" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.kiss.account.entity.PermissionModule">
+        insert into permissionModules(name, parentId, level, status, seq, remark, operatorId, operatorName, operatorIp)
+        values(#{name}, #{parentId}, #{level}, #{status}, #{seq}, #{remark}, #{operatorId}, #{operatorName}, #{operatorIp});
+    </insert>
+
+    <select id="getPermissionModuleById" resultType="com.kiss.account.entity.PermissionModule">
+        select * from permissionModules where id=#{id};
+    </select>
+
+    <select id="getPermissionModules" resultType="com.kiss.account.entity.PermissionModule">
+        select * from permissionModules;
+    </select>
+
+</mapper>
