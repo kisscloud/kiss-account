@@ -11,6 +11,10 @@ public class Account {
      */
     private Integer id;
     /**
+     * 姓名
+     */
+    private String name;
+    /**
      * 用户名
      */
     private String username;

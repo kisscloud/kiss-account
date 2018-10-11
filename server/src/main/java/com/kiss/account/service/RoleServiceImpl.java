@@ -8,6 +8,8 @@ import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.output.ResultOutput;
 import com.kiss.account.utils.ResultOutputUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Api(tags = "Role",description = "角色相关接口")
 public class RoleServiceImpl implements RoleClient {
 
     @Autowired
     private RoleDao roleDao;
 
     @Override
-    public ResultOutput create(CreateRoleInput createRoleInput) {
+    @ApiOperation("添加角色")
+    public ResultOutput postRoles(CreateRoleInput createRoleInput) {
         Role role = new Role();
         BeanUtils.copyProperties(createRoleInput,role);
         role.setOperatorId(123);
@@ -34,7 +38,8 @@ public class RoleServiceImpl implements RoleClient {
     }
 
     @Override
-    public ResultOutput allocatePermissionsToRole(AllocatePermissionToRoleInput allocatePermissionToRole) {
+    @ApiOperation("分配角色权限")
+    public ResultOutput postRolesPermissions(AllocatePermissionToRoleInput allocatePermissionToRole) {
         List<Integer> permissions = allocatePermissionToRole.getPermissionId();
         List<RolePermissions> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {

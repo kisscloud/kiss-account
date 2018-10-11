@@ -18,19 +18,19 @@ public class AccountDao {
         accountMapper.createAccount(account);
     }
 
-    public void allocateRoleToAcount(AccountRoles accountRoles) {
-        accountMapper.allocateRoleToAcount(accountRoles);
+    public void allocateRoleToAccount(AccountRoles accountRoles) {
+        accountMapper.allocateRoleToAccount(accountRoles);
     }
 
-    public void allocateRolesToAcount(List<AccountRoles> accountRoles) {
-        accountMapper.allocateRolesToAcount(accountRoles);
+    public void allocateRolesToAccount(List<AccountRoles> accountRoles) {
+        accountMapper.allocateRolesToAccount(accountRoles);
     }
 
     public List<Account> getAccounts() {
         return accountMapper.getAccounts();
     }
 
-    /**
+    /**z
      * 根据用户名查询用户
      * @param username 用户名
      * @return

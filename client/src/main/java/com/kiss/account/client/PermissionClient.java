@@ -8,19 +8,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/permissions")
+@RequestMapping()
 public interface PermissionClient {
 
-    @PostMapping
-    ResultOutput create(@Validated @RequestBody CreatePermissionInput createPermissionInput, BindingResult bindingResult);
+    @PostMapping("/permissions")
+    ResultOutput postPermissions(@Validated @RequestBody CreatePermissionInput createPermissionInput, BindingResult bindingResult);
 
-    @PostMapping("/modules")
-    ResultOutput createModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult);
+    @PostMapping("/permissions/modules")
+    ResultOutput postPermissionsModules(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult);
 
-    @GetMapping
-    String list();
+    @GetMapping("/permissions")
+    String getPermissions();
 
 
-    @GetMapping("/{id}")
-    String find();
+    @GetMapping("/permission")
+    String getPermission();
 }

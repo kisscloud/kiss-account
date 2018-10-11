@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/roles")
+@RequestMapping()
 public interface RoleClient {
 
-    @PostMapping("/create")
-    ResultOutput create(@RequestBody CreateRoleInput createRoleInput);
+    @PostMapping("/roles")
+    ResultOutput postRoles(@RequestBody CreateRoleInput createRoleInput);
 
-    @PostMapping("/role/permissions")
-    ResultOutput allocatePermissionsToRole(@RequestBody AllocatePermissionToRoleInput allocatePermissionToRole);
+    @PostMapping("/roles/permissions")
+    ResultOutput postRolesPermissions(@RequestBody AllocatePermissionToRoleInput allocatePermissionToRole);
 }

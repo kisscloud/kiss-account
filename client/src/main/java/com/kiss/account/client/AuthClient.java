@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public interface AuthClient {
 
-    @PostMapping("/login")
-    ResultOutput login(@RequestBody LoginInput loginInput);
+    @PostMapping("/username/login")
+    ResultOutput loginWithUsernameAndPassword(@RequestBody LoginInput loginInput);
 }

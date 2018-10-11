@@ -7,8 +7,8 @@
 <mapper namespace="com.kiss.account.mapper.AccountMapper">
 
     <insert id="createAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.Account">
-        insert into accounts(username, email, mobile, password, salt, remark, groupId, status, operatorId, operatorName, operatorIp)
-        values(#{username}, #{email}, #{mobile}, #{password}, #{salt}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
+        insert into accounts(name, username, email, mobile, password, salt, remark, groupId, status, operatorId, operatorName, operatorIp)
+        values(#{name}, #{username}, #{email}, #{mobile}, #{password}, #{salt}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
     <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Account">
@@ -31,12 +31,12 @@
         select * from accounts;
     </select>
 
-    <insert id="allocateRoleToAcount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
+    <insert id="allocateRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values(#{roleId}, #{accountId}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <insert id="allocateRolesToAcount" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+    <insert id="allocateRolesToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values
         <foreach collection="list" item="role" index="index" separator=",">

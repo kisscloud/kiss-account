@@ -4,113 +4,20 @@
     <list default="true" id="ed6be8d5-07cf-43f6-9f59-a0c94e3309c8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/kiss-account-common.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/KissAccountCommonApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocatePermissionToRoleInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocateRoleToAccountInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateLogInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionModuleInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateRoleInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/LoginInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/UpdateRolePermissionInput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/output/ResultOutput.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/KissAccountCommonApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/AllocatePermissionToRoleInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/AllocateRoleToAccountInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateAccountGroupInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateAccountInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateLogInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreatePermissionInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreatePermissionModuleInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateRoleInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/LoginInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/UpdateRolePermissionInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/output/ResultOutput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/kiss-account-server.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/KissAccountApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountGroupDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/LogDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/PermissionDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/RoleDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Account.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/AccountGroup.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/AccountRoles.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Log.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Permission.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/PermissionModule.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/RolePermissions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/enums/ResultOutputCodeEnum.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/exception/ResultException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/exception/TagException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionModuleMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/RoleMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/CryptoUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/JwtUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/ResultOutputUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/SqlSessionFactoryUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/Swagger2Util.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountGroupMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/LogMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/PermissionMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/PermissionModuleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/RoleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mybatis-config.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/KissAccountApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/AccountDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/AccountGroupDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/LogDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/PermissionDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/RoleDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Account.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/AccountGroup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/AccountRoles.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Log.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Permission.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/PermissionModule.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/RolePermissions.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/enums/ResultOutputCodeEnum.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/exception/ResultException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/exception/TagException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/AccountGroupMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/AccountMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/PermissionMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/PermissionModuleMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/RoleMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/AccountServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/PermissionServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/RoleServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/CryptoUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/JwtUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/ResultOutputUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/SqlSessionFactoryUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/Swagger2Util.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/AccountGroupMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/AccountMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/LogMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/PermissionMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/PermissionModuleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/RoleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mybatis-config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AuthClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AuthClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/PermissionClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/PermissionClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/RoleClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/RoleClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-two.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-controller/kiss-controller.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/mapper/AccountMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/mapper/AccountMapper.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -119,6 +26,8 @@
     <ignored path="$PROJECT_DIR$/kiss-account-common/target/" />
     <ignored path="$PROJECT_DIR$/kiss-controller/target/" />
     <ignored path="$PROJECT_DIR$/client/target/" />
+    <ignored path="$PROJECT_DIR$/common/target/" />
+    <ignored path="$PROJECT_DIR$/server/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +39,104 @@
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AccountServiceImpl.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="279">
+              <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountGroupDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountGroupDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="15" column="40" lean-forward="true" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CreateAccountGroupInput.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="KissAccountApplication.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuthServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="28" column="80" selection-start-line="28" selection-start-column="80" selection-end-line="28" selection-end-column="80" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JwtUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountGroupMapper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountMapper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="14" column="31" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Account.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/entity/Account.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -187,6 +193,19 @@
         <option value="$PROJECT_DIR$/client/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/kiss-controller/src/main/java/kiss/feign/AccountServiceFeign.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/RoleClient.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/PermissionClient.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AuthClient.java" />
+        <option value="$PROJECT_DIR$/server/src/main/resources/mapper/AccountMapper.xml" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/entity/Account.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" />
       </list>
     </option>
   </component>
@@ -196,17 +215,19 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="MavenProjectNavigator">
     <treeState>
       <expand>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
           <item name="kiss-account-two" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="kiss-account-two" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
         </path>
       </expand>
       <select />
@@ -215,10 +236,10 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="831" />
+    <option name="height" value="827" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -226,20 +247,65 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="kiss-account-two" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiss-account-two" type="462c0819:PsiDirectoryNode" />
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="account" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kiss-account" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kiss-account" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="account" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -248,7 +314,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.35282052" />
     <property name="settings.editor.selected.configurable" value="preferences.externalDependencies" />
@@ -285,7 +351,7 @@
     <configuration name="KissAccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kiss.account.KissAccountApplication" />
       <module name="server" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/server" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.kiss.account.*" />
@@ -323,12 +389,22 @@
       </option>
       <patterns />
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+    </configuration>
     <configuration name="KissAccountClientApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="kiss-account-client" />
+      <module name="client" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kiss.account.KissAccountClientApplication" />
     </configuration>
     <configuration name="KissAccountCommonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="kiss-account-common" />
+      <module name="common" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kiss.account.KissAccountCommonApplication" />
     </configuration>
     <configuration name="KissControllerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -358,11 +434,11 @@
       <listeners />
     </configuration>
     <list>
-      <item itemvalue="Application.KissAccountApplication" />
-      <item itemvalue="Application.KissControllerApplication" />
       <item itemvalue="Spring Boot.KissAccountCommonApplication" />
       <item itemvalue="Spring Boot.KissControllerApplication" />
       <item itemvalue="Spring Boot.KissAccountClientApplication" />
+      <item itemvalue="Application.KissAccountApplication" />
+      <item itemvalue="Application.KissControllerApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -385,6 +461,8 @@
       <workItem from="1539226008745" duration="231000" />
       <workItem from="1539226309208" duration="348000" />
       <workItem from="1539226661372" duration="28000" />
+      <workItem from="1539229293666" duration="3450000" />
+      <workItem from="1539238077390" duration="1762000" />
     </task>
     <task id="LOCAL-00001" summary="modify api name">
       <created>1539225373029</created>
@@ -425,43 +503,44 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13247000" />
+    <option name="totallyTimeSpent" value="18459000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="837" extended-state="6" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="3" visible="true" weight="0.25894135" />
+      <window_info anchor="right" id="Maven Projects" order="3" weight="0.25894135" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Structure" order="1" sideWeight="0.5020161" side_tool="true" weight="0.2639485" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39918256" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3987879" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32833788" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32970026" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32972974" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32969698" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49798387" visible="true" weight="0.2639485" />
       <window_info anchor="bottom" id="Problems" order="7" weight="0.32970026" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
-      <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
@@ -514,204 +593,29 @@
     <MESSAGE value="add ignore" />
     <option name="LAST_COMMIT_MESSAGE" value="add ignore" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="10" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/LogDao.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/RoleDao.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/PermissionDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionMapper.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/RoleMapper.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionModuleMapper.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/PermissionModule.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Permission.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Log.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Role.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/RolePermissions.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="634">
-          <caret line="61" column="20" lean-forward="true" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/LogMapper.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="38" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/resources/mybatis-config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="23" lean-forward="true" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-controller/src/main/java/kiss/controller/AccountController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="4" lean-forward="true" selection-start-line="14" selection-start-column="8" selection-end-line="19" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-controller/src/main/java/kiss/KissControllerApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/PermissionClient.java" />
-    <entry file="file://$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/AuthClient.java" />
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/KissAccountApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/RoleClient.java" />
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AuthServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="15" column="8" selection-start-line="15" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/RoleServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" />
     <entry file="file://$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/AccountClient.java" />
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="43" column="43" lean-forward="true" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="13" lean-forward="true" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AccountServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="88" column="46" selection-start-line="88" selection-start-column="46" selection-end-line="88" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocatePermissionToRoleInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocateRoleToAccountInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateLogInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionModuleInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateRoleInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/LoginInput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-common/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountDao.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountMapper.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountMapper.xml" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocatePermissionToRoleInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocateRoleToAccountInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateLogInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionModuleInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateRoleInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/LoginInput.java" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-common/.gitignore" />
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/.gitignore" />
     <entry file="file://$PROJECT_DIR$/kiss-controller/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -744,13 +648,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kiss-account-server/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/kiss-account-server/pom.xml" />
     <entry file="file://$PROJECT_DIR$/client/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -762,9 +660,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="52" selection-start-line="8" selection-start-column="52" selection-end-line="8" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -772,6 +667,166 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kiss-account.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="22" selection-start-column="22" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/RoleClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/PermissionClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AuthClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="12" column="45" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/resources/mapper/AccountMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="38" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="19" column="53" selection-start-line="19" selection-start-column="53" selection-end-line="19" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/entity/Account.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/5.0.9.RELEASE/spring-beans-5.0.9.RELEASE.jar!/org/springframework/beans/BeanUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="331" column="23" selection-start-line="331" selection-start-column="23" selection-end-line="331" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/main/java/com/kiss/account/input/LoginInput.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AccountClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="28" column="80" selection-start-line="28" selection-start-column="80" selection-end-line="28" selection-end-column="80" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountGroupDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="15" column="40" lean-forward="true" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -828,7 +883,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>client</last-edited>
+          <last-edited>kiss-controller</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

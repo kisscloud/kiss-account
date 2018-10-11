@@ -10,9 +10,9 @@ import java.util.List;
 public interface AccountMapper {
     Integer createAccount(Account account);
 
-    void allocateRoleToAcount(AccountRoles accountRoles);
+    void allocateRoleToAccount(AccountRoles accountRoles);
 
-    void allocateRolesToAcount(List<AccountRoles> accountRoles);
+    void allocateRolesToAccount(List<AccountRoles> accountRoles);
 
     List<Account> getAccounts();
 

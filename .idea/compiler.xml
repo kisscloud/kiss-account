@@ -6,16 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="kiss-account-client" />
-        <module name="kiss-account-common" />
-        <module name="kiss-account-server" />
+        <module name="client" />
+        <module name="common" />
         <module name="kiss-controller" />
+        <module name="server" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="client" target="1.8" />
-      <module name="common" target="1.8" />
-      <module name="server" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

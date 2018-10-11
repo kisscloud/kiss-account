@@ -11,21 +11,22 @@ import java.util.UUID;
 
 public class JwtUtil {
     private static final String SECRET = "Z~9T2*rTgm9W~I>3";
-    private static final long EXPIRATION =  1000*60*60*24;
-    public static Map<String,Object> getToken(int userId, String username) {
+    private static final long EXPIRATION = 1000 * 60 * 60 * 24;
+
+    public static Map<String, Object> getToken(int userId, String username) {
         String key = UUID.randomUUID().toString();
         Date expiredDate = computeExpired();
 
-        String token =  Jwts.builder()
-                        .setIssuer(username)
-                        .setSubject(userId + "")
-                        .setId(key)
-                        .setExpiration(expiredDate)
-                        .signWith(SignatureAlgorithm.HS512, SECRET)
-                        .compact();
-        Map<String,Object> result = new HashMap<>();
-        result.put("token",token);
-        result.put("expiredAt",expiredDate.getTime());
+        String token = Jwts.builder()
+                .setIssuer(username)
+                .setSubject(userId + "")
+                .setId(key)
+                .setExpiration(expiredDate)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
+        Map<String, Object> result = new HashMap<>();
+        result.put("accessToken", token);
+        result.put("expiredAt", expiredDate.getTime());
         return result;
     }
 
@@ -84,10 +85,9 @@ public class JwtUtil {
 
 
     public static void main(String[] args) {
-        String token="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpT1MiLCJqdGkiOiIzOTAxNzFjZC1kZWQxLTQwZmQtYTViNi1hNmEzYmI2NGM4ZjMiLCJleHAiOjE1MzUwOTg3ODN9.Hdl6Kzl_DMdqT6mSOO6WFMlydtravrlg8gswehbChjM3E9Nzu0rgXK8eADaKarDek9IR6N_QqcYHTgQLdBUm3g";
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpT1MiLCJqdGkiOiIzOTAxNzFjZC1kZWQxLTQwZmQtYTViNi1hNmEzYmI2NGM4ZjMiLCJleHAiOjE1MzUwOTg3ODN9.Hdl6Kzl_DMdqT6mSOO6WFMlydtravrlg8gswehbChjM3E9Nzu0rgXK8eADaKarDek9IR6N_QqcYHTgQLdBUm3g";
         System.out.println(getExpired(token));
     }
-
 
 
 }

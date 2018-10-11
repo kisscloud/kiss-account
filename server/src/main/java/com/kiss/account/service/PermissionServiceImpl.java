@@ -8,19 +8,23 @@ import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.output.ResultOutput;
 import com.kiss.account.utils.ResultOutputUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@Api(tags = "Permission", description = "权限相关接口")
 public class PermissionServiceImpl implements PermissionClient {
 
     @Autowired
     private PermissionDao permissionDao;
 
     @Override
-    public ResultOutput create(CreatePermissionInput createPermissionInput, BindingResult bindingResult) {
+    @ApiOperation(value = "创建权限")
+    public ResultOutput postPermissions(CreatePermissionInput createPermissionInput, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultOutputUtil.validateError(bindingResult.getFieldError().getDefaultMessage());
         }
@@ -44,7 +48,8 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    public ResultOutput createModule(CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult) {
+    @ApiOperation(value = "创建权限模块")
+    public ResultOutput postPermissionsModules(CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultOutputUtil.validateError(bindingResult.getFieldError().getDefaultMessage());
         }
@@ -64,12 +69,14 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    public String list() {
+    @ApiOperation(value = "获取权限列表")
+    public String getPermissions() {
         return null;
     }
 
     @Override
-    public String find() {
+    @ApiOperation(value = "获取权限信息")
+    public String getPermission() {
         return null;
     }
 }
