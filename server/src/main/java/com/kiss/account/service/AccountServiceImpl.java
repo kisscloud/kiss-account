@@ -47,7 +47,8 @@ public class AccountServiceImpl implements AccountClient {
         accountGroup.setOperatorIp("127.0.0.1");
         accountGroup.setOperatorName("张三");
         accountGroupDao.createAccountGroup(accountGroup);
-        return ResultOutputUtil.success();
+
+        return ResultOutputUtil.success(accountGroup);
     }
 
     @Override
@@ -64,7 +65,8 @@ public class AccountServiceImpl implements AccountClient {
         account.setOperatorIp("127.0.0.4");
         account.setOperatorName("李四");
         accountDao.createAccount(account);
-        return ResultOutputUtil.success();
+
+        return ResultOutputUtil.success(account);
     }
 
     @Override
