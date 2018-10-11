@@ -1,22 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed6be8d5-07cf-43f6-9f59-a0c94e3309c8" name="Default" comment="add ignore">
+    <list default="true" id="ed6be8d5-07cf-43f6-9f59-a0c94e3309c8" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/KissAccountClientApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/AccountClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/AuthClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/PermissionClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/src/main/java/com/kiss/account/client/RoleClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/target/classes/com/kiss/account/KissAccountClientApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/target/classes/com/kiss/account/client/AccountClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/target/classes/com/kiss/account/client/PermissionClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kiss-account-client/target/classes/com/kiss/account/client/RoleClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/kiss-account-common.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/KissAccountCommonApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocatePermissionToRoleInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/AllocateRoleToAccountInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateAccountInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateLogInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreatePermissionModuleInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/CreateRoleInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/LoginInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/input/UpdateRolePermissionInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/src/main/java/com/kiss/account/output/ResultOutput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/KissAccountCommonApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/AllocatePermissionToRoleInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/AllocateRoleToAccountInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateAccountGroupInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateAccountInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateLogInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreatePermissionInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreatePermissionModuleInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/CreateRoleInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/LoginInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/input/UpdateRolePermissionInput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-common/target/classes/com/kiss/account/output/ResultOutput.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/kiss-account-server.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/KissAccountApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/AccountGroupDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/LogDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/PermissionDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/dao/RoleDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Account.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/AccountGroup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/AccountRoles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Log.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Permission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/PermissionModule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/entity/RolePermissions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/enums/ResultOutputCodeEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/exception/ResultException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/exception/TagException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/AccountMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/PermissionModuleMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/mapper/RoleMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/AuthServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/CryptoUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/JwtUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/ResultOutputUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/SqlSessionFactoryUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/java/com/kiss/account/utils/Swagger2Util.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountGroupMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/AccountMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/LogMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/PermissionMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/PermissionModuleMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mapper/RoleMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/src/main/resources/mybatis-config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/KissAccountApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/AccountDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/AccountGroupDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/LogDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/PermissionDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/dao/RoleDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Account.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/AccountGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/AccountRoles.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Log.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Permission.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/PermissionModule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/entity/RolePermissions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/enums/ResultOutputCodeEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/exception/ResultException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/exception/TagException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/AccountGroupMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/AccountMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/PermissionMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/PermissionModuleMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/mapper/RoleMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/AccountServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/PermissionServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/service/RoleServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/CryptoUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/JwtUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/ResultOutputUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/SqlSessionFactoryUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/com/kiss/account/utils/Swagger2Util.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/AccountGroupMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/AccountMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/LogMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/PermissionMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/PermissionModuleMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mapper/RoleMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-account-server/target/classes/mybatis-config.xml" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -132,6 +226,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -139,23 +235,11 @@
               <item name="kiss-account-two" type="b2602c69:ProjectViewProjectNode" />
               <item name="kiss-account-two" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="kiss-account-two" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiss-account-two" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="kiss-account-two" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiss-account-two" type="462c0819:PsiDirectoryNode" />
-              <item name="kiss-account-client" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -200,7 +284,7 @@
   <component name="RunManager" selected="Application.KissAccountApplication">
     <configuration name="KissAccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kiss.account.KissAccountApplication" />
-      <module name="kiss-account-server" />
+      <module name="server" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
@@ -239,6 +323,18 @@
       </option>
       <patterns />
     </configuration>
+    <configuration name="KissAccountClientApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="kiss-account-client" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.kiss.account.KissAccountClientApplication" />
+    </configuration>
+    <configuration name="KissAccountCommonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="kiss-account-common" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.kiss.account.KissAccountCommonApplication" />
+    </configuration>
+    <configuration name="KissControllerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="kiss-controller" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="kiss.KissControllerApplication" />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -264,6 +360,9 @@
     <list>
       <item itemvalue="Application.KissAccountApplication" />
       <item itemvalue="Application.KissControllerApplication" />
+      <item itemvalue="Spring Boot.KissAccountCommonApplication" />
+      <item itemvalue="Spring Boot.KissControllerApplication" />
+      <item itemvalue="Spring Boot.KissAccountClientApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -284,7 +383,8 @@
       <updated>1539163010764</updated>
       <workItem from="1539163012545" duration="12640000" />
       <workItem from="1539226008745" duration="231000" />
-      <workItem from="1539226309208" duration="236000" />
+      <workItem from="1539226309208" duration="348000" />
+      <workItem from="1539226661372" duration="28000" />
     </task>
     <task id="LOCAL-00001" summary="modify api name">
       <created>1539225373029</created>
@@ -314,11 +414,18 @@
       <option name="project" value="LOCAL" />
       <updated>1539226063877</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add ignore">
+      <created>1539226560365</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1539226560365</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12871000" />
+    <option name="totallyTimeSpent" value="13247000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="837" extended-state="6" />
@@ -339,11 +446,11 @@
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32833788" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32970026" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32972974" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32972974" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
       <window_info anchor="bottom" id="Problems" order="7" weight="0.32970026" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
@@ -381,7 +488,6 @@
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="14" />
       <window_info anchor="right" id="Maven Projects" order="5" visible="true" weight="0.25894135" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
       <window_info anchor="right" id="SciView" order="6" />
       <window_info anchor="right" id="Database" order="7" />
@@ -391,8 +497,9 @@
       <window_info anchor="right" id="Theme Preview" order="9" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39918256" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Bean Validation" order="10" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39918256" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
