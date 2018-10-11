@@ -27,7 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
@@ -101,7 +103,11 @@ public class AccountServiceImpl implements AccountClient {
         Integer maxSize = Integer.parseInt(maxAccountsSize);
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize )? maxSize: Integer.parseInt(size);
         List<Account> accounts = accountDao.getAccounts((queryPage - 1)*pageSize,pageSize);
-        return ResultOutputUtil.success(accounts);
+        Integer count = accountDao.getAccountsCount();
+        Map<String,Object> result = new HashMap<>();
+        result.put("accounts",accounts);
+        result.put("count",count);
+        return ResultOutputUtil.success(result);
     }
 
     @Override
