@@ -14,6 +14,7 @@ import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,37 +94,35 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "获取账户列表")
-    public ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) {
-        Integer page = StringUtils.isEmpty(request.getParameter("page"))? 1 : Integer.parseInt(request.getParameter("page"));
+    public ResultOutput getAccounts(String page,String size) {
+        Integer queryPage = StringUtils.isEmpty(page)? 1 : Integer.parseInt(page);
         Integer maxSize = Integer.parseInt(maxAccountsSize);
-        Integer size = (StringUtils.isEmpty(request.getParameter("size")) || Integer.parseInt(request.getParameter("size")) > maxSize )? maxSize: Integer.parseInt(request.getParameter("size"));
-        List<Account> accounts = accountDao.getAccounts((page - 1)*size,size);
+        Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize )? maxSize: Integer.parseInt(size);
+        List<Account> accounts = accountDao.getAccounts((queryPage - 1)*pageSize,pageSize);
         return ResultOutputUtil.success(accounts);
     }
 
     @Override
     @ApiOperation(value = "添加账户信息")
-    public ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("id");
+    public ResultOutput getAccount(String id) {
         Account account = accountDao.getAccountById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);
     }
 
     @Override
-    public ResultOutput getGroups(HttpServletRequest request, HttpServletResponse response) {
+    public ResultOutput getGroups() {
         List<AccountGroup> groups = accountDao.getGroups();
         return ResultOutputUtil.success(groups);
     }
 
     @Override
-    public ResultOutput getGroup(HttpServletRequest request, HttpServletResponse response) {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        AccountGroup group = accountDao.getGroup(id);
+    public ResultOutput getGroup(String id) {
+        AccountGroup group = accountDao.getGroup(Integer.parseInt(id));
         return ResultOutputUtil.success(group);
     }
 
     @Override
-    public ResultOutput getAccountsCount(HttpServletRequest request, HttpServletResponse response) {
+    public ResultOutput getAccountsCount() {
         Integer count = accountDao.getAccountsCount();
         return ResultOutputUtil.success(count);
     }

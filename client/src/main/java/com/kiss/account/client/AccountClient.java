@@ -4,10 +4,8 @@ import com.kiss.account.input.AllocateRoleToAccountInput;
 import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.output.ResultOutput;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,19 +25,19 @@ public interface AccountClient {
     ResultOutput postAccountsRole(@RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
 
     @GetMapping("/accounts")
-    ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response);
+    ResultOutput getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
 
     @GetMapping("/account")
-    ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response);
+    ResultOutput getAccount(String id);
 
     @GetMapping("/groups")
-    ResultOutput getGroups(HttpServletRequest request, HttpServletResponse response);
+    ResultOutput getGroups();
 
     @GetMapping("/group")
-    ResultOutput getGroup(HttpServletRequest request, HttpServletResponse response);
+    ResultOutput getGroup(String id);
 
     @GetMapping("/accounts/count")
-    ResultOutput getAccountsCount(HttpServletRequest request, HttpServletResponse response);
+    ResultOutput getAccountsCount();
 
     @GetMapping("/get")
     String get();
