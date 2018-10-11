@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/user")
-public interface LoginClient {
+public interface AuthClient {
 
     @PostMapping("/login")
     ResultOutput login(@RequestBody LoginInput loginInput);

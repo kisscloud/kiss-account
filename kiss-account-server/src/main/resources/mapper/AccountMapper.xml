@@ -11,7 +11,7 @@
         values(#{username}, #{email}, #{mobile}, #{password}, #{salt}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <select id="getAccountById" resultType="com.kiss.account.entity.Account">
+    <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Account">
         select * from accounts where id=#{id};
     </select>
 

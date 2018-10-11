@@ -17,4 +17,6 @@ public interface AccountMapper {
     List<Account> getAccounts();
 
     Account getAccountByUsername(String username);
+
+    Account getAccountById(int userId);
 }

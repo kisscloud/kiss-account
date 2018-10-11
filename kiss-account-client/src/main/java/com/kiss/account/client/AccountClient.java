@@ -14,20 +14,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@RequestMapping("/account")
+@RequestMapping
 public interface AccountClient {
-    @RequestMapping("/create")
-    ResultOutput create(CreateAccountGroupInput createAccountGroupInput);
 
-    @PostMapping("/createAccount")
-    ResultOutput create(@RequestBody CreateAccountInput createAccountInput);
+    @PostMapping("/accounts/groups")
+    ResultOutput postAccountGroups(CreateAccountGroupInput createAccountGroupInput);
 
-    @PostMapping("/allocateRolesToAcount")
-    ResultOutput allocateRolesToAcount(@RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
+    @PostMapping("/accounts")
+    ResultOutput postAccounts(@RequestBody CreateAccountInput createAccountInput);
 
-    @GetMapping("/users")
-    ResultOutput users(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    @PostMapping("/accounts/role")
+    ResultOutput postAccountsRole(@RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
 
-    @RequestMapping("/get")
+    @GetMapping("/accounts")
+    ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    @GetMapping("/account")
+    ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    @GetMapping("/get")
     String get();
 }

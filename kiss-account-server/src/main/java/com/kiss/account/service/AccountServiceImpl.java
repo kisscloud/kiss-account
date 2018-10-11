@@ -12,6 +12,7 @@ import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.output.ResultOutput;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,8 @@ public class AccountServiceImpl implements AccountClient {
     private AccountDao accountDao;
 
     @Override
-    public ResultOutput create(CreateAccountGroupInput createAccountGroupInput) {
+    @ApiOperation(value = "创建部门", notes = "创建部门")
+    public ResultOutput postAccountGroups(CreateAccountGroupInput createAccountGroupInput) {
         AccountGroup accountGroup = new AccountGroup();
         BeanUtils.copyProperties(createAccountGroupInput,accountGroup);
         accountGroup.setOperatorId(123);
@@ -43,7 +45,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput create(CreateAccountInput createAccountInput) {
+    public ResultOutput postAccounts(CreateAccountInput createAccountInput) {
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput,account);
         String salt = CryptoUtil.salt();
@@ -58,7 +60,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput allocateRolesToAcount(AllocateRoleToAccountInput allocateRoleToAccountInput) {
+    public ResultOutput postAccountsRole(AllocateRoleToAccountInput allocateRoleToAccountInput) {
         List<Integer> roles = allocateRoleToAccountInput.getRoleId();
         List<AccountRoles> accountRolesList = new ArrayList<>();
         for (Integer roleId : roles) {
@@ -76,9 +78,16 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput users(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Account> accounts = accountDao.getAccounts();
         return ResultOutputUtil.success(accounts);
+    }
+
+    @Override
+    public ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        Account account = accountDao.getAccountById(Integer.parseInt(id));
+        return ResultOutputUtil.success(account);
     }
 
     @Override

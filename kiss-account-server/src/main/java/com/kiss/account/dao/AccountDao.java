@@ -39,4 +39,9 @@ public class AccountDao {
         Account account = accountMapper.getAccountByUsername(username);
         return account;
     }
+
+    public Account getAccountById(Integer id) {
+        Account account = accountMapper.getAccountById(id);
+        return account;
+    }
 }

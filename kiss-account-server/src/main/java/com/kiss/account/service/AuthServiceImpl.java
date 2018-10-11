@@ -1,6 +1,6 @@
 package com.kiss.account.service;
 
-import com.kiss.account.client.LoginClient;
+import com.kiss.account.client.AuthClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-public class LoginServiceImpl implements LoginClient {
+public class AuthServiceImpl implements AuthClient {
 
     @Autowired
     private AccountDao accountDao;
