@@ -2,9 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed6be8d5-07cf-43f6-9f59-a0c94e3309c8" name="Default" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AccountClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AccountClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiss-controller/target/classes/kiss/KissControllerApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/kiss-controller/target/classes/kiss/KissControllerApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,11 +39,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
+      <file leaf-file-name="AccountServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="64" column="43" lean-forward="true" selection-start-line="64" selection-start-column="43" selection-end-line="64" selection-end-column="43" />
+=======
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="258">
               <caret line="96" column="21" selection-start-line="32" selection-start-column="8" selection-end-line="96" selection-end-column="21" />
+=======
+            <state relative-caret-position="264">
+              <caret line="44" column="32" lean-forward="true" selection-start-line="42" selection-start-column="16" selection-end-line="44" selection-end-column="32" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
             </state>
           </provider>
         </entry>
@@ -48,26 +73,112 @@
       <file leaf-file-name="AccountClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AccountClient.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="255">
               <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
+=======
+<<<<<<< HEAD
+            <state relative-caret-position="165">
+              <caret line="15" column="40" lean-forward="true" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="CreateAccountGroupInput.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/common/src/main/java/com/kiss/account/input/CreateAccountGroupInput.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
       <file leaf-file-name="KissAccountApplication.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
               <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+=======
+      <file leaf-file-name="KissAccountApplication.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="AccountDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuthServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="28" column="80" selection-start-line="28" selection-start-column="80" selection-end-line="28" selection-end-column="80" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JwtUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/utils/JwtUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RoleServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PermissionServiceImpl.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="64" column="50" lean-forward="true" selection-start-line="64" selection-start-column="50" selection-end-line="64" selection-end-column="50" />
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
       <file leaf-file-name="KissControllerApplication.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kiss-controller/src/main/java/kiss/KissControllerApplication.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
               <caret line="12" column="24" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="27" />
+=======
+      <file leaf-file-name="AccountGroupMapper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+=======
+            <state relative-caret-position="408">
+              <caret line="114" column="16" lean-forward="true" selection-start-line="114" selection-start-column="16" selection-end-line="114" selection-end-column="16" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
             </state>
           </provider>
         </entry>
@@ -129,7 +240,6 @@
         <option value="$PROJECT_DIR$/kiss-controller/src/main/java/kiss/feign/AccountServiceFeign.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/KissAccountApplication.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/RoleClient.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/PermissionClient.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AuthClient.java" />
@@ -140,11 +250,22 @@
         <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java" />
         <option value="$PROJECT_DIR$/server/src/main/resources/mapper/AccountMapper.xml" />
         <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/dao/AccountDao.java" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/common/pom.xml" />
         <option value="$PROJECT_DIR$/client/pom.xml" />
         <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/kiss/account/client/AccountClient.java" />
+=======
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AccountServiceImpl.java" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java" />
+=======
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/client/pom.xml" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
       </list>
     </option>
   </component>
@@ -400,9 +521,17 @@
       <workItem from="1539226309208" duration="348000" />
       <workItem from="1539226661372" duration="28000" />
       <workItem from="1539229293666" duration="3450000" />
+<<<<<<< HEAD
+      <workItem from="1539238077390" duration="2807000" />
+=======
       <workItem from="1539238077390" duration="1762000" />
       <workItem from="1539253338630" duration="878000" />
+<<<<<<< HEAD
       <workItem from="1539254376288" duration="3176000" />
+=======
+      <workItem from="1539254376288" duration="507000" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
     </task>
     <task id="LOCAL-00001" summary="modify api name">
       <created>1539225373029</created>
@@ -457,7 +586,15 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="28888000" />
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="19504000" />
+=======
+    <option name="totallyTimeSpent" value="26219000" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="837" extended-state="0" />
@@ -480,10 +617,22 @@
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+<<<<<<< HEAD
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.40969697" />
+      <window_info anchor="bottom" id="Spring" order="7" weight="0.32970026" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32969698" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49798387" visible="true" weight="0.2639485" />
+=======
       <window_info anchor="bottom" id="Run" order="2" weight="0.35675675" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32970026" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32837838" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49798387" visible="true" weight="0.27110156" />
+=======
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32837838" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49798387" visible="true" weight="0.27110156" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
       <window_info anchor="bottom" id="Problems" order="7" weight="0.32970026" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
@@ -636,6 +785,9 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountMapper.java">
+=======
     <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/AuthServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -651,6 +803,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/mapper/AccountGroupMapper.java">
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
@@ -760,6 +913,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="258">
           <caret line="96" column="21" selection-start-line="32" selection-start-column="8" selection-end-line="96" selection-end-column="21" />
         </state>
@@ -790,6 +944,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+=======
+<<<<<<< HEAD
+        <state relative-caret-position="265">
+          <caret line="64" column="43" lean-forward="true" selection-start-line="64" selection-start-column="43" selection-end-line="64" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/RoleServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/kiss/account/service/PermissionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="64" column="50" lean-forward="true" selection-start-line="64" selection-start-column="50" selection-end-line="64" selection-end-column="50" />
+=======
+        <state relative-caret-position="408">
+          <caret line="114" column="16" lean-forward="true" selection-start-line="114" selection-start-column="16" selection-end-line="114" selection-end-column="16" />
+>>>>>>> 68ebcb90783c0d9d8b7a8a9a31fe083965a81a7c
+>>>>>>> fc9e44735375e687764e620b5238f6b499a112ab
         </state>
       </provider>
     </entry>

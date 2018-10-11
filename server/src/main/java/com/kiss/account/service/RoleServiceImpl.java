@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleClient {
         role.setOperatorIp("127.0.0.5");
         role.setOperatorName("旺旺");
         roleDao.createRole(role);
-        return ResultOutputUtil.success();
+        return ResultOutputUtil.success(role);
     }
 
     @Override
