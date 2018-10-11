@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>kiss-account-client</module>
+        <module>client</module>
         <module>kiss-account-server</module>
         <module>kiss-account-common</module>
         <module>kiss-controller</module>
