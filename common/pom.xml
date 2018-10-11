@@ -12,10 +12,22 @@
     <artifactId>kiss-account-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!--<distributionManagement>-->
-        <!--<snapshotRepository>-->
-            <!--<id>snapshots</id>-->
-            <!--<url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>-->
-        <!--</snapshotRepository>-->
-    <!--</distributionManagement>-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://47.100.229.84:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
