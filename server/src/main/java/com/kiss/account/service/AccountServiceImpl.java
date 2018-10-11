@@ -14,8 +14,10 @@ import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +37,9 @@ public class AccountServiceImpl implements AccountClient {
 
     @Autowired
     private AccountDao accountDao;
+
+    @Value("${max.accounts.size}")
+    private String maxAccountsSize;
 
     @Override
     @ApiOperation(value = "创建部门")
@@ -90,17 +95,39 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "获取账户列表")
-    public ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Account> accounts = accountDao.getAccounts();
+    public ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) {
+        Integer page = StringUtils.isEmpty(request.getParameter("page"))? 1 : Integer.parseInt(request.getParameter("page"));
+        Integer maxSize = Integer.parseInt(maxAccountsSize);
+        Integer size = (StringUtils.isEmpty(request.getParameter("size")) || Integer.parseInt(request.getParameter("size")) > maxSize )? maxSize: Integer.parseInt(request.getParameter("size"));
+        List<Account> accounts = accountDao.getAccounts((page - 1)*size,size);
         return ResultOutputUtil.success(accounts);
     }
 
     @Override
     @ApiOperation(value = "添加账户信息")
-    public ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         Account account = accountDao.getAccountById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);
+    }
+
+    @Override
+    public ResultOutput getGroups(HttpServletRequest request, HttpServletResponse response) {
+        List<AccountGroup> groups = accountDao.getGroups();
+        return ResultOutputUtil.success(groups);
+    }
+
+    @Override
+    public ResultOutput getGroup(HttpServletRequest request, HttpServletResponse response) {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        AccountGroup group = accountDao.getGroup(id);
+        return ResultOutputUtil.success(group);
+    }
+
+    @Override
+    public ResultOutput getAccountsCount(HttpServletRequest request, HttpServletResponse response) {
+        Integer count = accountDao.getAccountsCount();
+        return ResultOutputUtil.success(count);
     }
 
     @Override

@@ -27,10 +27,19 @@ public interface AccountClient {
     ResultOutput postAccountsRole(@RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
 
     @GetMapping("/accounts")
-    ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    ResultOutput getAccounts(HttpServletRequest request, HttpServletResponse response);
 
     @GetMapping("/account")
-    ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    ResultOutput getAccount(HttpServletRequest request, HttpServletResponse response);
+
+    @GetMapping("/groups")
+    ResultOutput getGroups(HttpServletRequest request, HttpServletResponse response);
+
+    @GetMapping("/group")
+    ResultOutput getGroup(HttpServletRequest request, HttpServletResponse response);
+
+    @GetMapping("/accounts/count")
+    ResultOutput getAccountsCount(HttpServletRequest request, HttpServletResponse response);
 
     @GetMapping("/get")
     String get();
