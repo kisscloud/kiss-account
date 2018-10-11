@@ -28,7 +28,7 @@
     </select>
 
     <select id="getAccounts" resultType="com.kiss.account.entity.Account">
-        select * from accounts;
+        select * from accounts order by createdAt limit #{start},#{size};;
     </select>
 
     <insert id="allocateRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
@@ -43,4 +43,16 @@
             (#{role.roleId}, #{role.accountId}, #{role.operatorId}, #{role.operatorName}, #{role.operatorIp})
         </foreach>
     </insert>
+
+    <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountgroups order by seq
+    </select>
+
+    <select id="getGroup" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountgroups where id=#{id}
+    </select>
+
+    <select id="getAccountsCount" resultType="java.lang.Integer">
+        select count(*) from accounts
+    </select>
 </mapper>
