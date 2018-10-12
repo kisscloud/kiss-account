@@ -3,6 +3,8 @@ package com.kiss.account.mapper;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.entity.AccountRoles;
+import com.kiss.account.output.AccountOutput;
+import com.kiss.account.output.AccountRolesOutput;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,13 +16,13 @@ public interface AccountMapper {
 
     void allocateRoleToAccount(AccountRoles accountRoles);
 
-    void allocateRolesToAccount(List<AccountRoles> accountRoles);
+    void allocateRolesToAccount(List<AccountRolesOutput> accountRoles);
 
-    List<Account> getAccounts(@Param("start") int start, @Param("size") int size);
+    List<AccountOutput> getAccounts(@Param("start") int start, @Param("size") int size);
 
     Account getAccountByUsername(String username);
 
-    Account getAccountById(int userId);
+    AccountOutput getAccountById(int userId);
 
     List<AccountGroup> getGroups();
 

@@ -5,16 +5,15 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.entity.AccountRoles;
 import com.kiss.account.input.AllocateRoleToAccountInput;
 import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
-import com.kiss.account.output.ResultOutput;
+import com.kiss.account.output.*;
+import com.kiss.account.status.Code;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import output.ResultOutput;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
@@ -46,7 +41,8 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "创建部门")
-    public ResultOutput postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
+    public ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
+
         AccountGroup accountGroup = new AccountGroup();
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0");
@@ -55,13 +51,16 @@ public class AccountServiceImpl implements AccountClient {
         accountGroup.setOperatorIp("127.0.0.1");
         accountGroup.setOperatorName("张三");
         accountGroupDao.createAccountGroup(accountGroup);
+        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+        BeanUtils.copyProperties(accountGroup, accountGroupOutput);
 
-        return ResultOutputUtil.success(accountGroup);
+        return ResultOutputUtil.success(accountGroupOutput);
     }
 
     @Override
     @ApiOperation(value = "添加账户")
-    public ResultOutput postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
+    public ResultOutput<AccountOutput> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
+
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
@@ -73,17 +72,23 @@ public class AccountServiceImpl implements AccountClient {
         account.setOperatorIp("127.0.0.4");
         account.setOperatorName("李四");
         accountDao.createAccount(account);
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(account, accountOutput);
+        AccountGroup group = accountDao.getGroup(account.getGroupId());
+        accountOutput.setGroupName(group.getName());
 
-        return ResultOutputUtil.success(account);
+        return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
     @ApiOperation(value = "绑定账户角色")
-    public ResultOutput postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
+    public ResultOutput<List<AccountRolesOutput>> postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
+
         List<Integer> roles = allocateRoleToAccountInput.getRoleId();
-        List<AccountRoles> accountRolesList = new ArrayList<>();
+        List<AccountRolesOutput> accountRolesList = new ArrayList<>();
+
         for (Integer roleId : roles) {
-            AccountRoles accountRoles = new AccountRoles();
+            AccountRolesOutput accountRoles = new AccountRolesOutput();
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
@@ -93,51 +98,75 @@ public class AccountServiceImpl implements AccountClient {
         }
 
         accountDao.allocateRolesToAccount(accountRolesList);
-        return ResultOutputUtil.success();
+
+        return ResultOutputUtil.success(accountRolesList);
     }
 
     @Override
     @ApiOperation(value = "获取账户列表")
-    public ResultOutput getAccounts(String page,String size) {
-        Integer queryPage = StringUtils.isEmpty(page)? 1 : Integer.parseInt(page);
+    public ResultOutput<GetAccountsOutput> getAccounts(String page, String size) {
+
+        Integer queryPage = StringUtils.isEmpty(page) ? 1 : Integer.parseInt(page);
         Integer maxSize = Integer.parseInt(maxAccountsSize);
-        Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize )? maxSize: Integer.parseInt(size);
-        List<Account> accounts = accountDao.getAccounts((queryPage - 1)*pageSize,pageSize);
+        Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
+        List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
-        Map<String,Object> result = new HashMap<>();
-        result.put("accounts",accounts);
-        result.put("count",count);
-        return ResultOutputUtil.success(result);
+        GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
+
+        return ResultOutputUtil.success(getAccountsOutput);
     }
 
     @Override
-    @ApiOperation(value = "添加账户信息")
-    public ResultOutput getAccount(String id) {
-        Account account = accountDao.getAccountById(Integer.parseInt(id));
+    @ApiOperation(value = "获取账户信息")
+    public ResultOutput<AccountOutput> getAccount(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return ResultOutputUtil.error(Code.PARAMETER_ERROR);
+        }
+        AccountOutput account = accountDao.getAccountById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);
     }
 
     @Override
-    public ResultOutput getGroups() {
+    public ResultOutput<AccountGroupOutput> getGroups() {
+
         List<AccountGroup> groups = accountDao.getGroups();
-        return ResultOutputUtil.success(groups);
+        List<AccountGroupOutput> groupsOutput = new ArrayList<>();
+
+        for (AccountGroup accountGroup : groups) {
+            AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+            BeanUtils.copyProperties(accountGroup, accountGroupOutput);
+            groupsOutput.add(accountGroupOutput);
+        }
+
+        return ResultOutputUtil.success(groupsOutput);
     }
 
     @Override
-    public ResultOutput getGroup(String id) {
+    public ResultOutput<AccountGroupOutput> getGroup(String id) {
+
         AccountGroup group = accountDao.getGroup(Integer.parseInt(id));
-        return ResultOutputUtil.success(group);
+        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+        BeanUtils.copyProperties(group, accountGroupOutput);
+
+        return ResultOutputUtil.success(accountGroupOutput);
     }
 
     @Override
-    public ResultOutput getAccountsCount() {
+    public ResultOutput<Integer> getAccountsCount() {
+
         Integer count = accountDao.getAccountsCount();
+
         return ResultOutputUtil.success(count);
     }
 
     @Override
-    public String get() {
+    public ResultOutput get() {
         System.out.println("hello");
-        return "hello ni hao";
+//        System.out.println(getMessage.messageSource);
+//
+//        System.out.println(Message.getMessage("zh-CN",900));
+//        System.out.println(Message.getMessage("en",170));
+//        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
+        return null;
     }
 }

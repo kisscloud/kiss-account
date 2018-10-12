@@ -3,20 +3,15 @@ package com.kiss.account.client;
 import com.kiss.account.input.AllocateRoleToAccountInput;
 import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
-import com.kiss.account.output.ResultOutput;
-import org.apache.ibatis.annotations.Param;
+import com.kiss.account.output.AccountGroupOutput;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import output.ResultOutput;
 
 @RequestMapping
 public interface AccountClient {
 
     @PostMapping("/accounts/groups")
-    ResultOutput postAccountGroups(CreateAccountGroupInput createAccountGroupInput);
+    ResultOutput<AccountGroupOutput> postAccountGroups(CreateAccountGroupInput createAccountGroupInput);
 
     @PostMapping("/accounts")
     ResultOutput postAccounts(@RequestBody CreateAccountInput createAccountInput);
@@ -40,5 +35,5 @@ public interface AccountClient {
     ResultOutput getAccountsCount();
 
     @GetMapping("/get")
-    String get();
+    ResultOutput get();
 }

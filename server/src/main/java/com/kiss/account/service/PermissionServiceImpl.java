@@ -6,14 +6,16 @@ import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
-import com.kiss.account.output.ResultOutput;
+import com.kiss.account.output.PermissionModuleOutput;
+import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
-
+import output.ResultOutput;
 
 @RestController
 @Api(tags = "Permission", description = "权限相关接口")
@@ -24,7 +26,7 @@ public class PermissionServiceImpl implements PermissionClient {
 
     @Override
     @ApiOperation(value = "创建权限")
-    public ResultOutput postPermissions(CreatePermissionInput createPermissionInput, BindingResult bindingResult) {
+    public ResultOutput<PermissionOutput> postPermissions(CreatePermissionInput createPermissionInput, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultOutputUtil.validateError(bindingResult.getFieldError().getDefaultMessage());
         }
@@ -44,12 +46,14 @@ public class PermissionServiceImpl implements PermissionClient {
         permission.setOperatorIp("0.0.0.0");
         permissionDao.createPermission(permission);
 
-        return ResultOutputUtil.success(permission);
+        PermissionOutput permissionOutput = new PermissionOutput();
+        BeanUtils.copyProperties(permission,permissionOutput);
+        return ResultOutputUtil.success(permissionOutput);
     }
 
     @Override
     @ApiOperation(value = "创建权限模块")
-    public ResultOutput postPermissionsModules(CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult) {
+    public ResultOutput<PermissionModuleOutput> postPermissionsModules(CreatePermissionModuleInput permissionModuleInput, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultOutputUtil.validateError(bindingResult.getFieldError().getDefaultMessage());
         }
@@ -65,7 +69,10 @@ public class PermissionServiceImpl implements PermissionClient {
         permissionModule.setOperatorIp("0.0.0.0");
         permissionModule.setStatus(1);
         permissionDao.createPermissionModule(permissionModule);
-        return ResultOutputUtil.success(permissionModule);
+
+        PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
+        BeanUtils.copyProperties(permissionModule,permissionModuleOutput);
+        return ResultOutputUtil.success(permissionModuleOutput);
     }
 
     @Override

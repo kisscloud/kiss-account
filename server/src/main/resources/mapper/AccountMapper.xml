@@ -11,8 +11,13 @@
         values(#{name}, #{username}, #{email}, #{mobile}, #{password}, #{salt}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Account">
-        select * from accounts where id=#{id};
+    <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.output.AccountOutput">
+        select account.id,account.name,account.username,account.email,account.mobile,
+                account.remark,account.groupId,account.status,account.operatorName,
+                account.operatorId,account.operatorIp,account.createdAt,account.updatedAt,gr.name as groupName
+        from accounts account left join accountgroups gr
+        on account.groupId = gr.id
+        where account.id=#{id};
     </select>
 
     <select id="getAccountByUsername" parameterType="java.lang.String" resultType="com.kiss.account.entity.Account">
@@ -27,8 +32,13 @@
         select * from accounts where mobile=#{mobile};
     </select>
 
-    <select id="getAccounts" resultType="com.kiss.account.entity.Account">
-        select * from accounts order by createdAt limit #{start},#{size};;
+    <select id="getAccounts" resultType="com.kiss.account.output.AccountOutput">
+        select account.id,account.name,account.username,account.email,account.mobile,
+                account.remark,account.groupId,account.status,account.operatorName,
+                account.operatorId,account.operatorIp,account.createdAt,account.updatedAt,gr.name as groupName
+        from accounts account left join accountgroups gr
+        on account.groupId = gr.id
+        order by account.createdAt limit #{start},#{size}
     </select>
 
     <insert id="allocateRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">

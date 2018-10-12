@@ -1,5 +1,6 @@
 package com.kiss.account.utils;
 
+import com.kiss.account.output.AuthOutput;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +14,7 @@ public class JwtUtil {
     private static final String SECRET = "Z~9T2*rTgm9W~I>3";
     private static final long EXPIRATION = 1000 * 60 * 60 * 24;
 
-    public static Map<String, Object> getToken(int userId, String username) {
+    public static AuthOutput getToken(int userId, String username) {
         String key = UUID.randomUUID().toString();
         Date expiredDate = computeExpired();
 
@@ -24,10 +25,11 @@ public class JwtUtil {
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        Map<String, Object> result = new HashMap<>();
-        result.put("accessToken", token);
-        result.put("expiredAt", expiredDate.getTime());
-        return result;
+        AuthOutput authOutput = new AuthOutput();
+        authOutput.setAccessToken(token);
+        authOutput.setExpiredAt(expiredDate.getTime());
+
+        return authOutput;
     }
 
     public static String getUserId(String token) {
