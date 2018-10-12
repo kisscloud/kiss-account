@@ -40,5 +40,5 @@ public interface AccountClient {
     ResultOutput getAccountsCount();
 
     @GetMapping("/get")
-    String get();
+    ResultOutput get();
 }
