@@ -4,6 +4,7 @@ import com.kiss.account.client.AuthClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
+import com.kiss.account.output.AuthOutput;
 import com.kiss.account.output.ResultOutput;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.JwtUtil;
@@ -26,7 +27,7 @@ public class AuthServiceImpl implements AuthClient {
 
     @Override
     @ApiOperation(value = "用户名密码登录")
-    public ResultOutput loginWithUsernameAndPassword(@Validated @RequestBody LoginInput loginInput) {
+    public ResultOutput<AuthOutput> loginWithUsernameAndPassword(@Validated @RequestBody LoginInput loginInput) {
 
         //校验用户名密码
         String username = loginInput.getUsername();
@@ -44,9 +45,9 @@ public class AuthServiceImpl implements AuthClient {
         }
 
         //生成token
-        Map<String, Object> token = JwtUtil.getToken(account.getId(), account.getUsername());
-        token.put("name", account.getName());
+        AuthOutput authOutput = JwtUtil.getToken(account.getId(), account.getUsername());
+        authOutput.setName(account.getName());
 
-        return ResultOutputUtil.success(token);
+        return ResultOutputUtil.success(authOutput);
     }
 }

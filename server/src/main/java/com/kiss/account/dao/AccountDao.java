@@ -6,6 +6,7 @@ import com.kiss.account.entity.AccountRoles;
 import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
+import com.kiss.account.output.AccountRolesOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class AccountDao {
         accountMapper.allocateRoleToAccount(accountRoles);
     }
 
-    public void allocateRolesToAccount(List<AccountRoles> accountRoles) {
+    public void allocateRolesToAccount(List<AccountRolesOutput> accountRoles) {
         accountMapper.allocateRolesToAccount(accountRoles);
     }
 
@@ -48,8 +49,8 @@ public class AccountDao {
      * @param id 用户id
      * @return
      */
-    public Account getAccountById(Integer id) {
-        Account account = accountMapper.getAccountById(id);
+    public AccountOutput getAccountById(Integer id) {
+        AccountOutput account = accountMapper.getAccountById(id);
         return account;
     }
 

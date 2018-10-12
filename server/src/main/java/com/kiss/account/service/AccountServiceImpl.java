@@ -11,9 +11,7 @@ import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.out.Code;
 import com.kiss.account.out.Message;
-import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.GetAccountsOutput;
-import com.kiss.account.output.ResultOutput;
+import com.kiss.account.output.*;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
@@ -44,7 +42,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "创建部门")
-    public ResultOutput<AccountGroup> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
+    public ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
         AccountGroup accountGroup = new AccountGroup();
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0");
@@ -53,13 +51,14 @@ public class AccountServiceImpl implements AccountClient {
         accountGroup.setOperatorIp("127.0.0.1");
         accountGroup.setOperatorName("张三");
         accountGroupDao.createAccountGroup(accountGroup);
-
-        return ResultOutputUtil.success(accountGroup);
+        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+        BeanUtils.copyProperties(accountGroup,accountGroupOutput);
+        return ResultOutputUtil.success(accountGroupOutput);
     }
 
     @Override
     @ApiOperation(value = "添加账户")
-    public ResultOutput<Account> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
+    public ResultOutput<AccountOutput> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
@@ -71,17 +70,20 @@ public class AccountServiceImpl implements AccountClient {
         account.setOperatorIp("127.0.0.4");
         account.setOperatorName("李四");
         accountDao.createAccount(account);
-
-        return ResultOutputUtil.success(account);
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(account,accountOutput);
+        AccountGroup group = accountDao.getGroup(account.getGroupId());
+        accountOutput.setGroupName(group.getName());
+        return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
     @ApiOperation(value = "绑定账户角色")
-    public ResultOutput<List<AccountRoles>> postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
+    public ResultOutput<List<AccountRolesOutput>> postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
         List<Integer> roles = allocateRoleToAccountInput.getRoleId();
-        List<AccountRoles> accountRolesList = new ArrayList<>();
+        List<AccountRolesOutput> accountRolesList = new ArrayList<>();
         for (Integer roleId : roles) {
-            AccountRoles accountRoles = new AccountRoles();
+            AccountRolesOutput accountRoles = new AccountRolesOutput();
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
@@ -108,25 +110,33 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "添加账户信息")
-    public ResultOutput<Account> getAccount(String id) {
-        Account account = accountDao.getAccountById(Integer.parseInt(id));
+    public ResultOutput<AccountOutput> getAccount(String id) {
+        AccountOutput account = accountDao.getAccountById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);
     }
 
     @Override
-    public ResultOutput getGroups() {
+    public ResultOutput<AccountGroupOutput> getGroups() {
         List<AccountGroup> groups = accountDao.getGroups();
-        return ResultOutputUtil.success(groups);
+        List<AccountGroupOutput> groupsOutput = new ArrayList<>();
+        for (AccountGroup accountGroup : groups) {
+            AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+            BeanUtils.copyProperties(accountGroup,accountGroupOutput);
+            groupsOutput.add(accountGroupOutput);
+        }
+        return ResultOutputUtil.success(groupsOutput);
     }
 
     @Override
-    public ResultOutput getGroup(String id) {
+    public ResultOutput<AccountGroupOutput> getGroup(String id) {
         AccountGroup group = accountDao.getGroup(Integer.parseInt(id));
-        return ResultOutputUtil.success(group);
+        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+        BeanUtils.copyProperties(group,accountGroupOutput);
+        return ResultOutputUtil.success(accountGroupOutput);
     }
 
     @Override
-    public ResultOutput getAccountsCount() {
+    public ResultOutput<Integer> getAccountsCount() {
         Integer count = accountDao.getAccountsCount();
         return ResultOutputUtil.success(count);
     }
