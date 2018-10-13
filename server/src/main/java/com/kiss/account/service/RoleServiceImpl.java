@@ -1,5 +1,6 @@
 package com.kiss.account.service;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
@@ -13,14 +14,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import output.ResultOutput;
 
 @RestController
-@Api(tags = "Role",description = "角色相关接口")
+@Api(tags = "Role", description = "角色相关接口")
 public class RoleServiceImpl implements RoleClient {
 
     @Autowired
@@ -28,15 +32,15 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation("添加角色")
-    public ResultOutput<RoleOutput> postRoles(CreateRoleInput createRoleInput) {
+    public ResultOutput<RoleOutput> postRoles(@Validated @RequestBody CreateRoleInput createRoleInput) {
         Role role = new Role();
-        BeanUtils.copyProperties(createRoleInput,role);
+        BeanUtils.copyProperties(createRoleInput, role);
         role.setOperatorId(123);
         role.setOperatorIp("127.0.0.5");
         role.setOperatorName("旺旺");
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
-        BeanUtils.copyProperties(role,roleOutput);
+        BeanUtils.copyProperties(role, roleOutput);
         return ResultOutputUtil.success(roleOutput);
     }
 
@@ -58,10 +62,25 @@ public class RoleServiceImpl implements RoleClient {
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
         for (RolePermissions rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
-            BeanUtils.copyProperties(rolePermission,rolePermissionOutput);
+            BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
             rolePermissionOutputs.add(rolePermissionOutput);
         }
         return ResultOutputUtil.success(rolePermissionOutputs);
+    }
+
+    @Override
+    @ApiOperation("获取所有角色")
+    public ResultOutput<List<RoleOutput>> getRoles() {
+
+        List<Role> roles = roleDao.getRoles();
+        List<RoleOutput> roleOutputs = new ArrayList<>();
+        for (Role role : roles) {
+            RoleOutput roleOutput = new RoleOutput();
+            BeanUtils.copyProperties(role, roleOutput);
+            roleOutputs.add(roleOutput);
+        }
+
+        return ResultOutputUtil.success(roleOutputs);
     }
 
 }

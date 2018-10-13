@@ -25,11 +25,12 @@ public class AuthServiceImpl implements AuthClient {
 
     @Override
     @ApiOperation(value = "用户名密码登录")
-    public ResultOutput<AuthOutput> loginWithUsernameAndPassword(@Validated @RequestBody LoginInput loginInput) {
+    public ResultOutput<AuthOutput> loginWithUsernameAndPassword(@RequestBody LoginInput loginInput) {
 
         //校验用户名密码
         String username = loginInput.getUsername();
         String password = loginInput.getPassword();
+
         //查询用户信息
         Account account = accountDao.getAccountByUsername(username);
         if (account == null) {

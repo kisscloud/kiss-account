@@ -1,5 +1,6 @@
 package com.kiss.account.dao;
 
+import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
 import com.kiss.account.mapper.RoleMapper;
@@ -24,5 +25,10 @@ public class RoleDao {
 
     public void allocatePermissionToRole(RolePermissions rolePermissions) {
         roleMapper.allocatePermissionToRole(rolePermissions);
+    }
+
+    public List<Role> getRoles() {
+        List<Role> roles = roleMapper.getRoles();
+        return roles;
     }
 }

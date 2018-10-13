@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PermissionOutput {
+public class BindPermissionOutput {
     /**
      * 权限ID
      */
@@ -22,6 +22,10 @@ public class PermissionOutput {
      * 模块名称
      */
     private String moduleName;
+    /**
+     * 模块父ID
+     */
+    private Integer moduleParentId;
     /**
      * 权限类型
      */
@@ -46,24 +50,4 @@ public class PermissionOutput {
      * 权限备注
      */
     private String remark;
-    /**
-     * 最后操作者ID
-     */
-    private Integer operatorId;
-    /**
-     * 最后操作者
-     */
-    private String operatorName;
-    /**
-     * 最后操作者IP
-     */
-    private String operatorIp;
-    /**
-     * 创建时间
-     */
-    private Date createdAt;
-    /**
-     * 更新时间
-     */
-    private Date updatedAt;
 }

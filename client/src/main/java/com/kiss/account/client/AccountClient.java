@@ -4,23 +4,28 @@ import com.kiss.account.input.AllocateRoleToAccountInput;
 import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.output.AccountGroupOutput;
+import com.kiss.account.output.AccountOutput;
+import com.kiss.account.output.GetAccountsOutput;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
+
+import java.util.List;
 
 @RequestMapping
 public interface AccountClient {
 
     @PostMapping("/accounts/groups")
-    ResultOutput<AccountGroupOutput> postAccountGroups(CreateAccountGroupInput createAccountGroupInput);
+    ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput);
 
     @PostMapping("/accounts")
-    ResultOutput postAccounts(@RequestBody CreateAccountInput createAccountInput);
+    ResultOutput postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput);
 
     @PostMapping("/accounts/role")
-    ResultOutput postAccountsRole(@RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
+    ResultOutput postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
 
     @GetMapping("/accounts")
-    ResultOutput getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
+    ResultOutput<GetAccountsOutput> getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
 
     @GetMapping("/account")
     ResultOutput getAccount(String id);

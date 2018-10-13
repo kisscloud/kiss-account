@@ -37,7 +37,8 @@ public class AccountDao {
     /**
      * 根据用户名查询用户
      * @param username 用户名
-     * @return
+     *
+     * @return Account
      */
     public Account getAccountByUsername(String username) {
         Account account = accountMapper.getAccountByUsername(username);
@@ -47,7 +48,7 @@ public class AccountDao {
     /**
      * 根据用户id查询用户
      * @param id 用户id
-     * @return
+     * @return AccountOutput
      */
     public AccountOutput getAccountById(Integer id) {
         AccountOutput account = accountMapper.getAccountById(id);
@@ -56,7 +57,7 @@ public class AccountDao {
 
     /**
      * 获取所有部门信息
-     * @return
+     * @return List<AccountGroup>
      */
     public List<AccountGroup> getGroups() {
         List<AccountGroup> groups = accountMapper.getGroups();
@@ -65,8 +66,8 @@ public class AccountDao {
 
     /**
      * 根据部门id获取部门信息
-     * @param id
-     * @return
+     * @param id 部门id
+     * @return AccountGroup
      */
     public AccountGroup getGroup (int id) {
         return accountMapper.getGroup(id);
@@ -74,7 +75,7 @@ public class AccountDao {
 
     /**
      * 获取所有用户数量
-     * @return
+     * @return Integer
      */
     public Integer getAccountsCount() {
         return accountMapper.getAccountsCount();

@@ -11,15 +11,43 @@
         values(#{name}, #{moduleId}, #{type}, #{code}, #{dataFields}, #{remark}, #{status}, #{seq}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <select id="getPermissionById" resultType="com.kiss.account.entity.Permission">
-        select * from permissions where id=#{id};
+    <select id="getPermissionById" resultType="com.kiss.account.output.PermissionOutput">
+        select permission.id, permission.name, permission.moduleId, permission.type,
+               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
+               permission.createdAt, permission.updatedAt, pm.name as moduleName
+        from permissions permission left join permissionModules pm
+        on permission.moduleId = pm.id
+        where permission.id = #{id};
     </select>
 
-    <select id="getPermissions" resultType="com.kiss.account.entity.Permission">
-        select * from permissions;
+    <select id="getPermissionsByModuleId" resultType="com.kiss.account.output.PermissionOutput">
+        select permission.id, permission.name, permission.moduleId, permission.type,
+               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
+               permission.createdAt, permission.updatedAt, pm.name as moduleName
+        from permissions permission left join permissionModules pm
+        on permission.moduleId = pm.id
+        where permission.moduleId = #{moduleId};
     </select>
 
-    <select id="getPermissionsByModuleId" resultType="com.kiss.account.entity.Permission">
-        select * from permissions where moduleId=#{moduleId};
+    <select id="getPermissions" resultType="com.kiss.account.output.PermissionOutput">
+        select permission.id, permission.name, permission.moduleId, permission.type,
+               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
+               permission.createdAt, permission.updatedAt, pm.name as moduleName
+        from permissions permission left join permissionModules pm
+        on permission.moduleId = pm.id
+        order by permission.createdAt;
+    </select>
+
+    <select id="getBindPermissions" resultType="com.kiss.account.output.BindPermissionOutput">
+        select permission.id, permission.name, permission.moduleId, permission.type,
+               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.remark, pm.name as moduleName, pm.parentId as moduleParentId
+        from permissions permission left join permissionModules pm
+        on permission.moduleId = pm.id
+        where permission.status = #{status}
+        order by permission.createdAt;
     </select>
 </mapper>
