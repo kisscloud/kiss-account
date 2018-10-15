@@ -18,4 +18,7 @@ public interface RoleMapper {
     List<Role> getRoles();
 
     List<Integer> getRolesPermissionIds(Integer id);
+
+    List<Integer> getRolesAccountIds(Integer id);
+
 }

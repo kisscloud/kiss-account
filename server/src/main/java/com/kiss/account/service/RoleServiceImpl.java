@@ -89,4 +89,10 @@ public class RoleServiceImpl implements RoleClient {
         return ResultOutputUtil.success(permissionIds);
     }
 
+    @Override
+    public ResultOutput<List<Integer>> getRolesAccountIds(Integer id) {
+        List<Integer> accountIds = roleDao.getRolesAccountIds(id);
+        return ResultOutputUtil.success(accountIds);
+    }
+
 }

@@ -39,4 +39,8 @@
         select permissionId from rolepermissions where roleId=#{id};
     </select>
 
+    <select id="getRolesAccountIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select accountId from accountroles where roleId=#{id};
+    </select>
+
 </mapper>

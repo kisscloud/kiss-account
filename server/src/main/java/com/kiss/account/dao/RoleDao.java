@@ -35,4 +35,8 @@ public class RoleDao {
     public List<Integer> getRolesPermissionIds(Integer id) {
         return roleMapper.getRolesPermissionIds(id);
     }
+
+    public List<Integer> getRolesAccountIds(Integer id) {
+        return roleMapper.getRolesAccountIds(id);
+    }
 }

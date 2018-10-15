@@ -22,4 +22,7 @@ public interface RoleClient {
 
     @GetMapping("/roles/permissionIds")
     ResultOutput<List<Integer>> getRolesPermissionIds(@RequestParam("id") Integer id);
+
+    @GetMapping("/roles/accountIds")
+    ResultOutput<List<Integer>> getRolesAccountIds(@RequestParam("id") Integer id);
 }
