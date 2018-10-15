@@ -8,8 +8,8 @@
 
     <insert id="createPermissionsModules" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.kiss.account.entity.PermissionModule">
-        insert into permissionModules(name, parentId, level, status, seq, remark, operatorId, operatorName, operatorIp)
-        values(#{name}, #{parentId}, #{level}, #{status}, #{seq}, #{remark}, #{operatorId}, #{operatorName}, #{operatorIp});
+        insert into permissionModules(name, parentId, level, status, seq, remark, permissions, operatorId, operatorName, operatorIp)
+        values(#{name}, #{parentId}, #{level}, #{status}, #{seq}, #{remark},#{permissions}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
     <select id="getPermissionModuleById" resultType="com.kiss.account.entity.PermissionModule">
@@ -19,5 +19,17 @@
     <select id="getPermissionsModules" resultType="com.kiss.account.entity.PermissionModule">
         select * from permissionModules;
     </select>
+
+    <select id="getBindPermissionsModules" resultType="com.kiss.account.entity.PermissionModule">
+        select * from permissionModules where permissions != 0;
+    </select>
+
+    <select id="getPermissionModulePermissionsCount" resultType="java.lang.Integer">
+        select permissions from permissionModules where id = #{id};
+    </select>
+
+    <update id="updatePermissionModulePermissionsCount" parameterType="com.kiss.account.entity.PermissionModule">
+        update permissionModules set permissions=#{permissions} where id=#{id};
+    </update>
 
 </mapper>

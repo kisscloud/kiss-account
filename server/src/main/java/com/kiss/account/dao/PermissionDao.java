@@ -8,6 +8,8 @@ import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +49,11 @@ public class PermissionDao {
      */
     public PermissionModule createPermissionModule(PermissionModule permissionModule) {
 
+        if (permissionModule.getLevel() == null) {
+            permissionModule.setLevel("");
+        } else {
+            permissionModule.setLevel(StringUtils.removeStart(permissionModule.getLevel(), ","));
+        }
         permissionModuleMapper.createPermissionsModules(permissionModule);
 
         return permissionModule;
@@ -62,6 +69,24 @@ public class PermissionDao {
         return permissionMapper.getPermissions();
     }
 
+    /**
+     * 获取可以绑定的权限列表DAO
+     *
+     * @return List<BindPermissionOutput>
+     */
+    public List<BindPermissionOutput> getBindPermissions() {
+        return permissionMapper.getBindPermissions(1);
+    }
+
+    /**
+     * 根据ID查询权限模块DAO
+     *
+     * @param id Integer
+     * @return PermissionModule
+     */
+    public PermissionModule getPermissionModuleById(Integer id) {
+        return permissionModuleMapper.getPermissionModuleById(id);
+    }
 
     /**
      * 获取权限模块列表DAO
@@ -73,11 +98,36 @@ public class PermissionDao {
     }
 
     /**
-     * 获取可以绑定的权限列表DAO
+     * 获取待绑定的权限模块列表DAO
      *
-     * @return List<BindPermissionOutput>
+     * @return List<PermissionModule>
      */
-    public List<BindPermissionOutput> getBindPermissions() {
-        return permissionMapper.getBindPermissions(1);
+    public List<PermissionModule> getBindPermissionsModules() {
+        return permissionModuleMapper.getBindPermissionsModules();
+    }
+
+    /**
+     * 获取权限模块所绑定的权限数DAO
+     *
+     * @param id Integer
+     * @return Integer
+     */
+    public Integer getPermissionModulePermissionsCount(Integer id) {
+        return permissionModuleMapper.getPermissionModulePermissionsCount(id);
+    }
+
+    /**
+     * 更新权限模块所绑定的权限数DAO
+     *
+     * @param id               Integer
+     * @param permissionsCount Integer  +1/-1 权限数加一或减一
+     */
+    public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
+        Integer oldCount = getPermissionModulePermissionsCount(id);
+        PermissionModule permissionModule = new PermissionModule();
+        permissionModule.setId(id);
+        permissionModule.setPermissions(oldCount + permissionsCount);
+        permissionModuleMapper.updatePermissionModulePermissionsCount(permissionModule);
     }
 }
+

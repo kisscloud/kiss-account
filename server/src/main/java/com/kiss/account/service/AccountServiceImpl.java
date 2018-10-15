@@ -9,7 +9,7 @@ import com.kiss.account.input.AllocateRoleToAccountInput;
 import com.kiss.account.input.CreateAccountGroupInput;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.output.*;
-import com.kiss.account.status.Code;
+import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
@@ -120,7 +120,7 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "获取账户信息")
     public ResultOutput<AccountOutput> getAccount(String id) {
         if (StringUtils.isEmpty(id)) {
-            return ResultOutputUtil.error(Code.PARAMETER_ERROR);
+            return ResultOutputUtil.error(AccountStatusCode.PARAMETER_ERROR);
         }
         AccountOutput account = accountDao.getAccountById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);

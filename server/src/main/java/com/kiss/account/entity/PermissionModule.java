@@ -1,5 +1,6 @@
 package com.kiss.account.entity;
 
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,6 +19,10 @@ public class PermissionModule {
      * 权限模块父ID
      */
     private Integer parentId;
+    /**
+     * 模块绑定的权限数
+     */
+    private Integer permissions;
     /**
      * 权限模块层级
      */

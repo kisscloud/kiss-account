@@ -9,11 +9,13 @@ import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
+import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,15 +33,22 @@ public class PermissionServiceImpl implements PermissionClient {
 
     @Override
     @ApiOperation(value = "创建权限")
+    @Transactional
     public ResultOutput<PermissionOutput> postPermissions(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
 
-        Permission permission = new Permission();
+        // 1. 查询权限所属模块信息
+        PermissionModule permissionModule = permissionDao.getPermissionModuleById(createPermissionInput.getModuleId());
+        if (permissionModule == null) {
+            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EXIST);
+        }
 
+        // 2. 添加权限信息
+        Permission permission = new Permission();
         permission.setName(createPermissionInput.getName());
         permission.setModuleId(createPermissionInput.getModuleId());
         permission.setType(createPermissionInput.getType());
         permission.setCode(createPermissionInput.getCode());
-//        permission.setDataFields();
+        // permission.setDataFields();
         permission.setStatus(createPermissionInput.getStatus());
         permission.setSeq(10);
         permission.setRemark(createPermissionInput.getRemark());
@@ -48,21 +57,47 @@ public class PermissionServiceImpl implements PermissionClient {
         permission.setOperatorIp("0.0.0.0");
         permissionDao.createPermission(permission);
 
+        // 3. 更新权限所属模块的权限数
+        permissionDao.updatePermissionModulePermissionsCount(permission.getModuleId(), +1);
+
+        // 4. 更新权限所属模块父模块权限数
+        String[] modulesIds = permissionModule.getLevel().split(",");
+        for (String moduleIdString : modulesIds) {
+            permissionDao.updatePermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
+        }
+
+
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(permission, permissionOutput);
         return ResultOutputUtil.success(permissionOutput);
     }
 
+    /**
+     * 创建权限模块
+     */
     @Override
     @ApiOperation(value = "创建权限模块")
     public ResultOutput<PermissionModuleOutput> postPermissionsModules(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
 
         PermissionModule permissionModule = new PermissionModule();
+        PermissionModule parentPermissionModule = new PermissionModule();
+
+        // 1. 如果父模块ID不等于0，则查询父模块信息；
+        //    * 绑定权限模块 level， 等于父权限模块的 level 拼接父权限模块的 id；
+        if (permissionModuleInput.getParentId() != 0) {
+            parentPermissionModule = permissionDao.getPermissionModuleById(permissionModuleInput.getParentId());
+            if (parentPermissionModule == null) {
+                return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EXIST);
+            }
+            permissionModule.setLevel(String.format("%s,%d", parentPermissionModule.getLevel(), parentPermissionModule.getId()));
+        }
+
+        // 2. 添加权限模块信息
         permissionModule.setName(permissionModuleInput.getName());
         permissionModule.setParentId(permissionModuleInput.getParentId());
-        permissionModule.setLevel("");
         permissionModule.setSeq(100);
         permissionModule.setRemark(permissionModuleInput.getRemark());
+        permissionModule.setPermissions(0);
         permissionModule.setOperatorId(0);
         permissionModule.setOperatorName("System");
         permissionModule.setOperatorIp("0.0.0.0");
@@ -71,6 +106,7 @@ public class PermissionServiceImpl implements PermissionClient {
 
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
+
         return ResultOutputUtil.success(permissionModuleOutput);
     }
 
@@ -102,6 +138,21 @@ public class PermissionServiceImpl implements PermissionClient {
     public ResultOutput<List<PermissionModuleOutput>> getPermissionsModules() {
 
         List<PermissionModule> permissionModules = permissionDao.getPermissionsModules();
+        List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
+
+        for (PermissionModule permissionModule : permissionModules) {
+            PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
+            BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
+            permissionModuleOutputs.add(permissionModuleOutput);
+        }
+
+        return ResultOutputUtil.success(permissionModuleOutputs);
+    }
+
+    @Override
+    public ResultOutput<List<PermissionModuleOutput>> getBindPermissionsModules() {
+
+        List<PermissionModule> permissionModules = permissionDao.getBindPermissionsModules();
         List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
 
         for (PermissionModule permissionModule : permissionModules) {

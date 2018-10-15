@@ -33,4 +33,7 @@ public interface PermissionClient {
 
     @GetMapping("/permissions/modules")
     ResultOutput<List<PermissionModuleOutput>> getPermissionsModules();
+
+    @GetMapping("/bind/permissions/modules")
+    ResultOutput<List<PermissionModuleOutput>> getBindPermissionsModules();
 }
