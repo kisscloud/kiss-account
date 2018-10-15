@@ -46,8 +46,8 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation("分配角色权限")
-    public ResultOutput<List<RolePermissionOutput>> postRolesPermissions(AllocatePermissionToRoleInput allocatePermissionToRole) {
-        List<Integer> permissions = allocatePermissionToRole.getPermissionId();
+    public ResultOutput<List<RolePermissionOutput>> postRolesPermissions(@Validated @RequestBody AllocatePermissionToRoleInput allocatePermissionToRole) {
+        List<Integer> permissions = allocatePermissionToRole.getPermissions();
         List<RolePermissions> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {
             RolePermissions rolePermission = new RolePermissions();
