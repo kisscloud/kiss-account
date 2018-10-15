@@ -1,16 +1,11 @@
 package com.kiss.account.client;
 
-import com.kiss.account.input.AllocateRoleToAccountInput;
-import com.kiss.account.input.CreateAccountGroupInput;
-import com.kiss.account.input.CreateAccountInput;
+import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
-import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.GetAccountsOutput;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
-
-import java.util.List;
 
 @RequestMapping
 public interface AccountClient {
@@ -41,4 +36,17 @@ public interface AccountClient {
 
     @GetMapping("/get")
     ResultOutput get();
+
+    @PutMapping("/accounts")
+    ResultOutput putAccount(@Validated @RequestBody PutAccountInput putAccountInput);
+
+    @PutMapping("/accounts/group")
+    ResultOutput putAccountGroup(@Validated @RequestBody PutAccountGroupInput putAccountGroupInput);
+
+    @PutMapping("/accounts/password")
+    ResultOutput putAccountPassword(@RequestParam("id") Integer id);
+
+    @PutMapping("/accounts/status")
+    ResultOutput putAccountStatus(@Validated @RequestBody PutAccountStatusInput putAccountStatusInput);
+
 }

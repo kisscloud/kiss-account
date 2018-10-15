@@ -80,4 +80,28 @@ public class AccountDao {
     public Integer getAccountsCount() {
         return accountMapper.getAccountsCount();
     }
+
+    /**
+     * 根据账户的唯一值查询账户
+     * @param name
+     * @param username
+     * @param email
+     * @param mobile
+     * @return
+     */
+    public Account getAccountByUniqueIdentification(String name,String username,String email,String mobile) {
+        return accountMapper.getAccountByUniqueIdentification(name,username,email,mobile);
+    }
+
+    public Integer putAccount(AccountOutput account) {
+        return accountMapper.putAccount(account);
+    }
+
+    public Integer putAccountPassword(Account account) {
+        return accountMapper.putAccountPassword(account);
+    }
+
+    public Integer putAccountStatus(AccountOutput accountOutput) {
+        return accountMapper.putAccountStatus(accountOutput);
+    }
 }
