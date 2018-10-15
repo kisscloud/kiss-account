@@ -50,4 +50,37 @@
         where permission.status = #{status}
         order by permission.createdAt;
     </select>
+
+    <select id="getPermissionByNameOrCode" parameterType="com.kiss.account.entity.Permission" resultType="com.kiss.account.entity.Permission">
+        select * from permissions where name = #{name} or code = #{code} limit 0,1
+    </select>
+
+    <update id="putPermission" parameterType="com.kiss.account.output.PermissionOutput">
+        update permissions
+        set id = #{id}
+        <if test="code != null and code != ''">
+            ,code = #{code,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="moduleId != null ">
+            ,moduleId = #{moduleId,jdbcType=INTEGER}
+        </if>
+        <if test="type != null ">
+            ,type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            ,status = #{status,jdbcType=INTEGER}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deletePermission" parameterType="java.lang.Integer">
+        delete from permissions where id = #{id}
+    </delete>
+
+    <select id="getPermissionByModuleId" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Permission">
+        select * from permissions where moduleId=#{id}
+    </select>
 </mapper>

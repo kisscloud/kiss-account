@@ -4,6 +4,7 @@ import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
 import com.kiss.account.mapper.RoleMapper;
+import com.kiss.account.output.RoleOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,5 +39,21 @@ public class RoleDao {
 
     public List<Integer> getRolesAccountIds(Integer id) {
         return roleMapper.getRolesAccountIds(id);
+    }
+
+    public Role getRoleByName (String name) {
+        return roleMapper.getRoleByName(name);
+    }
+
+    public Integer putRole (RoleOutput roleOutput) {
+        return roleMapper.putRole(roleOutput);
+    }
+
+    public Integer deleteRole (Integer id) {
+        return roleMapper.deleteRole(id);
+    }
+
+    public Integer deleteRolePermissions (Integer id) {
+        return roleMapper.deleteRolePermissions(id);
     }
 }

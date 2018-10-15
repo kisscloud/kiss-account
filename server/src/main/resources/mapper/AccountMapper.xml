@@ -71,7 +71,7 @@
     </select>
 
     <select id="getAccountByUniqueIdentification" resultType="com.kiss.account.entity.Account">
-        select * from accounts where name=#{name} or username=#{username} or email=#{email} or mobile=#{mobile}
+        select * from accounts where name=#{name} or username=#{username} or email=#{email} or mobile=#{mobile} limit 0,1
     </select>
 
     <update id="putAccount" parameterType="com.kiss.account.output.AccountOutput">
@@ -89,8 +89,8 @@
         <if test="mobile != null and mobile != ''">
             ,mobile = #{mobile,jdbcType=VARCHAR}
         </if>
-        <if test="groupId != null and groupId != ''">
-            ,groupId = #{groupId,jdbcType=VARCHAR}
+        <if test="groupId != null">
+            ,groupId = #{groupId,jdbcType=INTEGER}
         </if>
         where id = #{id,jdbcType=INTEGER}
     </update>

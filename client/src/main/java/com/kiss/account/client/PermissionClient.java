@@ -3,6 +3,8 @@ package com.kiss.account.client;
 
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
+import com.kiss.account.input.PutPermissionInput;
+import com.kiss.account.input.PutPermissionModuleInput;
 import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
@@ -36,4 +38,16 @@ public interface PermissionClient {
 
     @GetMapping("/bind/permissions/modules")
     ResultOutput<List<PermissionModuleOutput>> getBindPermissionsModules();
+
+    @PutMapping("/permission")
+    ResultOutput<PermissionOutput> putPermission(PutPermissionInput putPermissionInput);
+
+    @PutMapping("/permissionModule")
+    ResultOutput<PermissionModuleOutput> putPermissionModule(PutPermissionModuleInput putPermissionModuleInput);
+
+    @DeleteMapping("/permission")
+    ResultOutput deletePermission(Integer id);
+
+    @DeleteMapping("/permissionModule")
+    ResultOutput deletePermissionModule(Integer id);
 }

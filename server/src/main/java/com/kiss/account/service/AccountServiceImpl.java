@@ -185,7 +185,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput putAccount(@RequestBody PutAccountInput putAccountInput) {
+    public ResultOutput<AccountOutput> putAccount(@Validated @RequestBody PutAccountInput putAccountInput) {
 
         Account account = accountDao.getAccountByUniqueIdentification(putAccountInput.getName(),putAccountInput.getUsername(),putAccountInput.getEmail(),putAccountInput.getMobile());
 
@@ -201,11 +201,11 @@ public class AccountServiceImpl implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
         }
 
-        return ResultOutputUtil.success(account);
+        return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
-    public ResultOutput putAccountGroup(@RequestBody PutAccountGroupInput putAccountGroupInput) {
+    public ResultOutput putAccountGroup(@Validated @RequestBody PutAccountGroupInput putAccountGroupInput) {
 
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(putAccountGroupInput.getName());
 

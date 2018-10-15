@@ -2,6 +2,7 @@ package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
+import com.kiss.account.output.PermissionModuleOutput;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -52,4 +53,10 @@ public interface PermissionModuleMapper {
      * @param permissionModule PermissionModule
      */
     void updatePermissionModulePermissionsCount(PermissionModule permissionModule);
+
+    PermissionModule getPermissionModuleByName (String name);
+
+    Integer deletePermissionModule (Integer id);
+
+    Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput);
 }
