@@ -3,10 +3,7 @@ package com.kiss.account.client;
 import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.input.CreateRoleInput;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
 
 import java.util.List;
@@ -22,4 +19,7 @@ public interface RoleClient {
 
     @GetMapping("/roles")
     ResultOutput<List<RoleOutput>> getRoles();
+
+    @GetMapping("/roles/permissionIds")
+    ResultOutput<List<Integer>> getRolesPermissionIds(@RequestParam("id") Integer id);
 }

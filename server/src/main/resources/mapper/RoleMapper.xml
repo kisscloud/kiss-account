@@ -34,4 +34,9 @@
             (#{permission.roleId}, #{permission.permissionId}, #{permission.dataScope}, #{permission.operatorId}, #{permission.operatorName}, #{permission.operatorIp})
         </foreach>
     </insert>
+
+    <select id="getRolesPermissionIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select permissionId from rolepermissions where roleId=#{id};
+    </select>
+
 </mapper>

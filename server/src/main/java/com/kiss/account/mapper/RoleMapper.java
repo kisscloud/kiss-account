@@ -16,4 +16,6 @@ public interface RoleMapper {
     void allocatePermissionsToRole(List<RolePermissions> rolePermissions);
 
     List<Role> getRoles();
+
+    List<Integer> getRolesPermissionIds(Integer id);
 }

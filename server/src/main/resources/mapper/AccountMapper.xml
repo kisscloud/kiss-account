@@ -38,7 +38,11 @@
                 account.operatorId,account.operatorIp,account.createdAt,account.updatedAt,gr.name as groupName
         from accounts account left join accountgroups gr
         on account.groupId = gr.id
-        order by account.createdAt limit #{start},#{size}
+        order by account.createdAt
+        <if test="size != 0">
+            limit #{start},#{size}
+        </if>
+
     </select>
 
     <insert id="allocateRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
