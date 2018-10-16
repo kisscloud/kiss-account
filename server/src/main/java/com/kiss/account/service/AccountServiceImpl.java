@@ -10,7 +10,7 @@ import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.ServiceStatusUtil;
+import com.kiss.account.utils.DbEnumsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -184,7 +184,7 @@ public class AccountServiceImpl implements AccountClient {
 //        System.out.println(Message.getMessage("zh-CN",900));
 //        System.out.println(Message.getMessage("en",170));
 //        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
-        return ResultOutputUtil.success(ServiceStatusUtil.getStatusValue("zh-CN","user1"));
+        return ResultOutputUtil.success(DbEnumsUtil.getStatusValue("zh-CN","user1"));
     }
 
     @Override
