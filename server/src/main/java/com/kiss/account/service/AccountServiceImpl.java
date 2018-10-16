@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,7 +88,7 @@ public class AccountServiceImpl implements AccountClient {
         accountDao.createAccount(account);
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
-        AccountGroup group = accountDao.getGroup(account.getGroupId());
+        AccountGroup group = accountGroupDao.getGroupById(account.getGroupId());
         accountOutput.setGroupName(group.getName());
 
         return ResultOutputUtil.success(accountOutput);
@@ -95,6 +96,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "绑定账户角色")
+    @Transactional
     public ResultOutput<List<AccountRolesOutput>> postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
 
         List<Integer> roles = allocateRoleToAccountInput.getRoleId();
@@ -110,6 +112,7 @@ public class AccountServiceImpl implements AccountClient {
             accountRolesList.add(accountRoles);
         }
 
+        accountDao.deleteAccountRoles(allocateRoleToAccountInput.getAccountId());
         accountDao.allocateRolesToAccount(accountRolesList);
 
         return ResultOutputUtil.success(accountRolesList);
@@ -142,7 +145,7 @@ public class AccountServiceImpl implements AccountClient {
     @Override
     public ResultOutput<AccountGroupOutput> getGroups() {
 
-        List<AccountGroup> groups = accountDao.getGroups();
+        List<AccountGroup> groups = accountGroupDao.getGroups();
         List<AccountGroupOutput> groupsOutput = new ArrayList<>();
 
         for (AccountGroup accountGroup : groups) {
@@ -157,7 +160,7 @@ public class AccountServiceImpl implements AccountClient {
     @Override
     public ResultOutput<AccountGroupOutput> getGroup(String id) {
 
-        AccountGroup group = accountDao.getGroup(Integer.parseInt(id));
+        AccountGroup group = accountGroupDao.getGroupById(Integer.parseInt(id));
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(group, accountGroupOutput);
 

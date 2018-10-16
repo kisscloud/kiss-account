@@ -2,166 +2,119 @@ package com.kiss.account.dao;
 
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
-import com.kiss.account.mapper.PermissionMapper;
-import com.kiss.account.mapper.PermissionModuleMapper;
 import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
-@Slf4j
-@Component
-public class PermissionDao {
-
-    @Autowired
-    private PermissionMapper permissionMapper;
-
-
-    @Autowired
-    private PermissionModuleMapper permissionModuleMapper;
+public interface PermissionDao {
 
     /**
-     * 创建权限DAO
-     *
-     * @param permission Permission
-     * @return Permission
-     */
-    public Permission createPermission(Permission permission) {
-
-        permissionMapper.createPermission(permission);
-
-        return permission;
-    }
-
-
-    /**
-     * 创建权限模块DAO
-     *
-     * @param permissionModule PermissionModule
-     * @return PermissionModule
-     */
-    public PermissionModule createPermissionModule(PermissionModule permissionModule) {
-
-        if (permissionModule.getLevel() == null) {
-            permissionModule.setLevel("");
-        } else {
-            permissionModule.setLevel(StringUtils.removeStart(permissionModule.getLevel(), ","));
-        }
-        permissionModuleMapper.createPermissionsModules(permissionModule);
-
-        return permissionModule;
-    }
-
-
-    /**
-     * 获取所有权限DAO
-     *
-     * @return List<Permission>
-     */
-    public List<PermissionOutput> getPermissions() {
-        return permissionMapper.getPermissions();
-    }
-
-    /**
-     * 获取可以绑定的权限列表DAO
-     *
-     * @return List<BindPermissionOutput>
-     */
-    public List<BindPermissionOutput> getBindPermissions() {
-        return permissionMapper.getBindPermissions(1);
-    }
-
-    /**
-     * 根据ID查询权限模块DAO
-     *
-     * @param id Integer
-     * @return PermissionModule
-     */
-    public PermissionModule getPermissionModuleById(Integer id) {
-        return permissionModuleMapper.getPermissionModuleById(id);
-    }
-
-    /**
-     * 获取权限模块列表DAO
-     *
-     * @return List<PermissionModule>
-     */
-    public List<PermissionModule> getPermissionsModules() {
-        return permissionModuleMapper.getPermissionsModules();
-    }
-
-    /**
-     * 获取待绑定的权限模块列表DAO
-     *
-     * @return List<PermissionModule>
-     */
-    public List<PermissionModule> getBindPermissionsModules() {
-        return permissionModuleMapper.getBindPermissionsModules();
-    }
-
-    /**
-     * 获取权限模块所绑定的权限数DAO
-     *
-     * @param id Integer
-     * @return Integer
-     */
-    public Integer getPermissionModulePermissionsCount(Integer id) {
-        return permissionModuleMapper.getPermissionModulePermissionsCount(id);
-    }
-
-    /**
-     * 更新权限模块所绑定的权限数DAO
-     *
-     * @param id               Integer
-     * @param permissionsCount Integer  +1/-1 权限数加一或减一
-     */
-    public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
-        Integer oldCount = getPermissionModulePermissionsCount(id);
-        PermissionModule permissionModule = new PermissionModule();
-        permissionModule.setId(id);
-        permissionModule.setPermissions(oldCount + permissionsCount);
-        permissionModuleMapper.updatePermissionModulePermissionsCount(permissionModule);
-    }
-
-    /**
-     * 根据权限名称或者权限码获取权限
+     * 创建权限
      * @param permission
      * @return
      */
-    public Permission getPermissionByNameOrCode (Permission permission) {
-        return permissionMapper.getPermissionByNameOrCode(permission);
-    }
+    Permission createPermission(Permission permission);
 
-    public Integer putPermission (PermissionOutput permissionOutput) {
-        return permissionMapper.putPermission(permissionOutput);
-    }
+    /**
+     * 创建权限模块
+     * @param permissionModule
+     * @return
+     */
+    PermissionModule createPermissionModule(PermissionModule permissionModule);
 
-    public Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput) {
-        return permissionModuleMapper.putPermissionModule(permissionModuleOutput);
-    }
+    /**
+     * 查询所有权限
+     * @return
+     */
+    List<PermissionOutput> getPermissions();
 
-    public Integer deletePermission (Integer id) {
-        return permissionMapper.deletePermission(id);
-    }
+    /**
+     * 查询可以绑定的权限列表
+     * @return
+     */
+    List<BindPermissionOutput> getBindPermissions();
 
-    public Integer deletePermissionModule (Integer id) {
-        return permissionModuleMapper.deletePermissionModule(id);
-    }
+    /**
+     * 根据ID查询权限模块
+     * @param id
+     * @return
+     */
+    PermissionModule getPermissionModuleById(Integer id);
 
-    public PermissionModule getPermissionModuleByName (String name) {
-        return permissionModuleMapper.getPermissionModuleByName(name);
-    }
+    /**
+     * 查询权限模块列表
+     * @return
+     */
+    List<PermissionModule> getPermissionsModules();
 
-    public List<Permission> getPermissionByModuleId (Integer id) {
-        return permissionMapper.getPermissionByModuleId(id);
-    }
+    /**
+     * 查询待绑定的权限模块列表
+     * @return
+     */
+    List<PermissionModule> getBindPermissionsModules();
 
+    /**
+     * 查询权限模块所绑定的权限数
+     * @param id
+     * @return
+     */
+    Integer getPermissionModulePermissionsCount(Integer id);
+
+    /**
+     * 更新权限模块所绑定的权限数
+     * @param id                +1/-1 权限数加一或减一
+     * @param permissionsCount
+     */
+    void putPermissionModulePermissionsCount(Integer id, Integer permissionsCount);
+
+    /**
+     * 根据权限名称或者权限码查询权限
+     * @param permission
+     * @return
+     */
+    Permission getPermissionByNameOrCode (Permission permission);
+
+    /**
+     * 更新权限
+     * @param permissionOutput
+     * @return
+     */
+    Integer putPermission (PermissionOutput permissionOutput);
+
+    /**
+     * 根系权限模块
+     * @param permissionModuleOutput
+     * @return
+     */
+    Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput);
+
+    /**
+     * 删除权限
+     * @param id
+     * @return
+     */
+    Integer deletePermission (Integer id);
+
+    /**
+     * 删除权限模块
+     * @param id
+     * @return
+     */
+    Integer deletePermissionModule (Integer id);
+
+    /**
+     * 根据模块名查询模块信息
+     * @param name
+     * @return
+     */
+    PermissionModule getPermissionModuleByName (String name);
+
+    /**
+     * 根据模块id查询权限信息
+     * @param id
+     * @return
+     */
+    List<Permission> getPermissionByModuleId (Integer id);
 }
-

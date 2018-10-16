@@ -2,106 +2,87 @@ package com.kiss.account.dao;
 
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.entity.AccountRoles;
-import com.kiss.account.exception.ResultException;
-import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.AccountRolesOutput;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
-@Component
-public class AccountDao {
-    @Autowired
-    private AccountMapper accountMapper;
-
-    public void createAccount(Account account) throws ResultException {
-        accountMapper.createAccount(account);
-    }
-
-    public void allocateRoleToAccount(AccountRoles accountRoles) {
-        accountMapper.allocateRoleToAccount(accountRoles);
-    }
-
-    public void allocateRolesToAccount(List<AccountRolesOutput> accountRoles) {
-        accountMapper.allocateRolesToAccount(accountRoles);
-    }
-
-    public List<AccountOutput> getAccounts(int start, int size) {
-        return accountMapper.getAccounts(start,size);
-    }
-
+public interface AccountDao {
     /**
-     * 根据用户名查询用户
-     * @param username 用户名
-     *
-     * @return Account
+     * 创建账户
+     * @param account
      */
-    public Account getAccountByUsername(String username) {
-        Account account = accountMapper.getAccountByUsername(username);
-        return account;
-    }
+    void createAccount(Account account);
 
     /**
-     * 根据用户id查询用户
-     * @param id 用户id
-     * @return AccountOutput
+     * 给账号分配角色
+     * @param accountRoles
      */
-    public AccountOutput getAccountById(Integer id) {
-        AccountOutput account = accountMapper.getAccountById(id);
-        return account;
-    }
+    void allocateRolesToAccount(List<AccountRolesOutput> accountRoles);
 
     /**
-     * 获取所有部门信息
-     * @return List<AccountGroup>
+     * 查询账号信息
+     * @param start
+     * @param size
+     * @return
      */
-    public List<AccountGroup> getGroups() {
-        List<AccountGroup> groups = accountMapper.getGroups();
-        return groups;
-    }
+    List<AccountOutput> getAccounts(int start, int size);
 
     /**
-     * 根据部门id获取部门信息
-     * @param id 部门id
-     * @return AccountGroup
+     * 通过账号名查询账号
+     * @param username
+     * @return
      */
-    public AccountGroup getGroup (int id) {
-        return accountMapper.getGroup(id);
-    }
+    Account getAccountByUsername(String username);
 
     /**
-     * 获取所有用户数量
-     * @return Integer
+     * 通过账号id查询账号
+     * @param id
+     * @return
      */
-    public Integer getAccountsCount() {
-        return accountMapper.getAccountsCount();
-    }
+    AccountOutput getAccountById(Integer id);
 
     /**
-     * 根据账户的唯一值查询账户
+     * 查询所有账号的数量
+     * @return
+     */
+    Integer getAccountsCount();
+
+    /**
+     * 获取满足账号唯一表示的账号(账号的部分属性是不允许重复的)
      * @param name
      * @param username
      * @param email
      * @param mobile
      * @return
      */
-    public Account getAccountByUniqueIdentification(String name,String username,String email,String mobile) {
-        return accountMapper.getAccountByUniqueIdentification(name,username,email,mobile);
-    }
+    Account getAccountByUniqueIdentification(String name,String username,String email,String mobile);
 
-    public Integer putAccount(AccountOutput account) {
-        return accountMapper.putAccount(account);
-    }
+    /**
+     * 更新账号信息
+     * @param account
+     * @return
+     */
+    Integer putAccount(AccountOutput account);
 
-    public Integer putAccountPassword(Account account) {
-        return accountMapper.putAccountPassword(account);
-    }
+    /**
+     * 重置账号密码
+     * @param account
+     * @return
+     */
+    Integer putAccountPassword(Account account);
 
-    public Integer putAccountStatus(AccountOutput accountOutput) {
-        return accountMapper.putAccountStatus(accountOutput);
-    }
+    /**
+     * 更新账号状态
+     * @param accountOutput
+     * @return
+     */
+    Integer putAccountStatus(AccountOutput accountOutput);
+
+    /**
+     * 删除账号所拥有的所有角色
+     * @param id
+     * @return
+     */
+    Integer deleteAccountRoles (Integer id);
 }

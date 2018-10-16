@@ -1,11 +1,8 @@
 package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Permission;
-import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.output.BindPermissionOutput;
-import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,21 +11,21 @@ import java.util.List;
 public interface PermissionMapper {
 
     /**
-     * 创建权限Mapper
+     * 创建权限
      *
      * @param permission Permission
      */
     void createPermission(Permission permission);
 
     /**
-     * 获取所有权限Mapper
+     * 查询所有权限
      *
      * @return List<Permission>
      */
     List<PermissionOutput> getPermissions();
 
     /**
-     * 获取所有绑定的权限Mapper
+     * 查询所有绑定的权限
      *
      * @return List<BindPermissionOutput>
      */
@@ -43,15 +40,30 @@ public interface PermissionMapper {
     PermissionOutput getPermissionsByModuleId(Integer id);
 
     /**
-     * 根据权限名称或者权限码获取权限
+     * 根据权限名称或者权限码查询权限
      * @param permission
      * @return
      */
     Permission getPermissionByNameOrCode (Permission permission);
 
+    /**
+     * 更新权限
+     * @param permissionOutput
+     * @return
+     */
     Integer putPermission (PermissionOutput permissionOutput);
 
+    /**
+     * 删除权限
+     * @param id
+     * @return
+     */
     Integer deletePermission (Integer id);
 
+    /**
+     * 根据模块id查询权限
+     * @param id
+     * @return
+     */
     List<Permission> getPermissionByModuleId (Integer id);
 }

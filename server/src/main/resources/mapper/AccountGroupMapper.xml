@@ -24,6 +24,14 @@
         select * from accountGroups where name=#{name};
     </select>
 
+    <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountgroups order by seq
+    </select>
+
+    <select id="getGroupById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountgroups where id=#{id}
+    </select>
+
     <update id="putAccountGroup" parameterType="com.kiss.account.entity.AccountGroup">
         update accountgroups
         set id = #{id}
