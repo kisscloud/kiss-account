@@ -26,7 +26,7 @@ public class Swagger2Util {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("KISS 账户服务")
+                .title("Kiss 账户服务")
                 .description("提供了账户验证、权限控制等功能")
                 .termsOfServiceUrl("https://kisscloud.io")
                 .version("1.0")

@@ -79,6 +79,7 @@ public class PermissionServiceImpl implements PermissionClient {
 
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(permission, permissionOutput);
+
         return ResultOutputUtil.success(permissionOutput);
     }
 
