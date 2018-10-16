@@ -89,4 +89,11 @@ public interface AccountMapper {
      * @return
      */
     Integer deleteAccountRoles(Integer id);
+
+    /**
+     * 获取账户下所有的权限
+     * @param id 账户id
+     * @return
+     */
+    List<String> getAccountPermissions(Integer id);
 }

@@ -10,7 +10,7 @@ import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.DbEnumsUtil;
+import com.kiss.account.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +22,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,9 @@ public class AccountServiceImpl implements AccountClient {
     @Value("${account.default.password}")
     private String accountDefaultPassword;
 
+    @Autowired
+    HttpServletRequest request;
+
     @Override
     @ApiOperation(value = "创建部门")
     public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
@@ -55,9 +60,9 @@ public class AccountServiceImpl implements AccountClient {
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0");
         accountGroup.setSeq(0);
-        accountGroup.setOperatorId(123);
+        accountGroup.setOperatorId(UserUtil.getUserId());
         accountGroup.setOperatorIp("127.0.0.1");
-        accountGroup.setOperatorName("张三");
+        accountGroup.setOperatorName(UserUtil.getUsername());
         accountGroupDao.createAccountGroup(accountGroup);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
@@ -72,7 +77,7 @@ public class AccountServiceImpl implements AccountClient {
         Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(), createAccountInput.getUsername(), createAccountInput.getEmail(), createAccountInput.getMobile());
 
         if (account != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
+            return verifyAccountExistType(account,createAccountInput.getName(),createAccountInput.getUsername(),createAccountInput.getEmail(),createAccountInput.getMobile());
         }
 
         account = new Account();
@@ -82,9 +87,9 @@ public class AccountServiceImpl implements AccountClient {
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
-        account.setOperatorId(123);
+        account.setOperatorId(UserUtil.getUserId());
         account.setOperatorIp("127.0.0.4");
-        account.setOperatorName("李四");
+        account.setOperatorName(UserUtil.getUsername());
         accountDao.createAccount(account);
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
@@ -104,9 +109,9 @@ public class AccountServiceImpl implements AccountClient {
 
         for (Integer roleId : roles) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(123);
+            accountRoles.setOperatorId(UserUtil.getUserId());
             accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName("李四");
+            accountRoles.setOperatorName(UserUtil.getUsername());
             accountRoles.setAccountId(bindRoleToAccountInput.getAccountId());
             accountRoles.setRoleId(roleId);
             accountRolesList.add(accountRoles);
@@ -180,14 +185,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     public ResultOutput get() {
-        System.out.println("hello");
-
-//        System.out.println(getMessage.messageSource);
-//
-//        System.out.println(Message.getMessage("zh-CN",900));
-//        System.out.println(Message.getMessage("en",170));
-//        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
-        return ResultOutputUtil.success(DbEnumsUtil.getStatusValue("zh-CN", "user1"));
+        return ResultOutputUtil.success("++++" + UserUtil.getUsername() + "=====" + UserUtil.getUserId());
     }
 
     @Override
@@ -197,7 +195,7 @@ public class AccountServiceImpl implements AccountClient {
         Account account = accountDao.getAccountByUniqueIdentification(updateAccountInput.getName(), updateAccountInput.getUsername(), updateAccountInput.getEmail(), updateAccountInput.getMobile());
 
         if (account != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
+            return verifyAccountExistType(account,updateAccountInput.getName(),updateAccountInput.getUsername(),updateAccountInput.getEmail(),updateAccountInput.getMobile());
         }
 
         AccountOutput accountOutput = new AccountOutput();
@@ -263,5 +261,25 @@ public class AccountServiceImpl implements AccountClient {
         }
 
         return ResultOutputUtil.success(accountOutput);
+    }
+
+    public ResultOutput verifyAccountExistType (Account account,String name,String username,String email,String mobile) {
+        if (!StringUtils.isEmpty(account.getName()) && account.getName().equals(name)) {
+            return ResultOutputUtil.error(AccountStatusCode.NAME_EXIST);
+        }
+
+        if (!StringUtils.isEmpty(account.getUsername()) && account.getUsername().equals(username)) {
+            return ResultOutputUtil.error(AccountStatusCode.USERNAME_EXIST);
+        }
+
+        if (!StringUtils.isEmpty(account.getEmail()) && account.getEmail().equals(email)) {
+            return ResultOutputUtil.error(AccountStatusCode.EMAIL_EXIST);
+        }
+
+        if (!StringUtils.isEmpty(account.getMobile()) && account.getMobile().equals(mobile)) {
+            return ResultOutputUtil.error(AccountStatusCode.MOBILE_EXIST);
+        }
+
+        return ResultOutputUtil.error(AccountStatusCode.Account_EXIST);
     }
 }

@@ -111,4 +111,12 @@
     <delete id="deleteAccountRoles" parameterType="java.lang.Integer">
         delete from accountroles where accountId = #{id}
     </delete>
+
+    <select id="getAccountPermissions" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select p.code from accountroles ar left join rolepermissions  rp
+        on ar.roleId = rp.roleId
+        left join permissions p
+        on rp.permissionId = p.id
+        where ar.accountId=#{id}
+    </select>
 </mapper>

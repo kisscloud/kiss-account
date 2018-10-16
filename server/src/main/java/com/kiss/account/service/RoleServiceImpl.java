@@ -14,6 +14,7 @@ import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -51,9 +52,9 @@ public class RoleServiceImpl implements RoleClient {
 
         role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
-        role.setOperatorId(123);
+        role.setOperatorId(UserUtil.getUserId());
         role.setOperatorIp("127.0.0.5");
-        role.setOperatorName("旺旺");
+        role.setOperatorName(UserUtil.getUsername());
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
@@ -69,9 +70,9 @@ public class RoleServiceImpl implements RoleClient {
         for (Integer permissionId : permissions) {
             RolePermissions rolePermission = new RolePermissions();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
-            rolePermission.setOperatorId(123);
+            rolePermission.setOperatorId(UserUtil.getUserId());
             rolePermission.setOperatorIp("127.0.0.5");
-            rolePermission.setOperatorName("旺旺");
+            rolePermission.setOperatorName(UserUtil.getUsername());
             rolePermission.setPermissionId(permissionId);
             rolePermissions.add(rolePermission);
         }
@@ -125,14 +126,15 @@ public class RoleServiceImpl implements RoleClient {
 
         for (Integer accountId : accountIds) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(123);
+            accountRoles.setOperatorId(UserUtil.getUserId());
             accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName("李四");
+            accountRoles.setOperatorName(UserUtil.getUsername());
             accountRoles.setAccountId(accountId);
             accountRoles.setRoleId(bindAccountsToRoleInput.getId());
             accountRolesList.add(accountRoles);
         }
 
+        roleDao.deleteRoleAccounts(bindAccountsToRoleInput.getId());
         accountDao.bindRolesToAccount(accountRolesList);
 
         return ResultOutputUtil.success(accountRolesList);

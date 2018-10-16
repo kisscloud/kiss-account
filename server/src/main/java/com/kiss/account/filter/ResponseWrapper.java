@@ -1,4 +1,4 @@
-package com.kiss.account.Filter;
+package com.kiss.account.filter;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;

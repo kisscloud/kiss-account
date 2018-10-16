@@ -8,6 +8,7 @@ import com.kiss.account.output.AuthOutput;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.JwtUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @RestController
 @Api(tags = "Auth", description = "认证相关接口")
 public class AuthServiceImpl implements AuthClient {
 
     @Autowired
     private AccountDaoImpl accountDao;
+
+    @Autowired
+    HttpServletRequest request;
 
     @Override
     @ApiOperation(value = "用户名密码登录")
@@ -42,9 +49,11 @@ public class AuthServiceImpl implements AuthClient {
             return ResultOutputUtil.error(100001);
         }
 
+        List<String> permissions = accountDao.getAccountPermissions(account.getId());
         //生成token
         AuthOutput authOutput = JwtUtil.getToken(account.getId(), account.getUsername());
         authOutput.setName(account.getName());
+        authOutput.setPermissions(permissions);
 
         return ResultOutputUtil.success(authOutput);
     }

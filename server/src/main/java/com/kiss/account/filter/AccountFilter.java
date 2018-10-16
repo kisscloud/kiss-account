@@ -1,6 +1,9 @@
-package com.kiss.account.Filter;
+package com.kiss.account.filter;
 
+import com.kiss.account.utils.ThreadLocalUtil;
+import com.kiss.account.utils.UserUtil;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +24,13 @@ public class AccountFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         ResponseWrapper responseWrapper = new ResponseWrapper(httpServletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        chain.doFilter(request,responseWrapper);
-
+        byte[] bytes = UserUtil.getGlobalMessage(httpServletRequest);
+        RequestWrapper requestWrapper = new RequestWrapper(httpServletRequest,bytes);
+        chain.doFilter(requestWrapper,responseWrapper);
         InnerFilterChain innerFilterChain = new InnerFilterChain();
         innerFilterChain.addFilter(new ResponseFilter(responseWrapper));
         innerFilterChain.doFilter(httpServletRequest,httpServletResponse,innerFilterChain);
+        ThreadLocalUtil.remove();
     }
 
     @Override
