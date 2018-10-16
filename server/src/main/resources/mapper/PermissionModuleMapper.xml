@@ -32,4 +32,27 @@
         update permissionModules set permissions=#{permissions} where id=#{id};
     </update>
 
+    <update id="putPermissionModule" parameterType="com.kiss.account.output.PermissionModuleOutput">
+        update permissionmodules
+        set id = #{id}
+        <if test="name != null and name != ''">
+            ,name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="parentId != null">
+            ,parentId = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            ,status = #{status,jdbcType=INTEGER}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deletePermissionModule" parameterType="java.lang.Integer">
+        delete from permissionmodules where id = #{id}
+    </delete>
+
+    <select id="getPermissionModuleByName" resultType="com.kiss.account.entity.PermissionModule">
+        select * from permissionModules where name = #{name};
+    </select>
+
 </mapper>

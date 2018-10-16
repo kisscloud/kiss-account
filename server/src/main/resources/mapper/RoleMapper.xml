@@ -43,4 +43,29 @@
         select accountId from accountroles where roleId=#{id};
     </select>
 
+    <select id="getRoleByName" parameterType="java.lang.String" resultType="com.kiss.account.entity.Role">
+        select * from roles where name=#{name} limit 0,1;
+    </select>
+
+    <update id="putRole" parameterType="com.kiss.account.output.RoleOutput">
+        update roles
+        set id = #{id}
+        <if test="name != null and name != ''">
+            ,name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            ,status = #{status,jdbcType=INTEGER}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete from roles where id = #{id}
+    </delete>
+
+    <delete id="deleteRolePermissions" parameterType="java.lang.Integer">
+        delete from rolepermissions where roleId=#{id}
+    </delete>
+
+
 </mapper>

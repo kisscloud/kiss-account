@@ -13,6 +13,11 @@ public class ResultException extends RuntimeException {
         e.printStackTrace();
     }
 
+    public ResultException (String message, Integer code) {
+        super(message);
+        this.code = code;
+    }
+
 
 
 }

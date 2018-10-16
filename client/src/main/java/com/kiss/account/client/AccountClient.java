@@ -2,6 +2,7 @@ package com.kiss.account.client;
 
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
+import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.GetAccountsOutput;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,10 +39,10 @@ public interface AccountClient {
     ResultOutput get();
 
     @PutMapping("/accounts")
-    ResultOutput putAccount(@Validated @RequestBody PutAccountInput putAccountInput);
+    ResultOutput<AccountOutput> putAccount(PutAccountInput putAccountInput);
 
     @PutMapping("/accounts/group")
-    ResultOutput putAccountGroup(@Validated @RequestBody PutAccountGroupInput putAccountGroupInput);
+    ResultOutput putAccountGroup(PutAccountGroupInput putAccountGroupInput);
 
     @PutMapping("/accounts/password")
     ResultOutput putAccountPassword(@RequestParam("id") Integer id);

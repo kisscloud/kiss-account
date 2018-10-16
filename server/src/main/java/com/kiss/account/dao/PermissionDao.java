@@ -129,5 +129,39 @@ public class PermissionDao {
         permissionModule.setPermissions(oldCount + permissionsCount);
         permissionModuleMapper.updatePermissionModulePermissionsCount(permissionModule);
     }
+
+    /**
+     * 根据权限名称或者权限码获取权限
+     * @param permission
+     * @return
+     */
+    public Permission getPermissionByNameOrCode (Permission permission) {
+        return permissionMapper.getPermissionByNameOrCode(permission);
+    }
+
+    public Integer putPermission (PermissionOutput permissionOutput) {
+        return permissionMapper.putPermission(permissionOutput);
+    }
+
+    public Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput) {
+        return permissionModuleMapper.putPermissionModule(permissionModuleOutput);
+    }
+
+    public Integer deletePermission (Integer id) {
+        return permissionMapper.deletePermission(id);
+    }
+
+    public Integer deletePermissionModule (Integer id) {
+        return permissionModuleMapper.deletePermissionModule(id);
+    }
+
+    public PermissionModule getPermissionModuleByName (String name) {
+        return permissionModuleMapper.getPermissionModuleByName(name);
+    }
+
+    public List<Permission> getPermissionByModuleId (Integer id) {
+        return permissionMapper.getPermissionByModuleId(id);
+    }
+
 }
 
