@@ -27,7 +27,7 @@ public interface AccountGroupMapper {
      * @param accountGroup
      * @return
      */
-    Integer putAccountGroup(AccountGroup accountGroup);
+    Integer updateAccountGroup(AccountGroup accountGroup);
 
     /**
      * 查询所有部门

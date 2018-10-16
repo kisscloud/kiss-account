@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AllocateRoleToAccountInput {
+public class BindRoleToAccountInput {
     private List<Integer> roleId;
 
     private int accountId;

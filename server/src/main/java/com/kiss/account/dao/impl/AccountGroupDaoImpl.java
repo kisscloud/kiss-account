@@ -32,7 +32,7 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
         return accountGroupMapper.getGroupById(id);
     }
 
-    public Integer putAccountGroup(AccountGroup accountGroup) {
-        return accountGroupMapper.putAccountGroup(accountGroup);
+    public Integer updateAccountGroup(AccountGroup accountGroup) {
+        return accountGroupMapper.updateAccountGroup(accountGroup);
     }
 }

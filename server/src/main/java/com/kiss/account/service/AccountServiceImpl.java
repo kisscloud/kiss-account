@@ -97,9 +97,9 @@ public class AccountServiceImpl implements AccountClient {
     @Override
     @ApiOperation(value = "绑定账户角色")
     @Transactional
-    public ResultOutput<List<AccountRoleOutput>> allocateAccountRoles(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
+    public ResultOutput<List<AccountRoleOutput>> bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput) {
 
-        List<Integer> roles = allocateRoleToAccountInput.getRoleId();
+        List<Integer> roles = bindRoleToAccountInput.getRoleId();
         List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer roleId : roles) {
@@ -107,13 +107,13 @@ public class AccountServiceImpl implements AccountClient {
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
-            accountRoles.setAccountId(allocateRoleToAccountInput.getAccountId());
+            accountRoles.setAccountId(bindRoleToAccountInput.getAccountId());
             accountRoles.setRoleId(roleId);
             accountRolesList.add(accountRoles);
         }
 
-        accountDao.deleteAccountRoles(allocateRoleToAccountInput.getAccountId());
-        accountDao.allocateRolesToAccount(accountRolesList);
+        accountDao.deleteAccountRoles(bindRoleToAccountInput.getAccountId());
+        accountDao.bindRolesToAccount(accountRolesList);
 
         return ResultOutputUtil.success(accountRolesList);
     }
@@ -202,7 +202,7 @@ public class AccountServiceImpl implements AccountClient {
 
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountInput, accountOutput);
-        Integer count = accountDao.putAccount(accountOutput);
+        Integer count = accountDao.updateAccount(accountOutput);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
@@ -223,7 +223,7 @@ public class AccountServiceImpl implements AccountClient {
 
         accountGroup = new AccountGroup();
         BeanUtils.copyProperties(updateAccountGroupInput, accountGroup);
-        Integer count = accountGroupDao.putAccountGroup(accountGroup);
+        Integer count = accountGroupDao.updateAccountGroup(accountGroup);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_GROUP_FAILED);
@@ -241,7 +241,7 @@ public class AccountServiceImpl implements AccountClient {
         account.setId(id);
         account.setSalt(salt);
         account.setPassword(password);
-        Integer count = accountDao.putAccountPassword(account);
+        Integer count = accountDao.updateAccountPassword(account);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
@@ -256,7 +256,7 @@ public class AccountServiceImpl implements AccountClient {
 
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountStatusInput, accountOutput);
-        Integer count = accountDao.putAccountStatus(accountOutput);
+        Integer count = accountDao.updateAccountStatus(accountOutput);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);

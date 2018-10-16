@@ -45,12 +45,12 @@
 
     </select>
 
-    <insert id="allocateRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
+    <insert id="bindRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values(#{roleId}, #{accountId}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <insert id="allocateRolesToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+    <insert id="bindRolesToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values
         <foreach collection="list" item="role" index="index" separator=",">
@@ -66,7 +66,7 @@
         select * from accounts where name=#{name} or username=#{username} or email=#{email} or mobile=#{mobile} limit 0,1
     </select>
 
-    <update id="putAccount" parameterType="com.kiss.account.output.AccountOutput">
+    <update id="updateAccount" parameterType="com.kiss.account.output.AccountOutput">
         update accounts
         set id = #{id}
         <if test="name != null and name != ''">
@@ -87,7 +87,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="putAccountPassword" parameterType="com.kiss.account.entity.Account">
+    <update id="updateAccountPassword" parameterType="com.kiss.account.entity.Account">
         update accounts
         set id = #{id}
         <if test="password != null and password != ''">
@@ -99,7 +99,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="putAccountStatus" parameterType="com.kiss.account.output.AccountOutput">
+    <update id="updateAccountStatus" parameterType="com.kiss.account.output.AccountOutput">
         update accounts
         set id = #{id}
         <if test="status != null and status != ''">

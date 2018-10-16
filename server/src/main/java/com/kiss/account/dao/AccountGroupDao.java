@@ -9,35 +9,40 @@ public interface AccountGroupDao {
 
     /**
      * 创建部门
-     * @param accountGroup
-     * @throws ResultException
+     *
+     * @param accountGroup AccountGroup
+     * @throws ResultException ResultException
      */
     void createAccountGroup(AccountGroup accountGroup) throws ResultException;
 
     /**
      * 根据部门的名字获取部门
-     * @param name
-     * @return
+     *
+     * @param name String
+     * @return AccountGroup
      */
     AccountGroup getAccountGroupByName(String name);
 
     /**
      * 查询部门信息
-     * @return
+     *
+     * @return List<AccountGroup>
      */
     List<AccountGroup> getGroups();
 
     /**
      * 根据部门id查询部门信息
-     * @param id
-     * @return
+     *
+     * @param id int
+     * @return AccountGroup
      */
-    AccountGroup getGroupById (int id);
+    AccountGroup getGroupById(int id);
 
     /**
      * 更新部门信息
-     * @param accountGroup
-     * @return
+     *
+     * @param accountGroup AccountGroup
+     * @return Integer
      */
-    Integer putAccountGroup(AccountGroup accountGroup);
+    Integer updateAccountGroup(AccountGroup accountGroup);
 }

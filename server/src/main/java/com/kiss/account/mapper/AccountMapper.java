@@ -22,7 +22,7 @@ public interface AccountMapper {
      * 给账号分配角色
      * @param accountRoles
      */
-    void allocateRolesToAccount(List<AccountRoleOutput> accountRoles);
+    void bindRolesToAccount(List<AccountRoleOutput> accountRoles);
 
     /**
      * 分页查询账号信息
@@ -67,21 +67,21 @@ public interface AccountMapper {
      * @param account
      * @return
      */
-    Integer putAccount(AccountOutput account);
+    Integer updateAccount(AccountOutput account);
 
     /**
      * 更新账户密码
      * @param account
      * @return
      */
-    Integer putAccountPassword(Account account);
+    Integer updateAccountPassword(Account account);
 
     /**
      * 更新账户状态
      * @param accountOutput
      * @return
      */
-    Integer putAccountStatus(AccountOutput accountOutput);
+    Integer updateAccountStatus(AccountOutput accountOutput);
 
     /**
      * 删除账户所拥有的所有角色

@@ -28,14 +28,14 @@ public interface PermissionModuleMapper {
      *
      * @return List<PermissionModule>
      */
-    List<PermissionModule> getPermissionsModules();
+    List<PermissionModule> getPermissionModules();
 
     /**
      * 查询待绑定的权限模块列表
      *
      * @return List<PermissionModule>
      */
-    List<PermissionModule> getBindPermissionsModules();
+    List<PermissionModule> getBindPermissionModules();
 
     /**
      * 查询权限模块所绑定的权限数
@@ -71,5 +71,5 @@ public interface PermissionModuleMapper {
      * @param permissionModuleOutput
      * @return
      */
-    Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput);
+    Integer updatePermissionModule (PermissionModuleOutput permissionModuleOutput);
 }

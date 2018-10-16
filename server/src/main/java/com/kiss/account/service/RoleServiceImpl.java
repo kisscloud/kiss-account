@@ -5,8 +5,8 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
-import com.kiss.account.input.AllocateAccountsToRoleInput;
-import com.kiss.account.input.AllocatePermissionToRoleInput;
+import com.kiss.account.input.BindAccountsToRoleInput;
+import com.kiss.account.input.BindPermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.input.UpdateRoleInput;
 import com.kiss.account.output.AccountRoleOutput;
@@ -62,26 +62,28 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation("分配角色权限")
-    public ResultOutput<List<RolePermissionOutput>> allocateRolePermissions(@Validated @RequestBody AllocatePermissionToRoleInput allocatePermissionToRole) {
-        List<Integer> permissions = allocatePermissionToRole.getPermissions();
+    public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
+
+        List<Integer> permissions = bindPermissionToRoleInput.getPermissions();
         List<RolePermissions> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {
             RolePermissions rolePermission = new RolePermissions();
-            rolePermission.setRoleId(allocatePermissionToRole.getRoleId());
+            rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
             rolePermission.setOperatorId(123);
             rolePermission.setOperatorIp("127.0.0.5");
             rolePermission.setOperatorName("旺旺");
             rolePermission.setPermissionId(permissionId);
             rolePermissions.add(rolePermission);
         }
-        roleDao.deleteRolePermissions(allocatePermissionToRole.getRoleId());
-        roleDao.allocatePermissionsToRole(rolePermissions);
+        roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
+        roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
         for (RolePermissions rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
             BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
             rolePermissionOutputs.add(rolePermissionOutput);
         }
+
         return ResultOutputUtil.success(rolePermissionOutputs);
     }
 
@@ -116,9 +118,9 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation(value = "绑定角色的用户")
-    public ResultOutput<List<AccountRoleOutput>> allocateRoleAccounts(@RequestBody AllocateAccountsToRoleInput allocateAccountsToRoleInput) {
+    public ResultOutput<List<AccountRoleOutput>> bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput) {
 
-        List<Integer> accountIds = allocateAccountsToRoleInput.getAccountIds();
+        List<Integer> accountIds = bindAccountsToRoleInput.getAccountIds();
         List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer accountId : accountIds) {
@@ -127,11 +129,11 @@ public class RoleServiceImpl implements RoleClient {
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
             accountRoles.setAccountId(accountId);
-            accountRoles.setRoleId(allocateAccountsToRoleInput.getId());
+            accountRoles.setRoleId(bindAccountsToRoleInput.getId());
             accountRolesList.add(accountRoles);
         }
 
-        accountDao.allocateRolesToAccount(accountRolesList);
+        accountDao.bindRolesToAccount(accountRolesList);
 
         return ResultOutputUtil.success(accountRolesList);
     }

@@ -5,7 +5,7 @@ import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.mapper.PermissionMapper;
 import com.kiss.account.mapper.PermissionModuleMapper;
-import com.kiss.account.output.AllocatePermissionOutput;
+import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionMapper.getPermissions();
     }
 
-    public List<AllocatePermissionOutput> getBindPermissions() {
+    public List<BindPermissionOutput> getBindPermissions() {
         return permissionMapper.getBindPermissions(1);
     }
 
@@ -58,19 +58,19 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionModuleMapper.getPermissionModuleById(id);
     }
 
-    public List<PermissionModule> getPermissionsModules() {
-        return permissionModuleMapper.getPermissionsModules();
+    public List<PermissionModule> getPermissionModules() {
+        return permissionModuleMapper.getPermissionModules();
     }
 
-    public List<PermissionModule> getBindPermissionsModules() {
-        return permissionModuleMapper.getBindPermissionsModules();
+    public List<PermissionModule> getBindPermissionModules() {
+        return permissionModuleMapper.getBindPermissionModules();
     }
 
     public Integer getPermissionModulePermissionsCount(Integer id) {
         return permissionModuleMapper.getPermissionModulePermissionsCount(id);
     }
 
-    public void putPermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
+    public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
         Integer oldCount = getPermissionModulePermissionsCount(id);
         PermissionModule permissionModule = new PermissionModule();
         permissionModule.setId(id);
@@ -82,12 +82,12 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionMapper.getPermissionByNameOrCode(permission);
     }
 
-    public Integer putPermission (PermissionOutput permissionOutput) {
-        return permissionMapper.putPermission(permissionOutput);
+    public Integer updatePermission (PermissionOutput permissionOutput) {
+        return permissionMapper.updatePermission(permissionOutput);
     }
 
-    public Integer putPermissionModule (PermissionModuleOutput permissionModuleOutput) {
-        return permissionModuleMapper.putPermissionModule(permissionModuleOutput);
+    public Integer updatePermissionModule (PermissionModuleOutput permissionModuleOutput) {
+        return permissionModuleMapper.updatePermissionModule(permissionModuleOutput);
     }
 
     public Integer deletePermission (Integer id) {

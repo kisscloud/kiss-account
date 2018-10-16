@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AllocatePermissionOutput {
+public class BindPermissionOutput {
     /**
      * 权限ID
      */

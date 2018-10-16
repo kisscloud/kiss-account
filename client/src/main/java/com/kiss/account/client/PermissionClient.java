@@ -5,7 +5,7 @@ import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
-import com.kiss.account.output.AllocatePermissionOutput;
+import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +28,14 @@ public interface PermissionClient {
     @GetMapping("/permission")
     ResultOutput<PermissionOutput> getPermission();
 
-    @GetMapping("/allocate/permissions")
-    ResultOutput<List<AllocatePermissionOutput>> getAllocatePermissions();
+    @GetMapping("/bind/permissions")
+    ResultOutput<List<BindPermissionOutput>> getbindPermissions();
 
     @GetMapping("/permission/modules")
     ResultOutput<List<PermissionModuleOutput>> getPermissionModules();
 
-    @GetMapping("/allocate/permission/modules")
-    ResultOutput<List<PermissionModuleOutput>> getAllocatePermissionModules();
+    @GetMapping("/bind/permission/modules")
+    ResultOutput<List<PermissionModuleOutput>> getBindPermissionModules();
 
     @PutMapping("/permission")
     ResultOutput<PermissionOutput> updatePermission(UpdatePermissionInput updatePermissionInput);

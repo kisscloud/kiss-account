@@ -10,61 +10,70 @@ public interface RoleDao {
 
     /**
      * 创建角色
-     * @param role
+     *
+     * @param role Role
      */
     void createRole(Role role);
 
     /**
      * 给角色分配权限
-     * @param rolePermissions
+     *
+     * @param rolePermissions (List<RolePermissions>
      */
-    void allocatePermissionsToRole(List<RolePermissions> rolePermissions);
+    void bindPermissionsToRole(List<RolePermissions> rolePermissions);
 
     /**
      * 查询所有角色
-     * @return
+     *
+     * @return List<Role>
      */
     List<Role> getRoles();
 
     /**
      * 根据角色id查询所有权限id
-     * @param id
-     * @return
+     *
+     * @param id Integer
+     * @return List<Integer>
      */
     List<Integer> getRolesPermissionIds(Integer id);
 
     /**
      * 根据角色id查询所有账号id
-     * @param id
-     * @return
+     *
+     * @param id Integer
+     * @return List<Integer>
      */
     List<Integer> getRolesAccountIds(Integer id);
 
     /**
      * 根据角色名查询角色信息
-     * @param name
-     * @return
+     *
+     * @param name String
+     * @return Role
      */
-    Role getRoleByName (String name);
+    Role getRoleByName(String name);
 
     /**
      * 更新角色
-     * @param roleOutput
-     * @return
+     *
+     * @param roleOutput RoleOutput
+     * @return Integer
      */
-    Integer putRole (RoleOutput roleOutput);
+    Integer putRole(RoleOutput roleOutput);
 
     /**
      * 删除角色
+     *
      * @param id 角色id
-     * @return
+     * @return Integer
      */
-    Integer deleteRole (Integer id);
+    Integer deleteRole(Integer id);
 
     /**
      * 删除角色对应的所有权限
+     *
      * @param id 角色id
-     * @return
+     * @return Integer
      */
-    Integer deleteRolePermissions (Integer id);
+    Integer deleteRolePermissions(Integer id);
 }

@@ -20,8 +20,8 @@ public class RoleDaoImpl implements RoleDao {
         roleMapper.createRole(role);
     }
 
-    public void allocatePermissionsToRole(List<RolePermissions> rolePermissions) {
-        roleMapper.allocatePermissionsToRole(rolePermissions);
+    public void bindPermissionsToRole(List<RolePermissions> rolePermissions) {
+        roleMapper.bindPermissionsToRole(rolePermissions);
     }
 
     public List<Role> getRoles() {

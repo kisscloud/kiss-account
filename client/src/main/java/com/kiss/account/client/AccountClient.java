@@ -18,7 +18,7 @@ public interface AccountClient {
     ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput);
 
     @PostMapping("/account/roles")
-    ResultOutput allocateAccountRoles(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
+    ResultOutput bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput);
 
     @GetMapping("/accounts")
     ResultOutput<GetAccountsOutput> getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);

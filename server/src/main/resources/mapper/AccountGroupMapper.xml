@@ -32,7 +32,7 @@
         select * from accountgroups where id=#{id}
     </select>
 
-    <update id="putAccountGroup" parameterType="com.kiss.account.entity.AccountGroup">
+    <update id="updateAccountGroup" parameterType="com.kiss.account.entity.AccountGroup">
         update accountgroups
         set id = #{id}
         <if test="name != null and name != ''">

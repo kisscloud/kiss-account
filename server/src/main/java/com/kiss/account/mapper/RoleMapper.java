@@ -20,7 +20,7 @@ public interface RoleMapper {
      * 给角色分配权限
      * @param rolePermissions
      */
-    void allocatePermissionsToRole(List<RolePermissions> rolePermissions);
+    void bindPermissionsToRole(List<RolePermissions> rolePermissions);
 
     /**
      * 查询所有角色

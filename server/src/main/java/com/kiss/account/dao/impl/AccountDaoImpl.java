@@ -20,8 +20,8 @@ public class AccountDaoImpl implements AccountDao {
         accountMapper.createAccount(account);
     }
 
-    public void allocateRolesToAccount(List<AccountRoleOutput> accountRoles) {
-        accountMapper.allocateRolesToAccount(accountRoles);
+    public void bindRolesToAccount(List<AccountRoleOutput> accountRoles) {
+        accountMapper.bindRolesToAccount(accountRoles);
     }
 
     public List<AccountOutput> getAccounts(int start, int size) {
@@ -46,16 +46,16 @@ public class AccountDaoImpl implements AccountDao {
         return accountMapper.getAccountByUniqueIdentification(name,username,email,mobile);
     }
 
-    public Integer putAccount(AccountOutput account) {
-        return accountMapper.putAccount(account);
+    public Integer updateAccount(AccountOutput account) {
+        return accountMapper.updateAccount(account);
     }
 
-    public Integer putAccountPassword(Account account) {
-        return accountMapper.putAccountPassword(account);
+    public Integer updateAccountPassword(Account account) {
+        return accountMapper.updateAccountPassword(account);
     }
 
-    public Integer putAccountStatus(AccountOutput accountOutput) {
-        return accountMapper.putAccountStatus(accountOutput);
+    public Integer updateAccountStatus(AccountOutput accountOutput) {
+        return accountMapper.updateAccountStatus(accountOutput);
     }
 
     public Integer deleteAccountRoles (Integer id) {

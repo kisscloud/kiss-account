@@ -41,7 +41,7 @@
         order by permission.createdAt;
     </select>
 
-    <select id="getBindPermissions" resultType="com.kiss.account.output.AllocatePermissionOutput">
+    <select id="getBindPermissions" resultType="com.kiss.account.output.BindPermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
                permission.code, permission.dataFields, permission.status, permission.seq,
                permission.remark, pm.name as moduleName, pm.parentId as moduleParentId
@@ -55,7 +55,7 @@
         select * from permissions where name = #{name} or code = #{code} limit 0,1
     </select>
 
-    <update id="putPermission" parameterType="com.kiss.account.output.PermissionOutput">
+    <update id="updatePermission" parameterType="com.kiss.account.output.PermissionOutput">
         update permissions
         set id = #{id}
         <if test="code != null and code != ''">

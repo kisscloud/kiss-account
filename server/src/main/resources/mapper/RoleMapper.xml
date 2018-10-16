@@ -20,13 +20,13 @@
         select * from roles;
     </select>
 
-    <insert id="allocatePermissionToRole" useGeneratedKeys="true" keyProperty="id"
+    <insert id="bindPermissionToRole" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.kiss.account.entity.RolePermissions">
         insert into rolepermissions(roleId, permissionId, dataScope, operatorId, operatorName, operatorIp)
         values(#{roleId}, #{permissionId}, #{dataScope}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <insert id="allocatePermissionsToRole" useGeneratedKeys="true" keyProperty="id"
+    <insert id="bindPermissionsToRole" useGeneratedKeys="true" keyProperty="id"
             parameterType="java.util.List">
         insert into rolepermissions(roleId, permissionId, dataScope, operatorId, operatorName, operatorIp)
         values
