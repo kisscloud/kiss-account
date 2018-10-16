@@ -60,9 +60,9 @@ public class AccountServiceImpl implements AccountClient {
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0");
         accountGroup.setSeq(0);
-        accountGroup.setOperatorId(UserUtil.getUserId());
+        accountGroup.setOperatorId(123);
         accountGroup.setOperatorIp("127.0.0.1");
-        accountGroup.setOperatorName(UserUtil.getUsername());
+        accountGroup.setOperatorName("koy");
         accountGroupDao.createAccountGroup(accountGroup);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
@@ -87,9 +87,9 @@ public class AccountServiceImpl implements AccountClient {
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
-        account.setOperatorId(UserUtil.getUserId());
+        account.setOperatorId(123);
         account.setOperatorIp("127.0.0.4");
-        account.setOperatorName(UserUtil.getUsername());
+        account.setOperatorName("koy");
         accountDao.createAccount(account);
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
@@ -109,9 +109,9 @@ public class AccountServiceImpl implements AccountClient {
 
         for (Integer roleId : roles) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(UserUtil.getUserId());
+            accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName(UserUtil.getUsername());
+            accountRoles.setOperatorName("koy");
             accountRoles.setAccountId(bindRoleToAccountInput.getAccountId());
             accountRoles.setRoleId(roleId);
             accountRolesList.add(accountRoles);

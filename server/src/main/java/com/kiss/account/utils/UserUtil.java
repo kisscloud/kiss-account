@@ -28,6 +28,7 @@ public class UserUtil {
         }
 
         String userMessage = new String(output.toByteArray(),"utf-8");
+        System.out.println(userMessage);
         JSONObject userMessageOb = JSONObject.parseObject(userMessage);
 
         if (userMessageOb != null) {

@@ -56,8 +56,8 @@ public class PermissionServiceImpl implements PermissionClient {
         permission.setStatus(createPermissionInput.getStatus());
         permission.setSeq(10);
         permission.setRemark(createPermissionInput.getRemark());
-        permission.setOperatorId(UserUtil.getUserId());
-        permission.setOperatorName(UserUtil.getUsername());
+        permission.setOperatorId(123);
+        permission.setOperatorName("koy");
         permission.setOperatorIp("0.0.0.0");
         Permission exist = permissionDao.getPermissionByNameOrCode(permission);
 
@@ -115,8 +115,8 @@ public class PermissionServiceImpl implements PermissionClient {
         permissionModule.setSeq(100);
         permissionModule.setRemark(permissionModuleInput.getRemark());
         permissionModule.setPermissions(0);
-        permissionModule.setOperatorId(UserUtil.getUserId());
-        permissionModule.setOperatorName(UserUtil.getUsername());
+        permissionModule.setOperatorId(123);
+        permissionModule.setOperatorName("koy");
         permissionModule.setOperatorIp("0.0.0.0");
         permissionModule.setStatus(1);
 

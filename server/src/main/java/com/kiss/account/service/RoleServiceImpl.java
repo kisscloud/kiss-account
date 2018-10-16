@@ -52,9 +52,9 @@ public class RoleServiceImpl implements RoleClient {
 
         role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
-        role.setOperatorId(UserUtil.getUserId());
+        role.setOperatorId(123);
         role.setOperatorIp("127.0.0.5");
-        role.setOperatorName(UserUtil.getUsername());
+        role.setOperatorName("koy");
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
@@ -70,9 +70,9 @@ public class RoleServiceImpl implements RoleClient {
         for (Integer permissionId : permissions) {
             RolePermissions rolePermission = new RolePermissions();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
-            rolePermission.setOperatorId(UserUtil.getUserId());
+            rolePermission.setOperatorId(123);
             rolePermission.setOperatorIp("127.0.0.5");
-            rolePermission.setOperatorName(UserUtil.getUsername());
+            rolePermission.setOperatorName("koy");
             rolePermission.setPermissionId(permissionId);
             rolePermissions.add(rolePermission);
         }
@@ -126,9 +126,9 @@ public class RoleServiceImpl implements RoleClient {
 
         for (Integer accountId : accountIds) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(UserUtil.getUserId());
+            accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName(UserUtil.getUsername());
+            accountRoles.setOperatorName("koy");
             accountRoles.setAccountId(accountId);
             accountRoles.setRoleId(bindAccountsToRoleInput.getId());
             accountRolesList.add(accountRoles);
