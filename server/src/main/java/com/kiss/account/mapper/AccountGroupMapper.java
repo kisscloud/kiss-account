@@ -7,4 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AccountGroupMapper {
 
     Integer createAccountGroup(AccountGroup accountGroup);
+
+    AccountGroup getAccountGroupByName(String name);
+
+    Integer putAccountGroup(AccountGroup accountGroup);
 }

@@ -2,11 +2,15 @@ package com.kiss.account.service;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.kiss.account.client.RoleClient;
+import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
+import com.kiss.account.input.AllocateAccountsToRoleInput;
 import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
+import com.kiss.account.output.AccountOutput;
+import com.kiss.account.output.AccountRolesOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.utils.ResultOutputUtil;
@@ -29,6 +33,9 @@ public class RoleServiceImpl implements RoleClient {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private AccountDao accountDao;
 
     @Override
     @ApiOperation("添加角色")
@@ -93,6 +100,27 @@ public class RoleServiceImpl implements RoleClient {
     public ResultOutput<List<Integer>> getRolesAccountIds(Integer id) {
         List<Integer> accountIds = roleDao.getRolesAccountIds(id);
         return ResultOutputUtil.success(accountIds);
+    }
+
+    @Override
+    public ResultOutput postRolesAccounts(@RequestBody AllocateAccountsToRoleInput allocateAccountsToRoleInput) {
+
+        List<Integer> accountIds = allocateAccountsToRoleInput.getAccountIds();
+        List<AccountRolesOutput> accountRolesList = new ArrayList<>();
+
+        for (Integer accountId : accountIds) {
+            AccountRolesOutput accountRoles = new AccountRolesOutput();
+            accountRoles.setOperatorId(123);
+            accountRoles.setOperatorIp("127.0.0.4");
+            accountRoles.setOperatorName("李四");
+            accountRoles.setAccountId(accountId);
+            accountRoles.setRoleId(allocateAccountsToRoleInput.getId());
+            accountRolesList.add(accountRoles);
+        }
+
+        accountDao.allocateRolesToAccount(accountRolesList);
+
+        return ResultOutputUtil.success(accountRolesList);
     }
 
 }

@@ -69,4 +69,50 @@
     <select id="getAccountsCount" resultType="java.lang.Integer">
         select count(*) from accounts
     </select>
+
+    <select id="getAccountByUniqueIdentification" resultType="com.kiss.account.entity.Account">
+        select * from accounts where name=#{name} or username=#{username} or email=#{email} or mobile=#{mobile}
+    </select>
+
+    <update id="putAccount" parameterType="com.kiss.account.output.AccountOutput">
+        update accounts
+        set id = #{id}
+        <if test="name != null and name != ''">
+            ,name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="username != null and username != ''">
+            ,username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null and email != ''">
+            ,email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            ,mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="groupId != null and groupId != ''">
+            ,groupId = #{groupId,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="putAccountPassword" parameterType="com.kiss.account.entity.Account">
+        update accounts
+        set id = #{id}
+        <if test="password != null and password != ''">
+            ,password = #{password,jdbcType=VARCHAR}
+        </if>
+        <if test="salt != null and salt != ''">
+            ,salt = #{salt,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="putAccountStatus" parameterType="com.kiss.account.output.AccountOutput">
+        update accounts
+        set id = #{id}
+        <if test="status != null and status != ''">
+            ,status = #{status,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

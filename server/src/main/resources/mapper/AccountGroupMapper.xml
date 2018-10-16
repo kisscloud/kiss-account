@@ -19,4 +19,17 @@
     <select id="getAccountGroups" resultType="com.kiss.account.entity.AccountGroup">
         select * from accountGroups;
     </select>
+
+    <select id="getAccountGroupByName" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountGroups where name=#{name};
+    </select>
+
+    <update id="putAccountGroup" parameterType="com.kiss.account.entity.AccountGroup">
+        update accountgroups
+        set id = #{id}
+        <if test="name != null and name != ''">
+            ,name = #{name,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

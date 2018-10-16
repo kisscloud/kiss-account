@@ -30,4 +30,11 @@ public interface AccountMapper {
 
     Integer getAccountsCount();
 
+    Account getAccountByUniqueIdentification(@Param("name") String name,@Param("username") String username,@Param("email") String email,@Param("mobile") String mobile);
+
+    Integer putAccount(AccountOutput account);
+
+    Integer putAccountPassword(Account account);
+
+    Integer putAccountStatus(AccountOutput accountOutput);
 }

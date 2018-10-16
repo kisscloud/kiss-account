@@ -15,4 +15,17 @@ public class AccountGroupDao {
     public void createAccountGroup(AccountGroup accountGroup) throws ResultException {
         accountGroupMapper.createAccountGroup(accountGroup);
     }
+
+    /**
+     * 根据部门的名字查找部门
+     * @param name
+     * @return
+     */
+    public AccountGroup getAccountGroupByName(String name) {
+        return accountGroupMapper.getAccountGroupByName(name);
+    }
+
+    public Integer putAccountGroup(AccountGroup accountGroup) {
+        return accountGroupMapper.putAccountGroup(accountGroup);
+    }
 }

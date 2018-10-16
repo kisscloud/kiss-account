@@ -5,13 +5,12 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.input.AllocateRoleToAccountInput;
-import com.kiss.account.input.CreateAccountGroupInput;
-import com.kiss.account.input.CreateAccountInput;
+import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.ServiceStatusUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +37,20 @@ public class AccountServiceImpl implements AccountClient {
     @Value("${max.accounts.size}")
     private String maxAccountsSize;
 
+    @Value("${account.default.password}")
+    private String accountDefaultPassword;
+
     @Override
     @ApiOperation(value = "创建部门")
     public ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
-        AccountGroup accountGroup = new AccountGroup();
+        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
+
+        if (accountGroup != null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNTGROUP_EXIST);
+        }
+
+        accountGroup = new AccountGroup();
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0");
         accountGroup.setSeq(0);
@@ -61,7 +68,13 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "添加账户")
     public ResultOutput<AccountOutput> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
-        Account account = new Account();
+        Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(),createAccountInput.getUsername(),createAccountInput.getEmail(),createAccountInput.getMobile());
+
+        if (account != null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
+        }
+
+        account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(createAccountInput.getPassword(), salt);
@@ -162,11 +175,83 @@ public class AccountServiceImpl implements AccountClient {
     @Override
     public ResultOutput get() {
         System.out.println("hello");
+
 //        System.out.println(getMessage.messageSource);
 //
 //        System.out.println(Message.getMessage("zh-CN",900));
 //        System.out.println(Message.getMessage("en",170));
 //        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
-        return null;
+        return ResultOutputUtil.success(ServiceStatusUtil.getStatusValue("zh-CN","user1"));
+    }
+
+    @Override
+    public ResultOutput putAccount(@RequestBody PutAccountInput putAccountInput) {
+
+        Account account = accountDao.getAccountByUniqueIdentification(putAccountInput.getName(),putAccountInput.getUsername(),putAccountInput.getEmail(),putAccountInput.getMobile());
+
+        if (account != null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
+        }
+
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(putAccountInput,accountOutput);
+        Integer count = accountDao.putAccount(accountOutput);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
+        }
+
+        return ResultOutputUtil.success(account);
+    }
+
+    @Override
+    public ResultOutput putAccountGroup(@RequestBody PutAccountGroupInput putAccountGroupInput) {
+
+        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(putAccountGroupInput.getName());
+
+        if (accountGroup != null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNTGROUP_EXIST);
+        }
+
+        accountGroup = new AccountGroup();
+        BeanUtils.copyProperties(putAccountGroupInput,accountGroup);
+        Integer count = accountGroupDao.putAccountGroup(accountGroup);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_GROUP_FAILED);
+        }
+        return ResultOutputUtil.success(accountGroup);
+    }
+
+    @Override
+    public ResultOutput putAccountPassword(Integer id) {
+
+        String salt = CryptoUtil.salt();
+        String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
+        Account account = new Account();
+        account.setId(id);
+        account.setSalt(salt);
+        account.setPassword(password);
+        Integer count = accountDao.putAccountPassword(account);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
+        }
+
+        return ResultOutputUtil.success();
+    }
+
+    @Override
+    public ResultOutput putAccountStatus(@RequestBody PutAccountStatusInput putAccountStatusInput) {
+
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(putAccountStatusInput,accountOutput);
+        Integer count = accountDao.putAccountStatus(accountOutput);
+
+        if(count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
+        }
+
+        return ResultOutputUtil.success(accountOutput);
     }
 }

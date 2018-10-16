@@ -1,5 +1,6 @@
 package com.kiss.account.client;
 
+import com.kiss.account.input.AllocateAccountsToRoleInput;
 import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.input.CreateRoleInput;
@@ -25,4 +26,7 @@ public interface RoleClient {
 
     @GetMapping("/roles/accountIds")
     ResultOutput<List<Integer>> getRolesAccountIds(@RequestParam("id") Integer id);
+
+    @PostMapping("/roles/accounts")
+    ResultOutput postRolesAccounts(@RequestBody AllocateAccountsToRoleInput allocateAccountsToRoleInput);
 }
