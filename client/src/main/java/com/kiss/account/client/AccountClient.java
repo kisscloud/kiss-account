@@ -11,14 +11,14 @@ import output.ResultOutput;
 @RequestMapping
 public interface AccountClient {
 
-    @PostMapping("/accounts/groups")
-    ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput);
+    @PostMapping("/account/group")
+    ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput);
 
-    @PostMapping("/accounts")
-    ResultOutput postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput);
+    @PostMapping("/account")
+    ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput);
 
-    @PostMapping("/accounts/role")
-    ResultOutput postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
+    @PostMapping("/account/roles")
+    ResultOutput allocateAccountRoles(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccount);
 
     @GetMapping("/accounts")
     ResultOutput<GetAccountsOutput> getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
@@ -38,16 +38,16 @@ public interface AccountClient {
     @GetMapping("/get")
     ResultOutput get();
 
-    @PutMapping("/accounts")
-    ResultOutput<AccountOutput> putAccount(PutAccountInput putAccountInput);
+    @PutMapping("/account")
+    ResultOutput<AccountOutput> updateAccount(UpdateAccountInput updateAccountInput);
 
-    @PutMapping("/accounts/group")
-    ResultOutput putAccountGroup(PutAccountGroupInput putAccountGroupInput);
+    @PutMapping("/account/group")
+    ResultOutput updateAccountGroup(UpdateAccountGroupInput updateAccountGroupInput);
 
-    @PutMapping("/accounts/password")
-    ResultOutput putAccountPassword(@RequestParam("id") Integer id);
+    @PutMapping("/account/password")
+    ResultOutput updateAccountPassword(@RequestParam("id") Integer id);
 
-    @PutMapping("/accounts/status")
-    ResultOutput putAccountStatus(@Validated @RequestBody PutAccountStatusInput putAccountStatusInput);
+    @PutMapping("/account/status")
+    ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput);
 
 }

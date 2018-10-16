@@ -41,7 +41,7 @@
         order by permission.createdAt;
     </select>
 
-    <select id="getBindPermissions" resultType="com.kiss.account.output.BindPermissionOutput">
+    <select id="getBindPermissions" resultType="com.kiss.account.output.AllocatePermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
                permission.code, permission.dataFields, permission.status, permission.seq,
                permission.remark, pm.name as moduleName, pm.parentId as moduleParentId

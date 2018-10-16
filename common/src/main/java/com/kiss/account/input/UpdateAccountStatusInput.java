@@ -5,12 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class PutAccountInput {
+public class UpdateAccountStatusInput {
     @NotEmpty(message = "用户id不能为空")
     private Integer id;
-    private String username;
-    private String email;
-    private String mobile;
-    private String name;
-    private Integer groupId;
+    @NotEmpty(message = "用户状态不能为空")
+    private Integer status;
 }

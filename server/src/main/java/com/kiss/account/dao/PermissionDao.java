@@ -2,7 +2,7 @@ package com.kiss.account.dao;
 
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
-import com.kiss.account.output.BindPermissionOutput;
+import com.kiss.account.output.AllocatePermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 
@@ -34,7 +34,7 @@ public interface PermissionDao {
      * 查询可以绑定的权限列表
      * @return
      */
-    List<BindPermissionOutput> getBindPermissions();
+    List<AllocatePermissionOutput> getBindPermissions();
 
     /**
      * 根据ID查询权限模块

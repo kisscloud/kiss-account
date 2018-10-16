@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PutPermissionInput {
+public class UpdatePermissionInput {
     @NotNull(message = "权限id不能为空")
     private Integer id;
 

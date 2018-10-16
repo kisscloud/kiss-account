@@ -6,9 +6,9 @@ import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
-import com.kiss.account.input.PutPermissionInput;
-import com.kiss.account.input.PutPermissionModuleInput;
-import com.kiss.account.output.BindPermissionOutput;
+import com.kiss.account.input.UpdatePermissionInput;
+import com.kiss.account.input.UpdatePermissionModuleInput;
+import com.kiss.account.output.AllocatePermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
@@ -37,7 +37,7 @@ public class PermissionServiceImpl implements PermissionClient {
     @Override
     @ApiOperation(value = "创建权限")
     @Transactional
-    public ResultOutput<PermissionOutput> postPermissions(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
+    public ResultOutput<PermissionOutput> createPermission(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
 
         // 1. 查询权限所属模块信息
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(createPermissionInput.getModuleId());
@@ -86,7 +86,7 @@ public class PermissionServiceImpl implements PermissionClient {
      */
     @Override
     @ApiOperation(value = "创建权限模块")
-    public ResultOutput<PermissionModuleOutput> postPermissionsModules(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
+    public ResultOutput<PermissionModuleOutput> createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
 
         PermissionModule permissionModule = permissionDao.getPermissionModuleByName(permissionModuleInput.getName());
 
@@ -144,15 +144,15 @@ public class PermissionServiceImpl implements PermissionClient {
 
     @Override
     @ApiOperation(value = "获取可以绑定的权限列表")
-    public ResultOutput<List<BindPermissionOutput>> getBindPermissions() {
+    public ResultOutput<List<AllocatePermissionOutput>> getAllocatePermissions() {
 
-        List<BindPermissionOutput> bindPermissionOutputs = permissionDao.getBindPermissions();
+        List<AllocatePermissionOutput> bindPermissionOutputs = permissionDao.getBindPermissions();
 
         return ResultOutputUtil.success(bindPermissionOutputs);
     }
 
     @Override
-    public ResultOutput<List<PermissionModuleOutput>> getPermissionsModules() {
+    public ResultOutput<List<PermissionModuleOutput>> getPermissionModules() {
 
         List<PermissionModule> permissionModules = permissionDao.getPermissionsModules();
         List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
@@ -167,7 +167,7 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    public ResultOutput<List<PermissionModuleOutput>> getBindPermissionsModules() {
+    public ResultOutput<List<PermissionModuleOutput>> getAllocatePermissionModules() {
 
         List<PermissionModule> permissionModules = permissionDao.getBindPermissionsModules();
         List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
@@ -182,18 +182,18 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    public ResultOutput<PermissionOutput> putPermission(@Validated @RequestBody PutPermissionInput putPermissionInput) {
+    public ResultOutput<PermissionOutput> updatePermission(@Validated @RequestBody UpdatePermissionInput updatePermissionInput) {
         Permission permission = new Permission();
-        permission.setCode(putPermissionInput.getCode());
-        permission.setName(putPermissionInput.getName());
+        permission.setCode(updatePermissionInput.getCode());
+        permission.setName(updatePermissionInput.getName());
         Permission exist = permissionDao.getPermissionByNameOrCode(permission);
 
-        if(exist != null) {
+        if (exist != null) {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_EXIST);
         }
 
         PermissionOutput permissionOutput = new PermissionOutput();
-        BeanUtils.copyProperties(putPermissionInput,permissionOutput);
+        BeanUtils.copyProperties(updatePermissionInput, permissionOutput);
         Integer count = permissionDao.putPermission(permissionOutput);
 
         if (count == 0) {
@@ -204,7 +204,7 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    public ResultOutput<PermissionModuleOutput> putPermissionModule(@Validated @RequestBody PutPermissionModuleInput putPermissionModuleInput) {
+    public ResultOutput<PermissionModuleOutput> updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput putPermissionModuleInput) {
         PermissionModule permissionModule = permissionDao.getPermissionModuleByName(putPermissionModuleInput.getName());
 
         if (permissionModule != null) {
@@ -212,7 +212,7 @@ public class PermissionServiceImpl implements PermissionClient {
         }
 
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
-        BeanUtils.copyProperties(putPermissionModuleInput,permissionModuleOutput);
+        BeanUtils.copyProperties(putPermissionModuleInput, permissionModuleOutput);
         Integer count = permissionDao.putPermissionModule(permissionModuleOutput);
 
         if (count == 0) {
@@ -238,7 +238,7 @@ public class PermissionServiceImpl implements PermissionClient {
 
         List<Permission> permissions = permissionDao.getPermissionByModuleId(id);
 
-        if(permissions != null && permissions.size() != 0) {
+        if (permissions != null && permissions.size() != 0) {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
         }
 

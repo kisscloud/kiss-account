@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AccountRolesOutput {
+public class AccountRoleOutput {
     /**
      * 账户ID
      */

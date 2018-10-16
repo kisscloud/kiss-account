@@ -4,10 +4,10 @@
 <!-- 定义一个映射配置文件的根节点 -->
 <!-- namespace 属性用来定义配置命名空间， 主要进行 session 级别的缓存管理 -->
 <!-- namespace 默认使用当前操作实体类的全路径 -->
-<mapper namespace="com.kiss.account.mapper.ServiceStatusMapper">
+<mapper namespace="com.kiss.account.mapper.DbEnumsMapper">
 
-    <select id="getServiceStatus" resultType="com.kiss.account.entity.ServiceStatus">
-        select * from servicestatus;
+    <select id="getDbEnums" resultType="com.kiss.account.entity.DbEnums">
+        select * from dbenums;
     </select>
 
 </mapper>

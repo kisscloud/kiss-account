@@ -6,9 +6,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PutRoleInput {
-    @NotNull(message = "角色id不能为空")
+public class UpdateAccountInput {
+    @NotNull(message = "用户id不能为空")
     private Integer id;
+    private String username;
+    private String email;
+    private String mobile;
     private String name;
-    private Integer status;
+    private Integer groupId;
 }

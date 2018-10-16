@@ -1,16 +1,16 @@
 package com.kiss.account.mapper;
 
-import com.kiss.account.entity.ServiceStatus;
+import com.kiss.account.entity.DbEnums;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface ServiceStatusMapper {
+public interface DbEnumsMapper {
 
     /**
      * 查询数据库存放的所有状态码信息
      * @return
      */
-    List<ServiceStatus> getServiceStatus();
+    List<DbEnums> getDbEnums();
 }

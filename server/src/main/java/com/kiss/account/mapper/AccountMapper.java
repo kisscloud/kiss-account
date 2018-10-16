@@ -1,9 +1,8 @@
 package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Account;
-import com.kiss.account.entity.AccountRoles;
 import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRolesOutput;
+import com.kiss.account.output.AccountRoleOutput;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +22,7 @@ public interface AccountMapper {
      * 给账号分配角色
      * @param accountRoles
      */
-    void allocateRolesToAccount(List<AccountRolesOutput> accountRoles);
+    void allocateRolesToAccount(List<AccountRoleOutput> accountRoles);
 
     /**
      * 分页查询账号信息

@@ -8,8 +8,8 @@ import com.kiss.account.entity.RolePermissions;
 import com.kiss.account.input.AllocateAccountsToRoleInput;
 import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
-import com.kiss.account.input.PutRoleInput;
-import com.kiss.account.output.AccountRolesOutput;
+import com.kiss.account.input.UpdateRoleInput;
+import com.kiss.account.output.AccountRoleOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
@@ -41,7 +41,7 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation("添加角色")
-    public ResultOutput<RoleOutput> postRoles(@Validated @RequestBody CreateRoleInput createRoleInput) {
+    public ResultOutput<RoleOutput> createRole(@Validated @RequestBody CreateRoleInput createRoleInput) {
 
         Role role = roleDao.getRoleByName(createRoleInput.getName());
 
@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @ApiOperation("分配角色权限")
-    public ResultOutput<List<RolePermissionOutput>> postRolesPermissions(@Validated @RequestBody AllocatePermissionToRoleInput allocatePermissionToRole) {
+    public ResultOutput<List<RolePermissionOutput>> allocateRolePermissions(@Validated @RequestBody AllocatePermissionToRoleInput allocatePermissionToRole) {
         List<Integer> permissions = allocatePermissionToRole.getPermissions();
         List<RolePermissions> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {
@@ -101,25 +101,28 @@ public class RoleServiceImpl implements RoleClient {
     }
 
     @Override
-    public ResultOutput<List<Integer>> getRolesPermissionIds(Integer id) {
+    @ApiOperation(value = "获取角色绑定的权限ID列表")
+    public ResultOutput<List<Integer>> getRolePermissionIds(Integer id) {
         List<Integer> permissionIds = roleDao.getRolesPermissionIds(id);
         return ResultOutputUtil.success(permissionIds);
     }
 
     @Override
-    public ResultOutput<List<Integer>> getRolesAccountIds(Integer id) {
+    @ApiOperation(value = "获取角色绑定的用户ID列表")
+    public ResultOutput<List<Integer>> getRoleAccountIds(Integer id) {
         List<Integer> accountIds = roleDao.getRolesAccountIds(id);
         return ResultOutputUtil.success(accountIds);
     }
 
     @Override
-    public ResultOutput<List<AccountRolesOutput>> postRolesAccounts(@RequestBody AllocateAccountsToRoleInput allocateAccountsToRoleInput) {
+    @ApiOperation(value = "绑定角色的用户")
+    public ResultOutput<List<AccountRoleOutput>> allocateRoleAccounts(@RequestBody AllocateAccountsToRoleInput allocateAccountsToRoleInput) {
 
         List<Integer> accountIds = allocateAccountsToRoleInput.getAccountIds();
-        List<AccountRolesOutput> accountRolesList = new ArrayList<>();
+        List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer accountId : accountIds) {
-            AccountRolesOutput accountRoles = new AccountRolesOutput();
+            AccountRoleOutput accountRoles = new AccountRoleOutput();
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
@@ -134,9 +137,11 @@ public class RoleServiceImpl implements RoleClient {
     }
 
     @Override
-    public ResultOutput<RoleOutput> putRole(@Validated @RequestBody PutRoleInput putRoleInput) {
+    @ApiOperation(value = "更新角色")
+    public ResultOutput<RoleOutput> updateRole(@Validated @RequestBody UpdateRoleInput updateRoleInput) {
+
         RoleOutput roleOutput = new RoleOutput();
-        BeanUtils.copyProperties(putRoleInput,roleOutput);
+        BeanUtils.copyProperties(updateRoleInput, roleOutput);
         Integer count = roleDao.putRole(roleOutput);
 
         if (count == 0) {
@@ -148,6 +153,7 @@ public class RoleServiceImpl implements RoleClient {
 
     @Override
     @Transactional
+    @ApiOperation(value = "删除空角色", notes = "未绑定用户的角色")
     public ResultOutput deleteRole(@RequestParam("id") Integer id) {
         Integer roleCount = roleDao.deleteRole(id);
 

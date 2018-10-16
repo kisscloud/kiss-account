@@ -1,7 +1,7 @@
 package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Permission;
-import com.kiss.account.output.BindPermissionOutput;
+import com.kiss.account.output.AllocatePermissionOutput;
 import com.kiss.account.output.PermissionOutput;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,7 +29,7 @@ public interface PermissionMapper {
      *
      * @return List<BindPermissionOutput>
      */
-    List<BindPermissionOutput> getBindPermissions(Integer status);
+    List<AllocatePermissionOutput> getBindPermissions(Integer status);
 
     /**
      * 查询权限信息

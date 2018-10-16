@@ -1,9 +1,8 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.Account;
-import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRolesOutput;
+import com.kiss.account.output.AccountRoleOutput;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface AccountDao {
      * 给账号分配角色
      * @param accountRoles
      */
-    void allocateRolesToAccount(List<AccountRolesOutput> accountRoles);
+    void allocateRolesToAccount(List<AccountRoleOutput> accountRoles);
 
     /**
      * 查询账号信息

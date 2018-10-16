@@ -10,7 +10,7 @@ import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.ServiceStatusUtil;
+import com.kiss.account.utils.DbEnumsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "创建部门")
-    public ResultOutput<AccountGroupOutput> postAccountGroups(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
+    public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
@@ -68,7 +67,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "添加账户")
-    public ResultOutput<AccountOutput> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
+    public ResultOutput<AccountOutput> createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
         Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(), createAccountInput.getUsername(), createAccountInput.getEmail(), createAccountInput.getMobile());
 
@@ -98,13 +97,13 @@ public class AccountServiceImpl implements AccountClient {
     @Override
     @ApiOperation(value = "绑定账户角色")
     @Transactional
-    public ResultOutput<List<AccountRolesOutput>> postAccountsRole(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
+    public ResultOutput<List<AccountRoleOutput>> allocateAccountRoles(@Validated @RequestBody AllocateRoleToAccountInput allocateRoleToAccountInput) {
 
         List<Integer> roles = allocateRoleToAccountInput.getRoleId();
-        List<AccountRolesOutput> accountRolesList = new ArrayList<>();
+        List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer roleId : roles) {
-            AccountRolesOutput accountRoles = new AccountRolesOutput();
+            AccountRoleOutput accountRoles = new AccountRoleOutput();
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("李四");
@@ -188,21 +187,21 @@ public class AccountServiceImpl implements AccountClient {
 //        System.out.println(Message.getMessage("zh-CN",900));
 //        System.out.println(Message.getMessage("en",170));
 //        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
-        return ResultOutputUtil.success(ServiceStatusUtil.getStatusValue("zh-CN", "user1"));
+        return ResultOutputUtil.success(DbEnumsUtil.getStatusValue("zh-CN", "user1"));
     }
 
     @Override
     @ApiOperation(value = "更新用户")
-    public ResultOutput<AccountOutput> putAccount(@Validated @RequestBody PutAccountInput putAccountInput) {
+    public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) {
 
-        Account account = accountDao.getAccountByUniqueIdentification(putAccountInput.getName(), putAccountInput.getUsername(), putAccountInput.getEmail(), putAccountInput.getMobile());
+        Account account = accountDao.getAccountByUniqueIdentification(updateAccountInput.getName(), updateAccountInput.getUsername(), updateAccountInput.getEmail(), updateAccountInput.getMobile());
 
         if (account != null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
         }
 
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(putAccountInput, accountOutput);
+        BeanUtils.copyProperties(updateAccountInput, accountOutput);
         Integer count = accountDao.putAccount(accountOutput);
 
         if (count == 0) {
@@ -214,16 +213,16 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "更新部门")
-    public ResultOutput putAccountGroup(@Validated @RequestBody PutAccountGroupInput putAccountGroupInput) {
+    public ResultOutput updateAccountGroup(@Validated @RequestBody UpdateAccountGroupInput updateAccountGroupInput) {
 
-        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(putAccountGroupInput.getName());
+        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(updateAccountGroupInput.getName());
 
         if (accountGroup != null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNTGROUP_EXIST);
         }
 
         accountGroup = new AccountGroup();
-        BeanUtils.copyProperties(putAccountGroupInput, accountGroup);
+        BeanUtils.copyProperties(updateAccountGroupInput, accountGroup);
         Integer count = accountGroupDao.putAccountGroup(accountGroup);
 
         if (count == 0) {
@@ -234,7 +233,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "重置账户密码")
-    public ResultOutput putAccountPassword(Integer id) {
+    public ResultOutput updateAccountPassword(Integer id) {
 
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
@@ -253,10 +252,10 @@ public class AccountServiceImpl implements AccountClient {
 
     @Override
     @ApiOperation(value = "更新用户状态")
-    public ResultOutput putAccountStatus(@RequestBody PutAccountStatusInput putAccountStatusInput) {
+    public ResultOutput updateAccountStatus(@RequestBody UpdateAccountStatusInput updateAccountStatusInput) {
 
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(putAccountStatusInput, accountOutput);
+        BeanUtils.copyProperties(updateAccountStatusInput, accountOutput);
         Integer count = accountDao.putAccountStatus(accountOutput);
 
         if (count == 0) {
