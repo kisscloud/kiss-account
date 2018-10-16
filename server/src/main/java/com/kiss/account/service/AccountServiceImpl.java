@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "添加账户")
     public ResultOutput<AccountOutput> postAccounts(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
-        Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(),createAccountInput.getUsername(),createAccountInput.getEmail(),createAccountInput.getMobile());
+        Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(), createAccountInput.getUsername(), createAccountInput.getEmail(), createAccountInput.getMobile());
 
         if (account != null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
@@ -140,6 +141,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "获取部门列表")
     public ResultOutput<AccountGroupOutput> getGroups() {
 
         List<AccountGroup> groups = accountDao.getGroups();
@@ -155,6 +157,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "获取部门信息")
     public ResultOutput<AccountGroupOutput> getGroup(String id) {
 
         AccountGroup group = accountDao.getGroup(Integer.parseInt(id));
@@ -165,6 +168,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "获取总账户数")
     public ResultOutput<Integer> getAccountsCount() {
 
         Integer count = accountDao.getAccountsCount();
@@ -181,20 +185,21 @@ public class AccountServiceImpl implements AccountClient {
 //        System.out.println(Message.getMessage("zh-CN",900));
 //        System.out.println(Message.getMessage("en",170));
 //        return ResultOutputUtil.error(Code.PARAMETER_ERROR,"ascsd");
-        return ResultOutputUtil.success(ServiceStatusUtil.getStatusValue("zh-CN","user1"));
+        return ResultOutputUtil.success(ServiceStatusUtil.getStatusValue("zh-CN", "user1"));
     }
 
     @Override
+    @ApiOperation(value = "更新用户")
     public ResultOutput<AccountOutput> putAccount(@Validated @RequestBody PutAccountInput putAccountInput) {
 
-        Account account = accountDao.getAccountByUniqueIdentification(putAccountInput.getName(),putAccountInput.getUsername(),putAccountInput.getEmail(),putAccountInput.getMobile());
+        Account account = accountDao.getAccountByUniqueIdentification(putAccountInput.getName(), putAccountInput.getUsername(), putAccountInput.getEmail(), putAccountInput.getMobile());
 
         if (account != null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_EXIST);
         }
 
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(putAccountInput,accountOutput);
+        BeanUtils.copyProperties(putAccountInput, accountOutput);
         Integer count = accountDao.putAccount(accountOutput);
 
         if (count == 0) {
@@ -205,6 +210,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "更新部门")
     public ResultOutput putAccountGroup(@Validated @RequestBody PutAccountGroupInput putAccountGroupInput) {
 
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(putAccountGroupInput.getName());
@@ -214,7 +220,7 @@ public class AccountServiceImpl implements AccountClient {
         }
 
         accountGroup = new AccountGroup();
-        BeanUtils.copyProperties(putAccountGroupInput,accountGroup);
+        BeanUtils.copyProperties(putAccountGroupInput, accountGroup);
         Integer count = accountGroupDao.putAccountGroup(accountGroup);
 
         if (count == 0) {
@@ -224,6 +230,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "重置账户密码")
     public ResultOutput putAccountPassword(Integer id) {
 
         String salt = CryptoUtil.salt();
@@ -242,13 +249,14 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "更新用户状态")
     public ResultOutput putAccountStatus(@RequestBody PutAccountStatusInput putAccountStatusInput) {
 
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(putAccountStatusInput,accountOutput);
+        BeanUtils.copyProperties(putAccountStatusInput, accountOutput);
         Integer count = accountDao.putAccountStatus(accountOutput);
 
-        if(count == 0) {
+        if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
         }
 
