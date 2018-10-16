@@ -1,7 +1,7 @@
 package com.kiss.account.service;
 
 import com.kiss.account.client.AuthClient;
-import com.kiss.account.dao.AccountDao;
+import com.kiss.account.dao.impl.AccountDaoImpl;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
 import com.kiss.account.output.AuthOutput;
@@ -11,7 +11,6 @@ import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
@@ -21,7 +20,7 @@ import output.ResultOutput;
 public class AuthServiceImpl implements AuthClient {
 
     @Autowired
-    private AccountDao accountDao;
+    private AccountDaoImpl accountDao;
 
     @Override
     @ApiOperation(value = "用户名密码登录")

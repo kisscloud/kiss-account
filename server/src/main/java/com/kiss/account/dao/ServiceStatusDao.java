@@ -1,22 +1,14 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.ServiceStatus;
-import com.kiss.account.mapper.ServiceStatusMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-public class ServiceStatusDao {
+public interface ServiceStatusDao {
 
-    @Autowired
-    private ServiceStatusMapper serviceStatusMapper;
-
-    public List<ServiceStatus> getServiceStatus () {
-
-        return serviceStatusMapper.getServiceStatus();
-    }
-
+    /**
+     * 查询数据库存放的所有状态码信息
+     * @return
+     */
+    List<ServiceStatus> getServiceStatus ();
 }
-

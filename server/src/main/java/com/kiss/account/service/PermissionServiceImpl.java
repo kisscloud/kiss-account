@@ -2,7 +2,6 @@ package com.kiss.account.service;
 
 import com.kiss.account.client.PermissionClient;
 import com.kiss.account.dao.PermissionDao;
-import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
@@ -68,12 +67,12 @@ public class PermissionServiceImpl implements PermissionClient {
         permissionDao.createPermission(permission);
 
         // 3. 更新权限所属模块的权限数
-        permissionDao.updatePermissionModulePermissionsCount(permission.getModuleId(), +1);
+        permissionDao.putPermissionModulePermissionsCount(permission.getModuleId(), +1);
 
         // 4. 更新权限所属模块父模块权限数
         String[] modulesIds = permissionModule.getLevel().split(",");
         for (String moduleIdString : modulesIds) {
-            permissionDao.updatePermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
+            permissionDao.putPermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
         }
 
 

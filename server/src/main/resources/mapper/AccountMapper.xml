@@ -58,14 +58,6 @@
         </foreach>
     </insert>
 
-    <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountgroups order by seq
-    </select>
-
-    <select id="getGroup" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountgroups where id=#{id}
-    </select>
-
     <select id="getAccountsCount" resultType="java.lang.Integer">
         select count(*) from accounts
     </select>
@@ -115,4 +107,8 @@
         </if>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <delete id="deleteAccountRoles" parameterType="java.lang.Integer">
+        delete from accountroles where accountId = #{id}
+    </delete>
 </mapper>

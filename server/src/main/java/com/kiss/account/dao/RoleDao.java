@@ -1,59 +1,70 @@
 package com.kiss.account.dao;
 
-import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
-import com.kiss.account.mapper.RoleMapper;
 import com.kiss.account.output.RoleOutput;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-public class RoleDao {
+public interface RoleDao {
 
-    @Autowired
-    private RoleMapper roleMapper;
+    /**
+     * 创建角色
+     * @param role
+     */
+    void createRole(Role role);
 
-    public void createRole(Role role) {
-        roleMapper.createRole(role);
-    }
+    /**
+     * 给角色分配权限
+     * @param rolePermissions
+     */
+    void allocatePermissionsToRole(List<RolePermissions> rolePermissions);
 
-    public void allocatePermissionsToRole(List<RolePermissions> rolePermissions) {
-        roleMapper.allocatePermissionsToRole(rolePermissions);
-    }
+    /**
+     * 查询所有角色
+     * @return
+     */
+    List<Role> getRoles();
 
-    public void allocatePermissionToRole(RolePermissions rolePermissions) {
-        roleMapper.allocatePermissionToRole(rolePermissions);
-    }
+    /**
+     * 根据角色id查询所有权限id
+     * @param id
+     * @return
+     */
+    List<Integer> getRolesPermissionIds(Integer id);
 
-    public List<Role> getRoles() {
-        List<Role> roles = roleMapper.getRoles();
-        return roles;
-    }
+    /**
+     * 根据角色id查询所有账号id
+     * @param id
+     * @return
+     */
+    List<Integer> getRolesAccountIds(Integer id);
 
-    public List<Integer> getRolesPermissionIds(Integer id) {
-        return roleMapper.getRolesPermissionIds(id);
-    }
+    /**
+     * 根据角色名查询角色信息
+     * @param name
+     * @return
+     */
+    Role getRoleByName (String name);
 
-    public List<Integer> getRolesAccountIds(Integer id) {
-        return roleMapper.getRolesAccountIds(id);
-    }
+    /**
+     * 更新角色
+     * @param roleOutput
+     * @return
+     */
+    Integer putRole (RoleOutput roleOutput);
 
-    public Role getRoleByName (String name) {
-        return roleMapper.getRoleByName(name);
-    }
+    /**
+     * 删除角色
+     * @param id 角色id
+     * @return
+     */
+    Integer deleteRole (Integer id);
 
-    public Integer putRole (RoleOutput roleOutput) {
-        return roleMapper.putRole(roleOutput);
-    }
-
-    public Integer deleteRole (Integer id) {
-        return roleMapper.deleteRole(id);
-    }
-
-    public Integer deleteRolePermissions (Integer id) {
-        return roleMapper.deleteRolePermissions(id);
-    }
+    /**
+     * 删除角色对应的所有权限
+     * @param id 角色id
+     * @return
+     */
+    Integer deleteRolePermissions (Integer id);
 }

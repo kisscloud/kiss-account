@@ -1,17 +1,14 @@
 package com.kiss.account.service;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermissions;
-import com.kiss.account.exception.ResultException;
 import com.kiss.account.input.AllocateAccountsToRoleInput;
 import com.kiss.account.input.AllocatePermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.input.PutRoleInput;
-import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.AccountRolesOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
@@ -77,6 +74,7 @@ public class RoleServiceImpl implements RoleClient {
             rolePermission.setPermissionId(permissionId);
             rolePermissions.add(rolePermission);
         }
+        roleDao.deleteRolePermissions(allocatePermissionToRole.getRoleId());
         roleDao.allocatePermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
         for (RolePermissions rolePermission : rolePermissions) {
