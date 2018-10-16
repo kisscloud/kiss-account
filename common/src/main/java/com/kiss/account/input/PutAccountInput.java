@@ -3,10 +3,11 @@ package com.kiss.account.input;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class PutAccountInput {
-    @NotEmpty(message = "用户id不能为空")
+    @NotNull(message = "用户id不能为空")
     private Integer id;
     private String username;
     private String email;
