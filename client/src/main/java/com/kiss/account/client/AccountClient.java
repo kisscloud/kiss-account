@@ -35,8 +35,8 @@ public interface AccountClient {
     @GetMapping("/accounts/count")
     ResultOutput getAccountsCount();
 
-    @GetMapping("/get")
-    ResultOutput get();
+    @PostMapping("/get")
+    ResultOutput get(AccountInfoInput accountInfoInput);
 
     @PutMapping("/account")
     ResultOutput<AccountOutput> updateAccount(UpdateAccountInput updateAccountInput);
@@ -49,5 +49,13 @@ public interface AccountClient {
 
     @PutMapping("/account/status")
     ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput);
+
+//    @GetMapping("/account/permissions")
+
+    @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
+    ResultOutput getAccountPermissions(@RequestParam("id") Integer id);
+
+    @RequestMapping(value = "/account/permissions/dataScope", method = RequestMethod.GET)
+    ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id,@RequestParam("code") String code);
 
 }

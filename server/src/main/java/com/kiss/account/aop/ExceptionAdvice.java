@@ -49,6 +49,8 @@ public class ExceptionAdvice {
             } catch (Exception e1) {
                 return ResultOutputUtil.error(AccountStatusCode.REQUEST_PARAMETER_ERROR);
             }
+        } else {
+            e.printStackTrace();
         }
         return ResultOutputUtil.error(AccountStatusCode.SERVICE_ERROR);
     }

@@ -2,6 +2,8 @@ package com.kiss.account.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.entity.Operator;
+import org.apache.ibatis.annotations.Param;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,13 +11,26 @@ import java.io.InputStream;
 
 public class UserUtil {
     public static String getUsername() {
-        return ThreadLocalUtil.getUserMessage().getUsername();
+        Operator operator = ThreadLocalUtil.getOperatorInfo();
+        if (operator == null) {
+            return null;
+        }
+
+        return operator.getUsername();
     }
 
     public static Integer getUserId() {
-        return ThreadLocalUtil.getUserMessage().getUserId();
+        Operator operator = ThreadLocalUtil.getOperatorInfo();
+
+        if (operator == null) {
+            return null;
+        }
+        return operator.getUserId();
     }
 
+    public static void setUserInfo(Operator operator) {
+        ThreadLocalUtil.setOperatorInfo(operator);
+    }
     public static byte[] getGlobalMessage(HttpServletRequest request) throws IOException {
 
         InputStream in = request.getInputStream();
@@ -35,7 +50,7 @@ public class UserUtil {
             Operator operator = new Operator();
             operator.setUsername(userMessageOb.getString("GateUsername"));
             operator.setUserId(userMessageOb.getInteger("GateUserId"));
-            ThreadLocalUtil.setUserMessage(operator);
+            ThreadLocalUtil.setOperatorInfo(operator);
         }
 
         return bytes;

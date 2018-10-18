@@ -11,6 +11,7 @@ import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.UserUtil;
+import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -19,13 +20,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import output.ResultOutput;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
@@ -46,10 +55,17 @@ public class AccountServiceImpl implements AccountClient {
     @Autowired
     HttpServletRequest request;
 
+    @InitBinder
+    public void initBinder (WebDataBinder binder) {
+        binder.setValidator(new AccountValidator());
+    }
+
     @Override
     @ApiOperation(value = "创建部门")
     public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        System.out.println("++++++bbb===" + httpServletRequest.getHeader("X-Access-Token"));
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
         if (accountGroup != null) {
@@ -87,9 +103,9 @@ public class AccountServiceImpl implements AccountClient {
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
-        account.setOperatorId(123);
+        account.setOperatorId(UserUtil.getUserId());
         account.setOperatorIp("127.0.0.4");
-        account.setOperatorName("koy");
+        account.setOperatorName(UserUtil.getUsername());
         accountDao.createAccount(account);
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
@@ -143,7 +159,7 @@ public class AccountServiceImpl implements AccountClient {
         if (StringUtils.isEmpty(id)) {
             return ResultOutputUtil.error(AccountStatusCode.PARAMETER_ERROR);
         }
-        AccountOutput account = accountDao.getAccountById(Integer.parseInt(id));
+        AccountOutput account = accountDao.getAccountOutputById(Integer.parseInt(id));
         return ResultOutputUtil.success(account);
     }
 
@@ -184,7 +200,7 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput get() {
+    public ResultOutput get(@Valid @RequestBody AccountInfoInput accountInfoInput) {
         return ResultOutputUtil.success("++++" + UserUtil.getUsername() + "=====" + UserUtil.getUserId());
     }
 
@@ -261,6 +277,29 @@ public class AccountServiceImpl implements AccountClient {
         }
 
         return ResultOutputUtil.success(accountOutput);
+    }
+
+    @Override
+    public ResultOutput getAccountPermissions(@RequestParam("id") Integer id) {
+
+        Account account = accountDao.getAccountById(id);
+        List<String> permissions = new ArrayList<>();
+
+        if (account != null && account.getType() == 1) {
+            permissions.add("*");
+            return ResultOutputUtil.success(permissions);
+        }
+
+        permissions = accountDao.getAccountPermissions(id);
+
+        return ResultOutputUtil.success(permissions);
+    }
+
+    @Override
+    public ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id,@RequestParam("code") String code) {
+
+        List<String> dataScope = accountDao.getAccountPermissionDataScope(id,code);
+        return ResultOutputUtil.success(dataScope);
     }
 
     public ResultOutput verifyAccountExistType (Account account,String name,String username,String email,String mobile) {

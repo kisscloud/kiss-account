@@ -43,7 +43,7 @@ public class ThreadLocalUtil {
         return StringUtils.hasText(lang)?lang:"zh-CN";
     }
 
-    public static void setUserMessage(Operator operator){
+    public static void setOperatorInfo(Operator operator){
         userThreadLocal.set(operator);
     }
 
@@ -51,7 +51,7 @@ public class ThreadLocalUtil {
         userThreadLocal.remove();
     }
 
-    public static Operator getUserMessage(){
+    public static Operator getOperatorInfo(){
         return userThreadLocal.get();
     }
 }

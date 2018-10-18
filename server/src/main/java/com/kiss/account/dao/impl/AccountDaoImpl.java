@@ -9,7 +9,9 @@ import com.kiss.account.output.AccountRoleOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class AccountDaoImpl implements AccountDao {
@@ -42,9 +44,9 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public AccountOutput getAccountById(Integer id) {
+    public AccountOutput getAccountOutputById(Integer id) {
 
-        AccountOutput account = accountMapper.getAccountById(id);
+        AccountOutput account = accountMapper.getAccountOutputById(id);
         return account;
     }
 
@@ -87,5 +89,20 @@ public class AccountDaoImpl implements AccountDao {
     public List<String> getAccountPermissions(Integer id) {
 
         return accountMapper.getAccountPermissions(id);
+    }
+
+    @Override
+    public Account getAccountById(Integer id) {
+
+        return accountMapper.getAccountById(id);
+    }
+
+    @Override
+    public List<String> getAccountPermissionDataScope(Integer id,String code) {
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("id",id);
+        params.put("code",code);
+        return accountMapper.getAccountPermissionDataScope(params);
     }
 }

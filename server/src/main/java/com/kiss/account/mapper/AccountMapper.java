@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AccountMapper {
@@ -44,7 +45,7 @@ public interface AccountMapper {
      * @param userId
      * @return
      */
-    AccountOutput getAccountById(int userId);
+    AccountOutput getAccountOutputById(int userId);
 
     /**
      * 查询所有账户的数量
@@ -96,4 +97,18 @@ public interface AccountMapper {
      * @return
      */
     List<String> getAccountPermissions(Integer id);
+
+    /**
+     * 更加账户id查询账户信息
+     * @param id
+     * @return
+     */
+    Account getAccountById(Integer id);
+
+    /**
+     * 根据账户id及权限码code查询账户的数据权限
+     * @param params
+     * @return
+     */
+    List<String> getAccountPermissionDataScope(Map<String,Object> params);
 }
