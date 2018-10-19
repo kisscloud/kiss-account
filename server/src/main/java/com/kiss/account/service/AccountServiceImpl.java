@@ -9,6 +9,7 @@ import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
+import com.kiss.account.utils.DbEnumsUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.UserUtil;
 import com.kiss.account.validator.AccountValidator;
@@ -139,6 +140,9 @@ public class AccountServiceImpl implements AccountClient {
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
         List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
+        for(AccountOutput accountOutput: accounts){
+//            accountOutput.setStatus();
+        }
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
 
         return ResultOutputUtil.success(getAccountsOutput);

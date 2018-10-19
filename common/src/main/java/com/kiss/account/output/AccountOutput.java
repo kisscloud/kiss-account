@@ -42,6 +42,12 @@ public class AccountOutput {
      * 账户状态
      */
     private Integer status;
+
+    /**
+     * 账户状态文案
+     */
+    private Integer statusText;
+
     /**
      * 最后操作者ID
      */

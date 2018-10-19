@@ -1,20 +1,16 @@
 package com.kiss.account.validator;
 
 import com.kiss.account.dao.AccountGroupDao;
-import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.input.UpdateAccountInput;
+import com.kiss.account.input.UpdateAccountStatusInput;
 import com.kiss.account.utils.ApplicationUtil;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.validation.constraints.NotEmpty;
-
-@Service
 public class AccountValidator implements Validator {
 
     private AccountDao accountDao;
@@ -31,7 +27,9 @@ public class AccountValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
 
-        return clazz.equals(CreateAccountInput.class) || clazz.equals(UpdateAccountInput.class);
+        return clazz.equals(CreateAccountInput.class)
+                || clazz.equals(UpdateAccountInput.class)
+                || clazz.equals(UpdateAccountStatusInput.class);
     }
 
     @Override
@@ -45,8 +43,8 @@ public class AccountValidator implements Validator {
             validateEmail(null, createAccountInput.getEmail(), errors);
             validateMobile(null, createAccountInput.getMobile(), errors);
 
-            validateGroupId(createAccountInput.getGroupId(),errors);
-            validatePassword(createAccountInput.getPassword(),errors);
+            validateGroupId(createAccountInput.getGroupId(), errors);
+            validatePassword(createAccountInput.getPassword(), errors);
 
         } else if (UpdateAccountInput.class.isInstance(target)) {
 
@@ -57,7 +55,13 @@ public class AccountValidator implements Validator {
             validateEmail(updateAccountInput.getId(), updateAccountInput.getEmail(), errors);
             validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
 
-            validateGroupId(updateAccountInput.getGroupId(),errors);
+            validateGroupId(updateAccountInput.getGroupId(), errors);
+
+        } else if (UpdateAccountStatusInput.class.isInstance(target)) {
+
+            UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
+            validateStatus(updateAccountStatusInput.getStatus(), errors);
+
         } else {
 
             errors.rejectValue("", null, "数据格式错误");
@@ -86,7 +90,7 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        if (id != null && !account.getId().equals(findAccount.getId())) {
+        if (id != null && account.getId().equals(findAccount.getId())) {
             return;
         }
 
@@ -106,7 +110,7 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        if (id != null && !account.getId().equals(findAccount.getId())) {
+        if (id != null && account.getId().equals(findAccount.getId())) {
             return;
         }
 
@@ -126,7 +130,7 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        if (id != null && !account.getId().equals(findAccount.getId())) {
+        if (id != null && account.getId().equals(findAccount.getId())) {
             return;
         }
 
@@ -146,7 +150,7 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        if (id != null && !account.getId().equals(findAccount.getId())) {
+        if (id != null && account.getId().equals(findAccount.getId())) {
             return;
         }
 
@@ -173,6 +177,12 @@ public class AccountValidator implements Validator {
         }
         if (password.length() > 32) {
             errors.rejectValue("name", "9001", "密码不能大于32位");
+        }
+    }
+
+    private void validateStatus(Integer status, Errors errors) {
+        if (status == null) {
+            errors.rejectValue("name", "9001", "用户状态不能为空");
         }
     }
 }
