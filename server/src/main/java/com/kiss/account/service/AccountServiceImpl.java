@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class AccountServiceImpl implements AccountClient {
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
         if (accountGroup != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNTGROUP_EXIST);
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NAME_EXIST);
         }
 
         accountGroup = new AccountGroup();
@@ -215,10 +216,17 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "更新部门")
     public ResultOutput updateAccountGroup(@Validated @RequestBody UpdateAccountGroupInput updateAccountGroupInput) {
 
-        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(updateAccountGroupInput.getName());
+        AccountGroup accountGroup = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
 
-        if (accountGroup != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNTGROUP_EXIST);
+        if (accountGroup == null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NOT_EXIST);
+        }
+
+        if (!accountGroup.getName().equals(updateAccountGroupInput.getName())) {
+            AccountGroup accountGroupQuery = accountGroupDao.getAccountGroupByName(updateAccountGroupInput.getName());
+            if (!accountGroupQuery.getId().equals(accountGroup.getId())) {
+                return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NAME_EXIST);
+            }
         }
 
         accountGroup = new AccountGroup();

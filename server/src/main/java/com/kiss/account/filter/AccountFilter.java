@@ -1,4 +1,4 @@
-package com.kiss.account.Filter;
+package com.kiss.account.filter;
 
 import org.springframework.stereotype.Component;
 import javax.servlet.*;

@@ -10,35 +10,33 @@ public interface AccountGroupMapper {
 
     /**
      * 创建部门
-     * @param accountGroup
-     * @return
+     * @param accountGroup AccountGroup
+     * @return Integer
      */
     Integer createAccountGroup(AccountGroup accountGroup);
 
     /**
      * 根据部门名称查询部门信息
-     * @param name
-     * @return
+     * @param name String
+     * @return AccountGroup
      */
-    AccountGroup getAccountGroupByName(String name);
+    AccountGroup getAccountGroupByName(String name);    /**
+     * 根据部门名称查询部门信息
+     * @param id Integer
+     * @return AccountGroup
+     */
+    AccountGroup getAccountGroupById(Integer id);
 
     /**
      * 更新部门信息
-     * @param accountGroup
-     * @return
+     * @param accountGroup AccountGroup
+     * @return Integer
      */
     Integer updateAccountGroup(AccountGroup accountGroup);
 
     /**
      * 查询所有部门
-     * @return
+     * @return List<AccountGroup>
      */
     List<AccountGroup> getGroups();
-
-    /**
-     * 根据部门id查询部门信息
-     * @param id
-     * @return
-     */
-    AccountGroup getGroupById(int id);
 }

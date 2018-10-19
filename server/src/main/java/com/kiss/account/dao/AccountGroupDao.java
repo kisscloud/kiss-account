@@ -24,6 +24,13 @@ public interface AccountGroupDao {
     AccountGroup getAccountGroupByName(String name);
 
     /**
+     * 根据部门ID获取部门
+     *
+     * @param id Integer
+     * @return AccountGroup
+     */
+    AccountGroup getAccountGroupById(Integer id);
+    /**
      * 查询部门信息
      *
      * @return List<AccountGroup>

@@ -1,4 +1,4 @@
-package com.kiss.account.Filter;
+package com.kiss.account.filter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

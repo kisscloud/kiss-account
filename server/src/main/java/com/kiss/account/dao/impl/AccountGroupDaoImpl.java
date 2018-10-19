@@ -4,6 +4,8 @@ import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountGroupMapper;
+import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.ResultOutputUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +17,28 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
     @Autowired
     private AccountGroupMapper accountGroupMapper;
 
-    public void createAccountGroup(AccountGroup accountGroup) throws ResultException {
+    public void createAccountGroup(AccountGroup accountGroup) {
+
+        AccountGroup parentAccountGroup;
+
+        if (accountGroup.getParentId() != 0) {
+            parentAccountGroup = getGroupById(accountGroup.getParentId());
+            if (parentAccountGroup != null) {
+                accountGroup.setLevel(String.format("%s,%d", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
+            }
+        }
+
         accountGroupMapper.createAccountGroup(accountGroup);
     }
 
     public AccountGroup getAccountGroupByName(String name) {
+
         return accountGroupMapper.getAccountGroupByName(name);
+    }
+
+    @Override
+    public AccountGroup getAccountGroupById(Integer id) {
+        return accountGroupMapper.getAccountGroupById(id);
     }
 
     public List<AccountGroup> getGroups() {
@@ -28,11 +46,22 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
         return groups;
     }
 
-    public AccountGroup getGroupById (int id) {
-        return accountGroupMapper.getGroupById(id);
+    public AccountGroup getGroupById(int id) {
+        return accountGroupMapper.getAccountGroupById(id);
     }
 
     public Integer updateAccountGroup(AccountGroup accountGroup) {
+
+
+        AccountGroup parentAccountGroup;
+
+        if (accountGroup.getParentId() != 0) {
+            parentAccountGroup = getGroupById(accountGroup.getParentId());
+            if (parentAccountGroup != null) {
+                accountGroup.setLevel(String.format("%s,%d", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
+            }
+        }
+
         return accountGroupMapper.updateAccountGroup(accountGroup);
     }
 }

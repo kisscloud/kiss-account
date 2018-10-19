@@ -25,10 +25,10 @@
     </select>
 
     <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountgroups order by seq
+        select * from accountgroups order by level
     </select>
 
-    <select id="getGroupById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+    <select id="getAccountGroupById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
         select * from accountgroups where id=#{id}
     </select>
 
@@ -38,6 +38,7 @@
         <if test="name != null and name != ''">
             ,name = #{name,jdbcType=VARCHAR}
         </if>
+            ,parentId=#{parentId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
