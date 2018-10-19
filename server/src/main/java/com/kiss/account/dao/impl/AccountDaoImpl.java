@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Component
 public class AccountDaoImpl implements AccountDao {
+
     @Autowired
     private AccountMapper accountMapper;
 
@@ -33,21 +34,31 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public List<AccountOutput> getAccounts(int start, int size) {
 
-        return accountMapper.getAccounts(start,size);
+        return accountMapper.getAccounts(start, size);
     }
 
     @Override
     public Account getAccountByUsername(String username) {
 
-        Account account = accountMapper.getAccountByUsername(username);
-        return account;
+        return accountMapper.getAccountByUsername(username);
+    }
+
+    @Override
+    public Account getAccountByEmail(String email) {
+
+        return accountMapper.getAccountByEmail(email);
+    }
+
+    @Override
+    public Account getAccountByMobile(String mobile) {
+
+        return accountMapper.getAccountByMobile(mobile);
     }
 
     @Override
     public AccountOutput getAccountOutputById(Integer id) {
 
-        AccountOutput account = accountMapper.getAccountOutputById(id);
-        return account;
+        return accountMapper.getAccountOutputById(id);
     }
 
     @Override
@@ -57,9 +68,9 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getAccountByUniqueIdentification(String name,String username,String email,String mobile) {
+    public Account getAccountByUniqueIdentification(String name, String username, String email, String mobile) {
 
-        return accountMapper.getAccountByUniqueIdentification(name,username,email,mobile);
+        return accountMapper.getAccountByUniqueIdentification(name, username, email, mobile);
     }
 
     @Override
@@ -77,10 +88,11 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Integer updateAccountStatus(AccountOutput accountOutput) {
         return accountMapper.updateAccountStatus(accountOutput);
+
     }
 
     @Override
-    public Integer deleteAccountRoles (Integer id) {
+    public Integer deleteAccountRoles(Integer id) {
 
         return accountMapper.deleteAccountRoles(id);
     }
@@ -98,11 +110,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<String> getAccountPermissionDataScope(Integer id,String code) {
+    public Account getAccountByName(String name) {
 
-        Map<String,Object> params = new HashMap<>();
-        params.put("id",id);
-        params.put("code",code);
+        return accountMapper.getAccountByName(name);
+    }
+
+    @Override
+    public List<String> getAccountPermissionDataScope(Integer id, String code) {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("code", code);
         return accountMapper.getAccountPermissionDataScope(params);
     }
 }

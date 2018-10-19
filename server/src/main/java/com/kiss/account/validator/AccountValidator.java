@@ -1,38 +1,148 @@
 package com.kiss.account.validator;
 
+import com.kiss.account.input.CreateAccountInput;
+import com.kiss.account.input.UpdateAccountInput;
 import com.kiss.account.utils.ApplicationUtil;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
-import com.kiss.account.input.AccountInfoInput;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import javax.validation.constraints.NotEmpty;
 
 @Service
 public class AccountValidator implements Validator {
 
     private AccountDao accountDao;
 
+    private Account account;
+
+    public AccountValidator() {
+        accountDao = (AccountDao) ApplicationUtil.getBean(AccountDao.class);
+    }
+
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(AccountInfoInput.class);
+
+        return clazz.equals(CreateAccountInput.class) || clazz.equals(UpdateAccountInput.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        AccountDao accountDao = (AccountDao) ApplicationUtil.getBean(AccountDao.class);
 
-        Account account = accountDao.getAccountById(18);
+        if (CreateAccountInput.class.isInstance(target)) {
 
-        AccountInfoInput accountInfoInput = (AccountInfoInput) target;
-        if (!accountInfoInput.getName().equals("abc")) {
-            errors.rejectValue("name", null, "用户名不对");
+            CreateAccountInput createAccountInput = (CreateAccountInput) target;
+            validateName(null, createAccountInput.getName(), errors);
+            validateUsername(null, createAccountInput.getUsername(), errors);
+            validateEmail(null, createAccountInput.getEmail(), errors);
+            validateMobile(null, createAccountInput.getMobile(), errors);
+
+        } else if (UpdateAccountInput.class.isInstance(target)) {
+
+            UpdateAccountInput updateAccountInput = (UpdateAccountInput) target;
+            validateAccountExist(updateAccountInput.getId(), errors);
+            validateName(updateAccountInput.getId(), updateAccountInput.getName(), errors);
+            validateUsername(updateAccountInput.getId(), updateAccountInput.getUsername(), errors);
+            validateEmail(updateAccountInput.getId(), updateAccountInput.getEmail(), errors);
+            validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
+
+        } else {
+
+            errors.rejectValue("", null, "数据格式错误");
+        }
+
+    }
+
+    private void validateAccountExist(Integer id, Errors errors) {
+
+        account = accountDao.getAccountById(id);
+
+        if (account == null) {
+            errors.rejectValue("", "9000", "账户不存在");
         }
     }
 
-    @Autowired
-    public void setAccountDao(final AccountDao accountDao) {
-        this.accountDao = accountDao;
+    private void validateUsername(Integer id, String username, Errors errors) {
+
+        if (StringUtils.isEmpty(username)) {
+            errors.rejectValue("name", "9001", "用户名不能为空");
+        }
+
+        Account findAccount = accountDao.getAccountByUsername(username);
+
+        if (findAccount == null) {
+            return;
+        }
+
+        if (id != null && !account.getId().equals(findAccount.getId())) {
+            return;
+        }
+
+        errors.rejectValue("name", "9001", "用户名已存在");
     }
+
+    private void validateName(Integer id, String name, Errors errors) {
+
+        if (StringUtils.isEmpty(name)) {
+
+            errors.rejectValue("name", "9001", "姓名不能为空");
+        }
+
+        Account findAccount = accountDao.getAccountByName(name);
+
+        if (findAccount == null) {
+            return;
+        }
+
+        if (id != null && !account.getId().equals(findAccount.getId())) {
+            return;
+        }
+
+        errors.rejectValue("name", "9002", "姓名已存在");
+    }
+
+    private void validateMobile(Integer id, String mobile, Errors errors) {
+
+        if (StringUtils.isEmpty(mobile)) {
+
+            errors.rejectValue("name", "9001", "手机号不能为空");
+        }
+
+        Account findAccount = accountDao.getAccountByMobile(mobile);
+
+        if (findAccount == null) {
+            return;
+        }
+
+        if (id != null && !account.getId().equals(findAccount.getId())) {
+            return;
+        }
+
+        errors.rejectValue("name", "9003", "手机号已存在");
+    }
+
+    private void validateEmail(Integer id, String email, Errors errors) {
+
+        if (StringUtils.isEmpty(email)) {
+
+            errors.rejectValue("name", "9001", "邮箱不能为空");
+        }
+
+        Account findAccount = accountDao.getAccountByEmail(email);
+
+        if (findAccount == null) {
+            return;
+        }
+
+        if (id != null && !account.getId().equals(findAccount.getId())) {
+            return;
+        }
+
+
+        errors.rejectValue("name", "9004", "邮箱已存在");
+    }
+
 }

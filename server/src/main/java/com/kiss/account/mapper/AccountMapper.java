@@ -14,6 +14,7 @@ public interface AccountMapper {
 
     /**
      * 创建账号
+     *
      * @param account
      * @return
      */
@@ -21,12 +22,14 @@ public interface AccountMapper {
 
     /**
      * 给账号分配角色
+     *
      * @param accountRoles
      */
     void bindRolesToAccount(List<AccountRoleOutput> accountRoles);
 
     /**
      * 分页查询账号信息
+     *
      * @param start
      * @param size
      * @return
@@ -34,14 +37,49 @@ public interface AccountMapper {
     List<AccountOutput> getAccounts(@Param("start") int start, @Param("size") int size);
 
     /**
+     * 更加账户id查询账户信息
+     *
+     * @param id
+     * @return
+     */
+    Account getAccountById(Integer id);
+
+    /**
      * 根据用户名查询账户信息
+     *
+     * @param name
+     * @return
+     */
+    Account getAccountByName(String name);
+
+    /**
+     * 根据用户名查找用户
+     *
      * @param username
      * @return
      */
     Account getAccountByUsername(String username);
 
     /**
+     * 根据邮箱查找用户
+     *
+     * @param email
+     * @return
+     */
+    Account getAccountByEmail(String email);
+
+
+    /**
+     * 根据手机号查找用户
+     *
+     * @param mobile
+     * @return
+     */
+    Account getAccountByMobile(String mobile);
+
+    /**
      * 根据账户id查询账户
+     *
      * @param userId
      * @return
      */
@@ -49,22 +87,25 @@ public interface AccountMapper {
 
     /**
      * 查询所有账户的数量
+     *
      * @return
      */
     Integer getAccountsCount();
 
     /**
      * 获取满足账号唯一表示的账号(账号的部分属性是不允许重复的)
+     *
      * @param name
      * @param username
      * @param email
      * @param mobile
      * @return
      */
-    Account getAccountByUniqueIdentification(@Param("name") String name,@Param("username") String username,@Param("email") String email,@Param("mobile") String mobile);
+    Account getAccountByUniqueIdentification(@Param("name") String name, @Param("username") String username, @Param("email") String email, @Param("mobile") String mobile);
 
     /**
      * 更新账户
+     *
      * @param account
      * @return
      */
@@ -72,6 +113,7 @@ public interface AccountMapper {
 
     /**
      * 更新账户密码
+     *
      * @param account
      * @return
      */
@@ -79,6 +121,7 @@ public interface AccountMapper {
 
     /**
      * 更新账户状态
+     *
      * @param accountOutput
      * @return
      */
@@ -86,6 +129,7 @@ public interface AccountMapper {
 
     /**
      * 删除账户所拥有的所有角色
+     *
      * @param id 账户id
      * @return
      */
@@ -93,22 +137,18 @@ public interface AccountMapper {
 
     /**
      * 获取账户下所有的权限
+     *
      * @param id 账户id
      * @return
      */
     List<String> getAccountPermissions(Integer id);
 
-    /**
-     * 更加账户id查询账户信息
-     * @param id
-     * @return
-     */
-    Account getAccountById(Integer id);
 
     /**
      * 根据账户id及权限码code查询账户的数据权限
+     *
      * @param params
      * @return
      */
-    List<String> getAccountPermissionDataScope(Map<String,Object> params);
+    List<String> getAccountPermissionDataScope(Map<String, Object> params);
 }

@@ -32,6 +32,10 @@
         select * from accounts where mobile=#{mobile};
     </select>
 
+    <select id="getAccountByName" resultType="com.kiss.account.entity.Account">
+        select * from accounts where name=#{name};
+    </select>
+
     <select id="getAccounts" resultType="com.kiss.account.output.AccountOutput">
         select account.id,account.name,account.username,account.email,account.mobile,
                 account.remark,account.groupId,account.status,account.operatorName,

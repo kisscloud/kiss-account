@@ -31,12 +31,44 @@ public interface AccountDao {
     List<AccountOutput> getAccounts(int start, int size);
 
     /**
+     * 根据账号id查询账号
+     *
+     * @param id Integer 用户ID
+     * @return Account
+     */
+    Account getAccountById(Integer id);
+
+    /**
+     * 根据姓名查找用户
+     *
+     * @param name String
+     * @return Account
+     */
+    Account getAccountByName(String name);
+
+    /**
      * 通过账号名查询账号
      *
      * @param username 用户名
      * @return Account
      */
     Account getAccountByUsername(String username);
+
+    /**
+     * 根据邮箱查找用户
+     *
+     * @param email String
+     * @return Account
+     */
+    Account getAccountByEmail(String email);
+
+    /**
+     * 根据手机号查找用户
+     *
+     * @param mobile String
+     * @return Account
+     */
+    Account getAccountByMobile(String mobile);
 
     /**
      * 通过账号id查询账号
@@ -98,24 +130,19 @@ public interface AccountDao {
 
     /**
      * 获取账户下所有的权限
+     *
      * @param id 账户id
-     * @return
+     * @return  List<String>
      */
     List<String> getAccountPermissions(Integer id);
 
     /**
-     * 根据账号id查询账号
-     * @param id
-     * @return
-     */
-    Account getAccountById(Integer id);
-
-    /**
      * 根据账户id及权限码查询账户的数据权限
-     * @param id
-     * @return
+     *
+     * @param id Integer
+     * @return List<String>
      */
-    List<String> getAccountPermissionDataScope(Integer id,String code);
+    List<String> getAccountPermissionDataScope(Integer id, String code);
 
 
 }

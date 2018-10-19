@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -52,11 +53,8 @@ public class AccountServiceImpl implements AccountClient {
     @Value("${account.default.password}")
     private String accountDefaultPassword;
 
-    @Autowired
-    HttpServletRequest request;
-
     @InitBinder
-    public void initBinder (WebDataBinder binder) {
+    public void initBinder(WebDataBinder binder) {
         binder.setValidator(new AccountValidator());
     }
 
@@ -64,8 +62,6 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "创建部门")
     public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        System.out.println("++++++bbb===" + httpServletRequest.getHeader("X-Access-Token"));
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
         if (accountGroup != null) {
@@ -83,6 +79,7 @@ public class AccountServiceImpl implements AccountClient {
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
 
+
         return ResultOutputUtil.success(accountGroupOutput);
     }
 
@@ -90,13 +87,7 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "添加账户")
     public ResultOutput<AccountOutput> createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
-        Account account = accountDao.getAccountByUniqueIdentification(createAccountInput.getName(), createAccountInput.getUsername(), createAccountInput.getEmail(), createAccountInput.getMobile());
-
-        if (account != null) {
-            return verifyAccountExistType(account,createAccountInput.getName(),createAccountInput.getUsername(),createAccountInput.getEmail(),createAccountInput.getMobile());
-        }
-
-        account = new Account();
+        Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(createAccountInput.getPassword(), salt);
@@ -208,12 +199,6 @@ public class AccountServiceImpl implements AccountClient {
     @ApiOperation(value = "更新用户")
     public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) {
 
-        Account account = accountDao.getAccountByUniqueIdentification(updateAccountInput.getName(), updateAccountInput.getUsername(), updateAccountInput.getEmail(), updateAccountInput.getMobile());
-
-        if (account != null) {
-            return verifyAccountExistType(account,updateAccountInput.getName(),updateAccountInput.getUsername(),updateAccountInput.getEmail(),updateAccountInput.getMobile());
-        }
-
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountInput, accountOutput);
         Integer count = accountDao.updateAccount(accountOutput);
@@ -303,13 +288,13 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    public ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id,@RequestParam("code") String code) {
+    public ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code) {
 
-        List<String> dataScope = accountDao.getAccountPermissionDataScope(id,code);
+        List<String> dataScope = accountDao.getAccountPermissionDataScope(id, code);
         return ResultOutputUtil.success(dataScope);
     }
 
-    public ResultOutput verifyAccountExistType (Account account,String name,String username,String email,String mobile) {
+    public ResultOutput verifyAccountExistType(Account account, String name, String username, String email, String mobile) {
         if (!StringUtils.isEmpty(account.getName()) && account.getName().equals(name)) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NAME_EXIST);
         }
