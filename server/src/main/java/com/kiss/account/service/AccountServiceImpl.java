@@ -140,8 +140,8 @@ public class AccountServiceImpl implements AccountClient {
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
         List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
-        for(AccountOutput accountOutput: accounts){
-//            accountOutput.setStatus();
+        for (AccountOutput accountOutput : accounts) {
+            accountOutput.setStatusText(DbEnumsUtil.getValue("accounts", String.valueOf(accountOutput.getStatus())));
         }
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
 

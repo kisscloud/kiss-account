@@ -64,7 +64,7 @@ public class AccountValidator implements Validator {
 
         } else {
 
-            errors.rejectValue("", null, "数据格式错误");
+            errors.rejectValue("", "", "数据格式错误");
         }
 
     }
@@ -74,7 +74,7 @@ public class AccountValidator implements Validator {
         account = accountDao.getAccountById(id);
 
         if (account == null) {
-            errors.rejectValue("", "9000", "账户不存在");
+            errors.rejectValue("id", "", "账户不存在");
         }
     }
 
