@@ -35,6 +35,10 @@ public class Account {
      */
     private String salt;
     /**
+     * 用户类型
+     */
+    private Integer type;
+    /**
      * 账户备注
      */
     private String remark;

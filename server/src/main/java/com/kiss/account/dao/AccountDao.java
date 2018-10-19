@@ -44,7 +44,7 @@ public interface AccountDao {
      * @param id Integer
      * @return AccountOutput
      */
-    AccountOutput getAccountById(Integer id);
+    AccountOutput getAccountOutputById(Integer id);
 
     /**
      * 查询所有账号的数量
@@ -95,4 +95,27 @@ public interface AccountDao {
      * @return Integer
      */
     Integer deleteAccountRoles(Integer id);
+
+    /**
+     * 获取账户下所有的权限
+     * @param id 账户id
+     * @return
+     */
+    List<String> getAccountPermissions(Integer id);
+
+    /**
+     * 根据账号id查询账号
+     * @param id
+     * @return
+     */
+    Account getAccountById(Integer id);
+
+    /**
+     * 根据账户id及权限码查询账户的数据权限
+     * @param id
+     * @return
+     */
+    List<String> getAccountPermissionDataScope(Integer id,String code);
+
+
 }

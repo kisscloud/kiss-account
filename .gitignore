@@ -16,3 +16,4 @@ buildNumber.properties
 
 .DS_Store
 !/sql/bisuibao/bisuibao_DML.sql
+application.properties

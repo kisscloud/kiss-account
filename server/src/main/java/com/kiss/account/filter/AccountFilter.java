@@ -1,6 +1,8 @@
 package com.kiss.account.filter;
 
+import com.kiss.account.utils.ThreadLocalUtil;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +23,16 @@ public class AccountFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         ResponseWrapper responseWrapper = new ResponseWrapper(httpServletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        chain.doFilter(request,responseWrapper);
-
-        InnerFilterChain innerFilterChain = new InnerFilterChain();
-        innerFilterChain.addFilter(new ResponseFilter(responseWrapper));
-        innerFilterChain.doFilter(httpServletRequest,httpServletResponse,innerFilterChain);
+        System.out.println("++++++" + httpServletRequest.getHeader("X-Access-Token"));
+        InnerFilterChain preFilterChain = new InnerFilterChain();
+        UserInfoFilter userInfoFilter = new UserInfoFilter();
+        preFilterChain.addFilter(userInfoFilter);
+        preFilterChain.doFilter(httpServletRequest,httpServletResponse,preFilterChain);
+        chain.doFilter(httpServletRequest,responseWrapper);
+        InnerFilterChain suffixFilterChain = new InnerFilterChain();
+        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper));
+        suffixFilterChain.doFilter(httpServletRequest,httpServletResponse,suffixFilterChain);
+        ThreadLocalUtil.remove();
     }
 
     @Override

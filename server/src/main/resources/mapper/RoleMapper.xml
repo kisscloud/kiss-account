@@ -67,5 +67,9 @@
         delete from rolepermissions where roleId=#{id}
     </delete>
 
+    <delete id="deleteRoleAccounts" parameterType="java.lang.Integer">
+        delete from accountroles where roleId=#{id}
+    </delete>
+
 
 </mapper>

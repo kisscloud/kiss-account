@@ -52,4 +52,9 @@ public class RoleDaoImpl implements RoleDao {
     public Integer deleteRolePermissions (Integer id) {
         return roleMapper.deleteRolePermissions(id);
     }
+
+    @Override
+    public Integer deleteRoleAccounts(Integer id) {
+        return roleMapper.deleteRoleAccounts(id);
+    }
 }

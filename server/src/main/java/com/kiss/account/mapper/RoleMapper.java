@@ -69,4 +69,11 @@ public interface RoleMapper {
      * @return
      */
     Integer deleteRolePermissions(Integer id);
+
+    /**
+     * 删除角色下所有用户
+     * @param id 角色id
+     * @return
+     */
+    Integer deleteRoleAccounts(Integer id);
 }

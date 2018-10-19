@@ -13,6 +13,7 @@ import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -55,8 +56,8 @@ public class PermissionServiceImpl implements PermissionClient {
         permission.setStatus(createPermissionInput.getStatus());
         permission.setSeq(10);
         permission.setRemark(createPermissionInput.getRemark());
-        permission.setOperatorId(0);
-        permission.setOperatorName("system");
+        permission.setOperatorId(123);
+        permission.setOperatorName("koy");
         permission.setOperatorIp("0.0.0.0");
         Permission exist = permissionDao.getPermissionByNameOrCode(permission);
 
@@ -114,8 +115,8 @@ public class PermissionServiceImpl implements PermissionClient {
         permissionModule.setSeq(100);
         permissionModule.setRemark(permissionModuleInput.getRemark());
         permissionModule.setPermissions(0);
-        permissionModule.setOperatorId(0);
-        permissionModule.setOperatorName("System");
+        permissionModule.setOperatorId(123);
+        permissionModule.setOperatorName("koy");
         permissionModule.setOperatorIp("0.0.0.0");
         permissionModule.setStatus(1);
 
