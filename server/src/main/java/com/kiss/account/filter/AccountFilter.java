@@ -23,7 +23,6 @@ public class AccountFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         ResponseWrapper responseWrapper = new ResponseWrapper(httpServletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        System.out.println("++++++" + httpServletRequest.getHeader("X-Access-Token"));
         InnerFilterChain preFilterChain = new InnerFilterChain();
         UserInfoFilter userInfoFilter = new UserInfoFilter();
         preFilterChain.addFilter(userInfoFilter);

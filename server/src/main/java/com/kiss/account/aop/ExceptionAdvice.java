@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import output.ResultOutput;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author qianrongli
@@ -33,36 +36,35 @@ public class ExceptionAdvice {
     public ResultOutput exceptionHandle(HttpServletRequest request, Exception e) {
 
         System.out.println("系统异常,接口：" + request.getRequestURI());
-        System.out.println(e.getMessage());
-        System.out.println(e.getClass());
 
         if (e instanceof MethodArgumentNotValidException) {
 
             MethodArgumentNotValidException methodException = ((MethodArgumentNotValidException) e);
             BindingResult bindingResult = methodException.getBindingResult();
-            FieldError fieldError = bindingResult.getFieldError();
-            String message = fieldError.getDefaultMessage();
-            Integer code = AccountStatusCode.VALIDATE_ERROR;
-            String returnMessage = "";
-            try {
+            List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
+            Map<String,List<String>> formVerifieds = new HashMap<>();
+            String language = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
 
-                Field field = AccountStatusCode.class.getDeclaredField(message);
+            if (fieldErrorList != null) {
 
-                if (field.get(field.getName()) == null) {
-                    code = Integer.parseInt(field.get(field.getName()).toString());
-                    String language = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
-                    returnMessage = CodeUtil.getMessage(language, code);
+                for (FieldError fieldError : fieldErrorList) {
+
+                    String message = fieldError.getDefaultMessage();
+                    String field = fieldError.getField();
+                    List<String> messageList = new ArrayList<>();
+
+                    if (formVerifieds.containsKey(field)) {
+                        messageList = formVerifieds.get(field);
+                    }
+
+                    String returnMessage = CodeUtil.getMessage(language, message);
+                    messageList.add(returnMessage == null ? message : returnMessage);
+
+                    formVerifieds.put(field,messageList);
                 }
-
-            } catch (NoSuchFieldException e1) {
-                returnMessage = message;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return ResultOutputUtil.error(AccountStatusCode.REQUEST_PARAMETER_ERROR);
-            } finally {
-
-                return ResultOutputUtil.error(code, returnMessage, null);
             }
+
+            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR,CodeUtil.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
         } else {
             e.printStackTrace();
         }

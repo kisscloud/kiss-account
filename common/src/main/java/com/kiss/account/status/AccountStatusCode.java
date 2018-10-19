@@ -1,8 +1,5 @@
 package com.kiss.account.status;
 
-
-import java.lang.reflect.Field;
-
 public class AccountStatusCode extends status.Code {
 
     public static final Integer PERMISSION_MODULE_NOT_EXIST = 1101;
@@ -33,11 +30,4 @@ public class AccountStatusCode extends status.Code {
     public static final Integer PERMISSION_CODE_IS_NOT_EMPTY = 2002;
     public static final Integer MODULE_ID_IS_NOT_NULL = 2003;
     public static final Integer SERVICE_ERROR = 3001;
-
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-//        Class<?> account = AccountStatusCode.class.getClass();
-        Field field = AccountStatusCode.class.getDeclaredField("PERMISSION_CODE_IS_NOT_EMPTY");
-        System.out.println(field.get(field.getName()));
-
-    }
 }
