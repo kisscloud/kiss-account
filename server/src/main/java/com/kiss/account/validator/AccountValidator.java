@@ -1,5 +1,7 @@
 package com.kiss.account.validator;
 
+import com.kiss.account.dao.AccountGroupDao;
+import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.input.UpdateAccountInput;
 import com.kiss.account.utils.ApplicationUtil;
@@ -17,10 +19,13 @@ public class AccountValidator implements Validator {
 
     private AccountDao accountDao;
 
+    private AccountGroupDao accountGroupDao;
+
     private Account account;
 
     public AccountValidator() {
         accountDao = (AccountDao) ApplicationUtil.getBean(AccountDao.class);
+        accountGroupDao = (AccountGroupDao) ApplicationUtil.getBean(AccountGroupDao.class);
     }
 
     @Override
@@ -40,6 +45,9 @@ public class AccountValidator implements Validator {
             validateEmail(null, createAccountInput.getEmail(), errors);
             validateMobile(null, createAccountInput.getMobile(), errors);
 
+            validateGroupId(createAccountInput.getGroupId(),errors);
+            validatePassword(createAccountInput.getPassword(),errors);
+
         } else if (UpdateAccountInput.class.isInstance(target)) {
 
             UpdateAccountInput updateAccountInput = (UpdateAccountInput) target;
@@ -49,6 +57,7 @@ public class AccountValidator implements Validator {
             validateEmail(updateAccountInput.getId(), updateAccountInput.getEmail(), errors);
             validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
 
+            validateGroupId(updateAccountInput.getGroupId(),errors);
         } else {
 
             errors.rejectValue("", null, "数据格式错误");
@@ -145,4 +154,25 @@ public class AccountValidator implements Validator {
         errors.rejectValue("name", "9004", "邮箱已存在");
     }
 
+    private void validateGroupId(Integer groupId, Errors errors) {
+        if (groupId == null) {
+            errors.rejectValue("name", "9001", "部门不能为空");
+        }
+
+        if (accountGroupDao.getAccountGroupById(groupId) == null) {
+            errors.rejectValue("name", "9001", "部门不存在");
+        }
+    }
+
+    private void validatePassword(String password, Errors errors) {
+        if (StringUtils.isEmpty(password)) {
+            errors.rejectValue("name", "9001", "密码不能为空");
+        }
+        if (password.length() < 8) {
+            errors.rejectValue("name", "9001", "密码不能小于8位");
+        }
+        if (password.length() > 32) {
+            errors.rejectValue("name", "9001", "密码不能大于32位");
+        }
+    }
 }
