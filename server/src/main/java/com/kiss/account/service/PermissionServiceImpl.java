@@ -12,14 +12,17 @@ import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.DbEnumsUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.UserUtil;
+import com.kiss.account.validator.PermissionModuleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +37,11 @@ public class PermissionServiceImpl implements PermissionClient {
 
     @Autowired
     private PermissionDao permissionDao;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setValidator(new PermissionModuleValidator());
+    }
 
     @Override
     @ApiOperation(value = "创建权限")
@@ -83,57 +91,15 @@ public class PermissionServiceImpl implements PermissionClient {
         return ResultOutputUtil.success(permissionOutput);
     }
 
-    /**
-     * 创建权限模块
-     */
-    @Override
-    @ApiOperation(value = "创建权限模块")
-    public ResultOutput<PermissionModuleOutput> createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
-
-        PermissionModule permissionModule = permissionDao.getPermissionModuleByName(permissionModuleInput.getName());
-
-        if (permissionModule != null) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_EXIST);
-        }
-
-        permissionModule = new PermissionModule();
-        PermissionModule parentPermissionModule = new PermissionModule();
-
-        // 1. 如果父模块ID不等于0，则查询父模块信息；
-        //    * 绑定权限模块 level， 等于父权限模块的 level 拼接父权限模块的 id；
-        if (permissionModuleInput.getParentId() != 0) {
-            parentPermissionModule = permissionDao.getPermissionModuleById(permissionModuleInput.getParentId());
-            if (parentPermissionModule == null) {
-                return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EXIST);
-            }
-            permissionModule.setLevel(String.format("%s,%d", parentPermissionModule.getLevel(), parentPermissionModule.getId()));
-        }
-
-        // 2. 添加权限模块信息
-        permissionModule.setName(permissionModuleInput.getName());
-        permissionModule.setParentId(permissionModuleInput.getParentId());
-        permissionModule.setSeq(100);
-        permissionModule.setRemark(permissionModuleInput.getRemark());
-        permissionModule.setPermissions(0);
-        permissionModule.setOperatorId(123);
-        permissionModule.setOperatorName("koy");
-        permissionModule.setOperatorIp("0.0.0.0");
-        permissionModule.setStatus(1);
-
-
-        permissionDao.createPermissionModule(permissionModule);
-
-        PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
-        BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-
-        return ResultOutputUtil.success(permissionModuleOutput);
-    }
-
     @Override
     @ApiOperation(value = "获取权限列表")
     public ResultOutput<List<PermissionOutput>> getPermissions() {
 
         List<PermissionOutput> permissions = permissionDao.getPermissions();
+        for (PermissionOutput permissionOutput : permissions) {
+            permissionOutput.setStatusText(DbEnumsUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+            permissionOutput.setTypeText(DbEnumsUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+        }
 
         return ResultOutputUtil.success(permissions);
     }
@@ -151,38 +117,6 @@ public class PermissionServiceImpl implements PermissionClient {
         List<BindPermissionOutput> bindPermissionOutputs = permissionDao.getBindPermissions();
 
         return ResultOutputUtil.success(bindPermissionOutputs);
-    }
-
-    @Override
-    @ApiOperation(value = "获取权限模块列表")
-    public ResultOutput<List<PermissionModuleOutput>> getPermissionModules() {
-
-        List<PermissionModule> permissionModules = permissionDao.getPermissionModules();
-        List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
-
-        for (PermissionModule permissionModule : permissionModules) {
-            PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
-            BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-            permissionModuleOutputs.add(permissionModuleOutput);
-        }
-
-        return ResultOutputUtil.success(permissionModuleOutputs);
-    }
-
-    @Override
-    @ApiOperation(value = "获取权限模块列表")
-    public ResultOutput<List<PermissionModuleOutput>> getBindPermissionModules() {
-
-        List<PermissionModule> permissionModules = permissionDao.getBindPermissionModules();
-        List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
-
-        for (PermissionModule permissionModule : permissionModules) {
-            PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
-            BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-            permissionModuleOutputs.add(permissionModuleOutput);
-        }
-
-        return ResultOutputUtil.success(permissionModuleOutputs);
     }
 
     @Override
@@ -209,26 +143,6 @@ public class PermissionServiceImpl implements PermissionClient {
     }
 
     @Override
-    @ApiOperation(value = "更新权限模块")
-    public ResultOutput<PermissionModuleOutput> updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput updatePermissionModuleInput) {
-        PermissionModule permissionModule = permissionDao.getPermissionModuleByName(updatePermissionModuleInput.getName());
-
-        if (permissionModule != null) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_EXIST);
-        }
-
-        PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
-        BeanUtils.copyProperties(updatePermissionModuleInput, permissionModuleOutput);
-        Integer count = permissionDao.updatePermissionModule(permissionModuleOutput);
-
-        if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PUT_PERMISSION_MODULE_FAILD);
-        }
-
-        return ResultOutputUtil.success(permissionModuleOutput);
-    }
-
-    @Override
     @ApiOperation(value = "删除权限")
     public ResultOutput deletePermission(@RequestParam("id") Integer id) {
         Integer count = permissionDao.deletePermission(id);
@@ -240,22 +154,4 @@ public class PermissionServiceImpl implements PermissionClient {
         return ResultOutputUtil.success();
     }
 
-    @Override
-    @ApiOperation(value = "删除权限模块")
-    public ResultOutput deletePermissionModule(@RequestParam("id") Integer id) {
-
-        List<Permission> permissions = permissionDao.getPermissionByModuleId(id);
-
-        if (permissions != null && permissions.size() != 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
-        }
-
-        Integer count = permissionDao.deletePermissionModule(id);
-
-        if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
-        }
-
-        return ResultOutputUtil.success();
-    }
 }

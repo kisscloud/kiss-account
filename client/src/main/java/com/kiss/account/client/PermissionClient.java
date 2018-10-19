@@ -19,9 +19,6 @@ public interface PermissionClient {
     @PostMapping("/permission")
     ResultOutput createPermission(CreatePermissionInput createPermissionInput);
 
-    @PostMapping("/permission/module")
-    ResultOutput createPermissionModule(CreatePermissionModuleInput permissionModuleInput);
-
     @GetMapping("/permissions")
     ResultOutput<List<PermissionOutput>> getPermissions();
 
@@ -31,21 +28,9 @@ public interface PermissionClient {
     @GetMapping("/bind/permissions")
     ResultOutput<List<BindPermissionOutput>> getbindPermissions();
 
-    @GetMapping("/permission/modules")
-    ResultOutput<List<PermissionModuleOutput>> getPermissionModules();
-
-    @GetMapping("/bind/permission/modules")
-    ResultOutput<List<PermissionModuleOutput>> getBindPermissionModules();
-
     @PutMapping("/permission")
     ResultOutput<PermissionOutput> updatePermission(UpdatePermissionInput updatePermissionInput);
 
-    @PutMapping("/permission/module")
-    ResultOutput<PermissionModuleOutput> updatePermissionModule(UpdatePermissionModuleInput updatePermissionModuleInput);
-
     @DeleteMapping("/permission")
     ResultOutput deletePermission(Integer id);
-
-    @DeleteMapping("/permission/module")
-    ResultOutput deletePermissionModule(Integer id);
 }

@@ -4,25 +4,24 @@ import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.input.UpdateAccountInput;
 import com.kiss.account.input.UpdateAccountStatusInput;
-import com.kiss.account.utils.ApplicationUtil;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 public class AccountValidator implements Validator {
 
+    @Autowired
     private AccountDao accountDao;
 
+    @Autowired
     private AccountGroupDao accountGroupDao;
 
     private Account account;
-
-    public AccountValidator() {
-        accountDao = (AccountDao) ApplicationUtil.getBean(AccountDao.class);
-        accountGroupDao = (AccountGroupDao) ApplicationUtil.getBean(AccountGroupDao.class);
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -62,9 +61,6 @@ public class AccountValidator implements Validator {
             UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
             validateStatus(updateAccountStatusInput.getStatus(), errors);
 
-        } else {
-
-            errors.rejectValue("", "", "数据格式错误");
         }
 
     }

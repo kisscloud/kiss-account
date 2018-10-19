@@ -60,13 +60,14 @@ public class PermissionModuleValidator implements Validator {
         }
     }
 
-    private void validateParentId(Integer id, Errors errors) {
+    private void validateParentId(Integer parentId, Errors errors) {
 
-        if (id == null) {
+        if (parentId == null) {
             errors.rejectValue("parentId", null, "父模块不能为空");
+            return;
         }
 
-        if (permissionDao.getPermissionModuleById(id) != null) {
+        if (parentId.equals(0) || permissionDao.getPermissionModuleById(parentId) != null) {
             return;
         }
 

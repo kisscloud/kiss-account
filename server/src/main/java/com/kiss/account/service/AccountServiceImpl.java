@@ -12,6 +12,7 @@ import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.DbEnumsUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.UserUtil;
+import com.kiss.account.validator.AccountGroupValidator;
 import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,6 +49,9 @@ public class AccountServiceImpl implements AccountClient {
     @Autowired
     private AccountDao accountDao;
 
+    @Autowired
+    private AccountValidator accountValidator;
+
     @Value("${max.accounts.size}")
     private String maxAccountsSize;
 
@@ -56,32 +60,7 @@ public class AccountServiceImpl implements AccountClient {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(new AccountValidator());
-    }
-
-    @Override
-    @ApiOperation(value = "创建部门")
-    public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
-
-        AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
-
-        if (accountGroup != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NAME_EXIST);
-        }
-
-        accountGroup = new AccountGroup();
-        BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
-        accountGroup.setLevel("0");
-        accountGroup.setSeq(0);
-        accountGroup.setOperatorId(123);
-        accountGroup.setOperatorIp("127.0.0.1");
-        accountGroup.setOperatorName("koy");
-        accountGroupDao.createAccountGroup(accountGroup);
-        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
-        BeanUtils.copyProperties(accountGroup, accountGroupOutput);
-
-
-        return ResultOutputUtil.success(accountGroupOutput);
+        binder.setValidator(accountValidator);
     }
 
     @Override
@@ -159,33 +138,6 @@ public class AccountServiceImpl implements AccountClient {
     }
 
     @Override
-    @ApiOperation(value = "获取部门列表")
-    public ResultOutput<AccountGroupOutput> getGroups() {
-
-        List<AccountGroup> groups = accountGroupDao.getGroups();
-        List<AccountGroupOutput> groupsOutput = new ArrayList<>();
-
-        for (AccountGroup accountGroup : groups) {
-            AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
-            BeanUtils.copyProperties(accountGroup, accountGroupOutput);
-            groupsOutput.add(accountGroupOutput);
-        }
-
-        return ResultOutputUtil.success(groupsOutput);
-    }
-
-    @Override
-    @ApiOperation(value = "获取部门信息")
-    public ResultOutput<AccountGroupOutput> getGroup(String id) {
-
-        AccountGroup group = accountGroupDao.getGroupById(Integer.parseInt(id));
-        AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
-        BeanUtils.copyProperties(group, accountGroupOutput);
-
-        return ResultOutputUtil.success(accountGroupOutput);
-    }
-
-    @Override
     @ApiOperation(value = "获取总账户数")
     public ResultOutput<Integer> getAccountsCount() {
 
@@ -194,7 +146,6 @@ public class AccountServiceImpl implements AccountClient {
         return ResultOutputUtil.success(count);
     }
 
-    @Override
     public ResultOutput get(@Valid @RequestBody AccountInfoInput accountInfoInput) {
         return ResultOutputUtil.success("++++" + UserUtil.getUsername() + "=====" + UserUtil.getUserId());
     }
@@ -212,33 +163,6 @@ public class AccountServiceImpl implements AccountClient {
         }
 
         return ResultOutputUtil.success(accountOutput);
-    }
-
-    @Override
-    @ApiOperation(value = "更新部门")
-    public ResultOutput updateAccountGroup(@Validated @RequestBody UpdateAccountGroupInput updateAccountGroupInput) {
-
-        AccountGroup accountGroup = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
-
-        if (accountGroup == null) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NOT_EXIST);
-        }
-
-        if (!accountGroup.getName().equals(updateAccountGroupInput.getName())) {
-            AccountGroup accountGroupQuery = accountGroupDao.getAccountGroupByName(updateAccountGroupInput.getName());
-            if (!accountGroupQuery.getId().equals(accountGroup.getId())) {
-                return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_GROUP_NAME_EXIST);
-            }
-        }
-
-        accountGroup = new AccountGroup();
-        BeanUtils.copyProperties(updateAccountGroupInput, accountGroup);
-        Integer count = accountGroupDao.updateAccountGroup(accountGroup);
-
-        if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_GROUP_FAILED);
-        }
-        return ResultOutputUtil.success(accountGroup);
     }
 
     @Override

@@ -11,11 +11,11 @@ import output.ResultOutput;
 @RequestMapping
 public interface AccountClient {
 
-    @PostMapping("/account/group")
-    ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput);
-
     @PostMapping("/account")
     ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput);
+
+    @PutMapping("/account")
+    ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput);
 
     @PostMapping("/account/roles")
     ResultOutput bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput);
@@ -26,23 +26,8 @@ public interface AccountClient {
     @GetMapping("/account")
     ResultOutput getAccount(String id);
 
-    @GetMapping("/groups")
-    ResultOutput getGroups();
-
-    @GetMapping("/group")
-    ResultOutput getGroup(String id);
-
     @GetMapping("/accounts/count")
     ResultOutput getAccountsCount();
-
-    @PostMapping("/get")
-    ResultOutput get(AccountInfoInput accountInfoInput);
-
-    @PutMapping("/account")
-    ResultOutput<AccountOutput> updateAccount(UpdateAccountInput updateAccountInput);
-
-    @PutMapping("/account/group")
-    ResultOutput updateAccountGroup(UpdateAccountGroupInput updateAccountGroupInput);
 
     @PutMapping("/account/password")
     ResultOutput updateAccountPassword(@RequestParam("id") Integer id);
@@ -50,12 +35,10 @@ public interface AccountClient {
     @PutMapping("/account/status")
     ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput);
 
-//    @GetMapping("/account/permissions")
-
     @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
     ResultOutput getAccountPermissions(@RequestParam("id") Integer id);
 
     @RequestMapping(value = "/account/permissions/dataScope", method = RequestMethod.GET)
-    ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id,@RequestParam("code") String code);
+    ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code);
 
 }

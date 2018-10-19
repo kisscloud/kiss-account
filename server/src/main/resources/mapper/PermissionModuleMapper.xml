@@ -17,11 +17,11 @@
     </select>
 
     <select id="getPermissionModules" resultType="com.kiss.account.entity.PermissionModule">
-        select * from permissionModules;
+        select * from permissionModules order by level;
     </select>
 
     <select id="getBindPermissionModules" resultType="com.kiss.account.entity.PermissionModule">
-        select * from permissionModules where permissions != 0;
+        select * from permissionModules where permissions != 0 order by level;
     </select>
 
     <select id="getPermissionModulePermissionsCount" resultType="java.lang.Integer">

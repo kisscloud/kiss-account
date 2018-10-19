@@ -27,6 +27,10 @@ public class PermissionOutput {
      */
     private Integer type;
     /**
+     * 权限类型文案
+     */
+    private String typeText;
+    /**
      * 权限码
      */
     private String code;
@@ -38,6 +42,11 @@ public class PermissionOutput {
      * 权限状态
      */
     private Integer status;
+
+    /**
+     * 权限状态文案
+     */
+    private String statusText;
     /**
      * 权限排序
      */
