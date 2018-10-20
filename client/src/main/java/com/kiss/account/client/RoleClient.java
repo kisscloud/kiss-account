@@ -36,5 +36,5 @@ public interface RoleClient {
     ResultOutput<RoleOutput> updateRole(UpdateRoleInput updateRoleInput);
 
     @DeleteMapping("/role")
-    ResultOutput deleteRole(Integer id);
+    ResultOutput deleteRole(@RequestParam("id") Integer id);
 }

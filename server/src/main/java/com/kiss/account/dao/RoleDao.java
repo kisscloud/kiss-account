@@ -46,6 +46,14 @@ public interface RoleDao {
     List<Integer> getRolesAccountIds(Integer id);
 
     /**
+     * 根据角色ID查询角色信息
+     *
+     * @param id Integer
+     * @return Role
+     */
+    Role getRoleById(Integer id);
+
+    /**
      * 根据角色名查询角色信息
      *
      * @param name String
@@ -79,6 +87,7 @@ public interface RoleDao {
 
     /**
      * 删除角色对应的用户
+     *
      * @param id 角色id
      * @return
      */

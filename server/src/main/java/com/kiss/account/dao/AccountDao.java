@@ -31,6 +31,14 @@ public interface AccountDao {
     List<AccountOutput> getAccounts(int start, int size);
 
     /**
+     * 查询部门用户
+     *
+     * @param groupId Integer
+     * @return List<Account>
+     */
+    List<Account> getAccountsByGroupId(Integer groupId);
+
+    /**
      * 根据账号id查询账号
      *
      * @param id Integer 用户ID

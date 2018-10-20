@@ -25,20 +25,25 @@
     </select>
 
     <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountgroups order by level
+        select * from accountGroups order by level
     </select>
 
-    <select id="getAccountGroupById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountgroups where id=#{id}
+    <select id="getAccountGroupById" parameterType="java.lang.Integer"
+            resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountGroups where id=#{id}
     </select>
 
     <update id="updateAccountGroup" parameterType="com.kiss.account.entity.AccountGroup">
-        update accountgroups
+        update accountGroups
         set id = #{id}
         <if test="name != null and name != ''">
             ,name = #{name,jdbcType=VARCHAR}
         </if>
-            ,parentId=#{parentId,jdbcType=INTEGER}
+        ,parentId=#{parentId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <delete id="deleteGroup" parameterType="java.lang.Integer">
+        delete from accountGroups where id=#{id};
+    </delete>
 </mapper>

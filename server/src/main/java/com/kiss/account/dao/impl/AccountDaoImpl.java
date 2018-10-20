@@ -38,6 +38,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public List<Account> getAccountsByGroupId(Integer groupId) {
+        return accountMapper.getAccountsByGroupId(groupId);
+    }
+
+    @Override
     public Account getAccountByUsername(String username) {
 
         return accountMapper.getAccountByUsername(username);

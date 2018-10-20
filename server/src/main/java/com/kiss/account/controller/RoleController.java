@@ -14,12 +14,15 @@ import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.validator.RoleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,17 +42,20 @@ public class RoleController implements RoleClient {
     @Autowired
     private AccountDao accountDao;
 
+    @Autowired
+    private RoleValidator roleValidator;
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.setValidator(roleValidator);
+    }
+
     @Override
     @ApiOperation("添加角色")
     public ResultOutput<RoleOutput> createRole(@Validated @RequestBody CreateRoleInput createRoleInput) {
 
-        Role role = roleDao.getRoleByName(createRoleInput.getName());
-
-        if (role != null) {
-            return ResultOutputUtil.error(AccountStatusCode.ROLE_EXIST);
-        }
-
-        role = new Role();
+        Role role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
         role.setOperatorId(123);
         role.setOperatorIp("127.0.0.5");

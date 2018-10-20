@@ -6,7 +6,7 @@
 package com.kiss.account.aop;
 
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.CodeUtil;
+import com.kiss.account.enums.CodeEnums;
 import com.kiss.account.utils.ResultOutputUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -57,14 +57,14 @@ public class ExceptionAdvice {
                         messageList = formVerifieds.get(field);
                     }
 
-                    String returnMessage = CodeUtil.getMessage(language, message);
+                    String returnMessage = CodeEnums.getMessage(language, message);
                     messageList.add(returnMessage == null ? message : returnMessage);
 
                     formVerifieds.put(field,messageList);
                 }
             }
 
-            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR,CodeUtil.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
+            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR, CodeEnums.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
         } else {
             e.printStackTrace();
         }

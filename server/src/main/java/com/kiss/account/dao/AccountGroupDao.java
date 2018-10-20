@@ -30,6 +30,7 @@ public interface AccountGroupDao {
      * @return AccountGroup
      */
     AccountGroup getAccountGroupById(Integer id);
+
     /**
      * 查询部门信息
      *
@@ -52,4 +53,11 @@ public interface AccountGroupDao {
      * @return Integer
      */
     Integer updateAccountGroup(AccountGroup accountGroup);
+
+    /**
+     * 删除部门
+     *
+     * @param id Integer
+     */
+    void deleteGroup(Integer id);
 }

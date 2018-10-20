@@ -24,7 +24,7 @@ public class AccountFilter implements Filter {
         ResponseWrapper responseWrapper = new ResponseWrapper(httpServletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         InnerFilterChain preFilterChain = new InnerFilterChain();
-        GuestFilter userInfoFilter = new GuestFilter();
+        UserInfoFilter userInfoFilter = new UserInfoFilter();
         preFilterChain.addFilter(userInfoFilter);
         preFilterChain.doFilter(httpServletRequest,httpServletResponse,preFilterChain);
         chain.doFilter(httpServletRequest,responseWrapper);

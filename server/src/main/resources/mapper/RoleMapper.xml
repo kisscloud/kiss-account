@@ -12,10 +12,6 @@
         values(#{name}, #{type}, #{status}, #{remark}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <select id="getRoleById" resultType="com.kiss.account.entity.Role">
-        select * from roles where id=#{id};
-    </select>
-
     <select id="getRoles" resultType="com.kiss.account.entity.Role">
         select * from roles;
     </select>
@@ -41,6 +37,10 @@
 
     <select id="getRolesAccountIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select accountId from accountroles where roleId=#{id};
+    </select>
+
+    <select id="getRoleById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Role">
+        select * from roles where name=#{id} limit 0,1;
     </select>
 
     <select id="getRoleByName" parameterType="java.lang.String" resultType="com.kiss.account.entity.Role">

@@ -64,6 +64,7 @@ public class AccountController implements AccountClient {
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(createAccountInput.getPassword(), salt);
+        account.setStatus(1);
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
@@ -71,10 +72,12 @@ public class AccountController implements AccountClient {
         account.setOperatorIp("127.0.0.4");
         account.setOperatorName(GuestUtil.getName());
         accountDao.createAccount(account);
+
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
         AccountGroup group = accountGroupDao.getGroupById(account.getGroupId());
         accountOutput.setGroupName(group.getName());
+        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -113,7 +116,7 @@ public class AccountController implements AccountClient {
         List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
         for (AccountOutput accountOutput : accounts) {
-            accountOutput.setStatusText(DbEnumUtil.getValue("accounts", String.valueOf(accountOutput.getStatus())));
+            accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
         }
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
 
@@ -150,6 +153,9 @@ public class AccountController implements AccountClient {
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountInput, accountOutput);
         Integer count = accountDao.updateAccount(accountOutput);
+        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        AccountGroup group = accountGroupDao.getGroupById(accountOutput.getGroupId());
+        accountOutput.setGroupName(group.getName());
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
@@ -164,8 +170,13 @@ public class AccountController implements AccountClient {
 
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
-        Account account = new Account();
-        account.setId(id);
+
+        Account account = accountDao.getAccountById(id);
+
+        if (account == null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
+        }
+
         account.setSalt(salt);
         account.setPassword(password);
         Integer count = accountDao.updateAccountPassword(account);
@@ -184,6 +195,7 @@ public class AccountController implements AccountClient {
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountStatusInput, accountOutput);
         Integer count = accountDao.updateAccountStatus(accountOutput);
+        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);

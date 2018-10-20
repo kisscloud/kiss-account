@@ -10,6 +10,7 @@ public interface AccountGroupMapper {
 
     /**
      * 创建部门
+     *
      * @param accountGroup AccountGroup
      * @return Integer
      */
@@ -17,11 +18,15 @@ public interface AccountGroupMapper {
 
     /**
      * 根据部门名称查询部门信息
+     *
      * @param name String
      * @return AccountGroup
      */
-    AccountGroup getAccountGroupByName(String name);    /**
+    AccountGroup getAccountGroupByName(String name);
+
+    /**
      * 根据部门名称查询部门信息
+     *
      * @param id Integer
      * @return AccountGroup
      */
@@ -29,6 +34,7 @@ public interface AccountGroupMapper {
 
     /**
      * 更新部门信息
+     *
      * @param accountGroup AccountGroup
      * @return Integer
      */
@@ -36,7 +42,15 @@ public interface AccountGroupMapper {
 
     /**
      * 查询所有部门
+     *
      * @return List<AccountGroup>
      */
     List<AccountGroup> getGroups();
+
+    /**
+     * 删除部门
+     *
+     * @param id Integer
+     */
+    void deleteGroup(Integer id);
 }

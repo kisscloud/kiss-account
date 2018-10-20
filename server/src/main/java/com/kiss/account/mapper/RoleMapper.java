@@ -3,6 +3,7 @@ package com.kiss.account.mapper;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,24 +13,28 @@ public interface RoleMapper {
 
     /**
      * 创建角色
+     *
      * @param role
      */
     void createRole(Role role);
 
     /**
      * 给角色分配权限
+     *
      * @param rolePermissions
      */
     void bindPermissionsToRole(List<RolePermission> rolePermissions);
 
     /**
      * 查询所有角色
+     *
      * @return
      */
     List<Role> getRoles();
 
     /**
      * 查询角色下所有的权限id
+     *
      * @param id 角色id
      * @return
      */
@@ -37,13 +42,23 @@ public interface RoleMapper {
 
     /**
      * 查询角色下所有的账户id
+     *
      * @param id 角色id
      * @return
      */
     List<Integer> getRolesAccountIds(Integer id);
 
     /**
+     * 根据角色ID查询角色信息
+     *
+     * @param id
+     * @return
+     */
+    Role getRoleById(Integer id);
+
+    /**
      * 根据角色名查询角色信息
+     *
      * @param name
      * @return
      */
@@ -51,6 +66,7 @@ public interface RoleMapper {
 
     /**
      * 更新角色信息
+     *
      * @param roleOutput
      * @return
      */
@@ -58,6 +74,7 @@ public interface RoleMapper {
 
     /**
      * 删除角色
+     *
      * @param id
      * @return
      */
@@ -65,6 +82,7 @@ public interface RoleMapper {
 
     /**
      * 删除角色下所有的权限
+     *
      * @param id
      * @return
      */
@@ -72,6 +90,7 @@ public interface RoleMapper {
 
     /**
      * 删除角色下所有用户
+     *
      * @param id 角色id
      * @return
      */

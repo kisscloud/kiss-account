@@ -8,7 +8,7 @@ import utils.JwtUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GuestFilter implements InnerFilter{
+public class UserInfoFilter implements InnerFilter{
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, InnerFilterChain filterChain) {

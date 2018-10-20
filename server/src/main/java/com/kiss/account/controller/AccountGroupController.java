@@ -1,7 +1,9 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.AccountGroupClient;
+import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
+import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
@@ -15,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
 
 import javax.validation.Valid;
@@ -27,6 +27,9 @@ import java.util.List;
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
 public class AccountGroupController implements AccountGroupClient {
+
+    @Autowired
+    private AccountDao accountDao;
 
     @Autowired
     private AccountGroupDao accountGroupDao;
@@ -88,13 +91,26 @@ public class AccountGroupController implements AccountGroupClient {
 
     @Override
     @ApiOperation(value = "获取部门信息")
-    public ResultOutput<AccountGroupOutput> getGroup(String id) {
+    public ResultOutput<AccountGroupOutput> getGroup(Integer id) {
 
-        AccountGroup group = accountGroupDao.getGroupById(Integer.parseInt(id));
+        AccountGroup group = accountGroupDao.getGroupById(id);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(group, accountGroupOutput);
 
         return ResultOutputUtil.success(accountGroupOutput);
+    }
+
+    @Override
+    @ApiOperation(value = "删除部门")
+    public ResultOutput deleteGroup(@RequestParam("id") Integer id) {
+
+        List<Account> accounts = accountDao.getAccountsByGroupId(id);
+        if (!accounts.isEmpty()) {
+            return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
+        }
+
+        accountGroupDao.deleteGroup(id);
+        return ResultOutputUtil.success();
     }
 
     @Override

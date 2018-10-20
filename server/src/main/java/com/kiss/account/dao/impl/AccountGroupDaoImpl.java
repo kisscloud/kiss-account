@@ -64,4 +64,9 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
 
         return accountGroupMapper.updateAccountGroup(accountGroup);
     }
+
+    @Override
+    public void deleteGroup(Integer id) {
+        accountGroupMapper.deleteGroup(id);
+    }
 }

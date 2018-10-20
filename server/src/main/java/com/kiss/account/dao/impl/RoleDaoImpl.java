@@ -16,40 +16,54 @@ public class RoleDaoImpl implements RoleDao {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Override
     public void createRole(Role role) {
         roleMapper.createRole(role);
     }
 
+    @Override
     public void bindPermissionsToRole(List<RolePermission> rolePermissions) {
         roleMapper.bindPermissionsToRole(rolePermissions);
     }
 
+    @Override
     public List<Role> getRoles() {
         List<Role> roles = roleMapper.getRoles();
         return roles;
     }
 
+    @Override
     public List<Integer> getRolesPermissionIds(Integer id) {
         return roleMapper.getRolesPermissionIds(id);
     }
 
+    @Override
     public List<Integer> getRolesAccountIds(Integer id) {
         return roleMapper.getRolesAccountIds(id);
     }
 
-    public Role getRoleByName (String name) {
+    @Override
+    public Role getRoleById(Integer id) {
+        return roleMapper.getRoleById(id);
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
         return roleMapper.getRoleByName(name);
     }
 
-    public Integer putRole (RoleOutput roleOutput) {
+    @Override
+    public Integer putRole(RoleOutput roleOutput) {
         return roleMapper.putRole(roleOutput);
     }
 
-    public Integer deleteRole (Integer id) {
+    @Override
+    public Integer deleteRole(Integer id) {
         return roleMapper.deleteRole(id);
     }
 
-    public Integer deleteRolePermissions (Integer id) {
+    @Override
+    public Integer deleteRolePermissions(Integer id) {
         return roleMapper.deleteRolePermissions(id);
     }
 
