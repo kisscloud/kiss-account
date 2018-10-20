@@ -32,5 +32,5 @@ public interface PermissionClient {
     ResultOutput<PermissionOutput> updatePermission(UpdatePermissionInput updatePermissionInput);
 
     @DeleteMapping("/permission")
-    ResultOutput deletePermission(Integer id);
+    ResultOutput deletePermission(@RequestParam("id") Integer id);
 }

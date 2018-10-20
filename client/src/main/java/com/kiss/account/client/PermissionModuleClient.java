@@ -19,14 +19,14 @@ public interface PermissionModuleClient {
     ResultOutput createPermissionModule(CreatePermissionModuleInput permissionModuleInput);
 
     @GetMapping("/permission/modules")
-    ResultOutput<List<PermissionModuleOutput>> getPermissionModules();
+    ResultOutput getPermissionModules();
 
     @GetMapping("/bind/permission/modules")
-    ResultOutput<List<PermissionModuleOutput>> getBindPermissionModules();
+    ResultOutput getBindPermissionModules();
 
     @PutMapping("/permission/module")
-    ResultOutput<PermissionModuleOutput> updatePermissionModule(UpdatePermissionModuleInput updatePermissionModuleInput);
+    ResultOutput updatePermissionModule(UpdatePermissionModuleInput updatePermissionModuleInput);
 
     @DeleteMapping("/permission/module")
-    ResultOutput deletePermissionModule(Integer id);
+    ResultOutput deletePermissionModule(@RequestParam("id") Integer id);
 }

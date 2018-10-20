@@ -15,7 +15,7 @@ import java.util.List;
 public interface RoleClient {
 
     @PostMapping("/role")
-    ResultOutput<RoleOutput> createRole(@RequestBody CreateRoleInput createRoleInput);
+    ResultOutput createRole(@RequestBody CreateRoleInput createRoleInput);
 
     @PostMapping("/roles/permissions")
     ResultOutput bindRolePermissions(@RequestBody BindPermissionToRoleInput bindPermissionToRoleInput);
@@ -33,7 +33,7 @@ public interface RoleClient {
     ResultOutput<List<AccountRoleOutput>> bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput);
 
     @PutMapping("/role")
-    ResultOutput<RoleOutput> updateRole(UpdateRoleInput updateRoleInput);
+    ResultOutput updateRole(UpdateRoleInput updateRoleInput);
 
     @DeleteMapping("/role")
     ResultOutput deleteRole(@RequestParam("id") Integer id);

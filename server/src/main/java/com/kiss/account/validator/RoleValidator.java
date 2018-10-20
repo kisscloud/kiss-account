@@ -37,6 +37,11 @@ public class RoleValidator implements Validator {
 
             UpdateRoleInput updateRoleInput = (UpdateRoleInput) target;
             validateRoleExist(updateRoleInput.getId(), errors);
+
+            if (role == null) {
+                return;
+            }
+
             validateName(updateRoleInput.getId(), updateRoleInput.getName(), errors);
 
         } else {
@@ -47,7 +52,9 @@ public class RoleValidator implements Validator {
     }
 
     private void validateRoleExist(Integer id, Errors errors) {
+
         role = roleDao.getRoleById(id);
+
         if (role == null) {
             errors.rejectValue("id", "", "角色不存在");
         }

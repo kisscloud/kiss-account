@@ -63,6 +63,7 @@ public class RoleController implements RoleClient {
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
+
         return ResultOutputUtil.success(roleOutput);
     }
 

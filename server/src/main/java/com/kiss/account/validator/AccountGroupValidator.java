@@ -37,6 +37,9 @@ public class AccountGroupValidator implements Validator {
 
             UpdateAccountGroupInput updateAccountGroupInput = (UpdateAccountGroupInput) target;
             validateAccountExist(updateAccountGroupInput.getId(), errors);
+            if (accountGroup == null) {
+                return;
+            }
             validateName(updateAccountGroupInput.getId(), updateAccountGroupInput.getName(), errors);
             validateParentId(updateAccountGroupInput.getParentId(), errors);
 

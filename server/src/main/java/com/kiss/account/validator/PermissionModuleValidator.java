@@ -41,6 +41,9 @@ public class PermissionModuleValidator implements Validator {
 
             UpdatePermissionModuleInput updatePermissionModuleInput = (UpdatePermissionModuleInput) target;
             validateModuleExist(updatePermissionModuleInput.getId(), errors);
+            if (permissionModule == null) {
+                return;
+            }
             validateParentId(updatePermissionModuleInput.getParentId(), errors);
             validateName(updatePermissionModuleInput.getId(), updatePermissionModuleInput.getName(), errors);
 

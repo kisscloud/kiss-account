@@ -33,37 +33,56 @@ public interface PermissionMapper {
 
     /**
      * 查询权限信息
-     * @param id Integer
      *
+     * @param id Integer
      * @return PermissionOutput
      */
     PermissionOutput getPermissionsByModuleId(Integer id);
 
     /**
      * 根据权限名称或者权限码查询权限
+     *
      * @param permission
      * @return
      */
-    Permission getPermissionByNameOrCode (Permission permission);
+    Permission getPermissionByNameOrCode(Permission permission);
 
     /**
      * 更新权限
+     *
      * @param permissionOutput
      * @return
      */
-    Integer updatePermission (PermissionOutput permissionOutput);
+    Integer updatePermission(PermissionOutput permissionOutput);
 
     /**
      * 删除权限
+     *
      * @param id
      * @return
      */
-    Integer deletePermission (Integer id);
+    Integer deletePermission(Integer id);
 
     /**
      * 根据模块id查询权限
+     *
      * @param id
      * @return
      */
-    List<Permission> getPermissionByModuleId (Integer id);
+    List<Permission> getPermissionByModuleId(Integer id);
+
+    /**
+     * 通过权限ID获取权限
+     */
+    PermissionOutput getPermissionById(Integer id);
+
+    /**
+     * 通过权限ID获取权限
+     */
+    Permission getPermissionByCode(String code);
+
+    /**
+     * 通过权限名称获取权限
+     */
+    Permission getPermissionByName(String name);
 }

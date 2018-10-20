@@ -8,7 +8,7 @@ import output.ResultOutput;
 @RequestMapping
 public interface AccountGroupClient {
     @PostMapping("/account/group")
-    ResultOutput<AccountGroupOutput> createAccountGroup(CreateAccountGroupInput createAccountGroupInput);
+    ResultOutput createAccountGroup(CreateAccountGroupInput createAccountGroupInput);
 
     @GetMapping("/groups")
     ResultOutput getGroups();

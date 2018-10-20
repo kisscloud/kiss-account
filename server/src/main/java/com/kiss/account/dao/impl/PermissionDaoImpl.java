@@ -46,31 +46,38 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionModule;
     }
 
-    public List<PermissionOutput> getPermissions() {
+    public List<PermissionOutput> getPermissions()
+    {
         return permissionMapper.getPermissions();
     }
 
     public List<BindPermissionOutput> getBindPermissions() {
+
         return permissionMapper.getBindPermissions(1);
     }
 
     public PermissionModule getPermissionModuleById(Integer id) {
+
         return permissionModuleMapper.getPermissionModuleById(id);
     }
 
     public List<PermissionModule> getPermissionModules() {
+
         return permissionModuleMapper.getPermissionModules();
     }
 
     public List<PermissionModule> getBindPermissionModules() {
+
         return permissionModuleMapper.getBindPermissionModules();
     }
 
     public Integer getPermissionModulePermissionsCount(Integer id) {
+
         return permissionModuleMapper.getPermissionModulePermissionsCount(id);
     }
 
     public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
+
         Integer oldCount = getPermissionModulePermissionsCount(id);
         PermissionModule permissionModule = new PermissionModule();
         permissionModule.setId(id);
@@ -78,32 +85,55 @@ public class PermissionDaoImpl implements PermissionDao {
         permissionModuleMapper.updatePermissionModulePermissionsCount(permissionModule);
     }
 
-    public Permission getPermissionByNameOrCode (Permission permission) {
+    public Permission getPermissionByNameOrCode(Permission permission) {
+
         return permissionMapper.getPermissionByNameOrCode(permission);
     }
 
-    public Integer updatePermission (PermissionOutput permissionOutput) {
+    public Integer updatePermission(PermissionOutput permissionOutput) {
+
         return permissionMapper.updatePermission(permissionOutput);
     }
 
-    public Integer updatePermissionModule (PermissionModuleOutput permissionModuleOutput) {
+    public Integer updatePermissionModule(PermissionModuleOutput permissionModuleOutput) {
+
         return permissionModuleMapper.updatePermissionModule(permissionModuleOutput);
     }
 
-    public Integer deletePermission (Integer id) {
+    public Integer deletePermission(Integer id) {
         return permissionMapper.deletePermission(id);
     }
 
-    public Integer deletePermissionModule (Integer id) {
+    public Integer deletePermissionModule(Integer id) {
         return permissionModuleMapper.deletePermissionModule(id);
     }
 
-    public PermissionModule getPermissionModuleByName (String name) {
+    public PermissionModule getPermissionModuleByName(String name) {
+
         return permissionModuleMapper.getPermissionModuleByName(name);
     }
 
-    public List<Permission> getPermissionByModuleId (Integer id) {
+    public List<Permission> getPermissionByModuleId(Integer id) {
+
         return permissionMapper.getPermissionByModuleId(id);
+    }
+
+    @Override
+    public PermissionOutput getPermissionById(Integer id) {
+
+        return permissionMapper.getPermissionById(id);
+    }
+
+    @Override
+    public Permission getPermissionByCode(String code) {
+
+        return permissionMapper.getPermissionByCode(code);
+    }
+
+    @Override
+    public Permission getPermissionByName(String name) {
+
+        return permissionMapper.getPermissionByName(name);
     }
 
 }

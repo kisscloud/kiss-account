@@ -1,7 +1,7 @@
 package com.kiss.account.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kiss.account.enums.CodeEnums;
+import com.kiss.account.utils.CodeUtil;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class ResponseFilter implements InnerFilter {
             JSONObject jsonObject = JSONObject.parseObject(responseMsg);
             String lang = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
             if(!StringUtils.isEmpty(jsonObject.getInteger("code")) && StringUtils.isEmpty(jsonObject.getString("message"))) {
-                String message = CodeEnums.getMessage(lang,jsonObject.get("code"));
+                String message = CodeUtil.getMessage(lang,jsonObject.get("code"));
                 jsonObject.put("message",message);
                 bytes = jsonObject.toJSONString().getBytes();
             }

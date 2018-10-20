@@ -12,6 +12,7 @@ import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
+import com.kiss.account.validator.PermissionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -34,9 +35,12 @@ public class PermissionController implements PermissionClient {
     @Autowired
     private PermissionDao permissionDao;
 
+    @Autowired
+    private PermissionValidator permissionValidator;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(new PermissionModuleValidator());
+        binder.setValidator(permissionValidator);
     }
 
     @Override
@@ -46,9 +50,6 @@ public class PermissionController implements PermissionClient {
 
         // 1. 查询权限所属模块信息
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(createPermissionInput.getModuleId());
-        if (permissionModule == null) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EXIST);
-        }
 
         // 2. 添加权限信息
         Permission permission = new Permission();
@@ -63,11 +64,6 @@ public class PermissionController implements PermissionClient {
         permission.setOperatorId(123);
         permission.setOperatorName("koy");
         permission.setOperatorIp("0.0.0.0");
-        Permission exist = permissionDao.getPermissionByNameOrCode(permission);
-
-        if (exist != null) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_EXIST);
-        }
 
         permissionDao.createPermission(permission);
 
@@ -77,12 +73,17 @@ public class PermissionController implements PermissionClient {
         // 4. 更新权限所属模块父模块权限数
         String[] modulesIds = permissionModule.getLevel().split(",");
         for (String moduleIdString : modulesIds) {
-            permissionDao.updatePermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
+            if (!moduleIdString.equals("")) {
+                permissionDao.updatePermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
+            }
         }
-
 
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(permission, permissionOutput);
+
+        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+        permissionOutput.setModuleName(permissionModule.getName());
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -118,14 +119,10 @@ public class PermissionController implements PermissionClient {
     @Override
     @ApiOperation(value = "更新权限")
     public ResultOutput<PermissionOutput> updatePermission(@Validated @RequestBody UpdatePermissionInput updatePermissionInput) {
+
         Permission permission = new Permission();
         permission.setCode(updatePermissionInput.getCode());
         permission.setName(updatePermissionInput.getName());
-        Permission exist = permissionDao.getPermissionByNameOrCode(permission);
-
-        if (exist != null) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_EXIST);
-        }
 
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(updatePermissionInput, permissionOutput);
@@ -134,6 +131,11 @@ public class PermissionController implements PermissionClient {
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_PERMISSION_FAILD);
         }
+
+        PermissionModule permissionModule = permissionDao.getPermissionModuleById(updatePermissionInput.getModuleId());
+        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+        permissionOutput.setModuleName(permissionModule.getName());
 
         return ResultOutputUtil.success(permissionOutput);
     }

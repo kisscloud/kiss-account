@@ -40,7 +40,7 @@
     </select>
 
     <select id="getRoleById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Role">
-        select * from roles where name=#{id} limit 0,1;
+        select * from roles where id=#{id} limit 0,1;
     </select>
 
     <select id="getRoleByName" parameterType="java.lang.String" resultType="com.kiss.account.entity.Role">

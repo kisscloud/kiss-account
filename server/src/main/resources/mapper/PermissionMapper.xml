@@ -21,6 +21,14 @@
         where permission.id = #{id};
     </select>
 
+    <select id="getPermissionByName" parameterType="java.lang.String" resultType="com.kiss.account.entity.Permission">
+        select * from permissions where name=#{name} limit 0,1;
+    </select>
+
+    <select id="getPermissionByCode" parameterType="java.lang.String" resultType="com.kiss.account.entity.Permission">
+        select * from permissions where code=#{code} limit 0,1;
+    </select>
+
     <select id="getPermissionsByModuleId" resultType="com.kiss.account.output.PermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
                permission.code, permission.limitFields, permission.status, permission.seq,
@@ -51,7 +59,8 @@
         order by permission.createdAt;
     </select>
 
-    <select id="getPermissionByNameOrCode" parameterType="com.kiss.account.entity.Permission" resultType="com.kiss.account.entity.Permission">
+    <select id="getPermissionByNameOrCode" parameterType="com.kiss.account.entity.Permission"
+            resultType="com.kiss.account.entity.Permission">
         select * from permissions where name = #{name} or code = #{code} limit 0,1
     </select>
 
@@ -80,7 +89,8 @@
         delete from permissions where id = #{id}
     </delete>
 
-    <select id="getPermissionByModuleId" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Permission">
+    <select id="getPermissionByModuleId" parameterType="java.lang.Integer"
+            resultType="com.kiss.account.entity.Permission">
         select * from permissions where moduleId=#{id}
     </select>
 </mapper>

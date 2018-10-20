@@ -49,6 +49,9 @@ public class AccountValidator implements Validator {
 
             UpdateAccountInput updateAccountInput = (UpdateAccountInput) target;
             validateAccountExist(updateAccountInput.getId(), errors);
+            if (account == null) {
+                return;
+            }
             validateName(updateAccountInput.getId(), updateAccountInput.getName(), errors);
             validateUsername(updateAccountInput.getId(), updateAccountInput.getUsername(), errors);
             validateEmail(updateAccountInput.getId(), updateAccountInput.getEmail(), errors);

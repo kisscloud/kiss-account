@@ -1,4 +1,4 @@
-package com.kiss.account.enums;
+package com.kiss.account.utils;
 
 import org.springframework.stereotype.Component;
 import status.CodeMessage;
@@ -12,8 +12,8 @@ import java.io.UnsupportedEncodingException;
  * CodeUtil.VALIDATE_ERROR = 1000
  */
 @Component
-public class CodeEnums extends CodeMessage {
+public class CodeUtil extends CodeMessage {
 
-    public CodeEnums() throws UnsupportedEncodingException {
+    public CodeUtil() throws UnsupportedEncodingException {
     }
 }

@@ -133,4 +133,28 @@ public interface PermissionDao {
      * @return List<Permission>
      */
     List<Permission> getPermissionByModuleId(Integer id);
+
+    /**
+     * 根据权限id查询权限信息
+     *
+     * @param id Integer
+     * @return Permission
+     */
+    PermissionOutput getPermissionById(Integer id);
+
+    /**
+     * 根据权限id查询权限信息
+     *
+     * @param code String
+     * @return Permission
+     */
+    Permission getPermissionByCode(String code);
+
+    /**
+     * 根据权限名称查询权限信息
+     *
+     * @param name String
+     * @return Permission
+     */
+    Permission getPermissionByName(String name);
 }

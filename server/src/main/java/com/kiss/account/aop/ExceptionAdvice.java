@@ -6,7 +6,7 @@
 package com.kiss.account.aop;
 
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.enums.CodeEnums;
+import com.kiss.account.utils.CodeUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -36,13 +36,14 @@ public class ExceptionAdvice {
     public ResultOutput exceptionHandle(HttpServletRequest request, Exception e) {
 
         System.out.println("系统异常,接口：" + request.getRequestURI());
+        System.out.println(e.getClass());
 
         if (e instanceof MethodArgumentNotValidException) {
 
             MethodArgumentNotValidException methodException = ((MethodArgumentNotValidException) e);
             BindingResult bindingResult = methodException.getBindingResult();
             List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
-            Map<String,List<String>> formVerifieds = new HashMap<>();
+            Map<String, List<String>> formVerifieds = new HashMap<>();
             String language = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
 
             if (fieldErrorList != null) {
@@ -57,14 +58,14 @@ public class ExceptionAdvice {
                         messageList = formVerifieds.get(field);
                     }
 
-                    String returnMessage = CodeEnums.getMessage(language, message);
+                    String returnMessage = CodeUtil.getMessage(language, message);
                     messageList.add(returnMessage == null ? message : returnMessage);
 
-                    formVerifieds.put(field,messageList);
+                    formVerifieds.put(field, messageList);
                 }
             }
 
-            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR, CodeEnums.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
+            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR, CodeUtil.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
         } else {
             e.printStackTrace();
         }
