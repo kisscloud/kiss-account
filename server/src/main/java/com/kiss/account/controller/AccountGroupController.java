@@ -1,35 +1,22 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
-import com.kiss.account.client.AccountClient;
 import com.kiss.account.client.AccountGroupClient;
-import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
-import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
-import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRoleOutput;
-import com.kiss.account.output.GetAccountsOutput;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.CryptoUtil;
-import com.kiss.account.utils.DbEnumsUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.UserUtil;
 import com.kiss.account.validator.AccountGroupValidator;
-import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 
@@ -39,7 +26,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
-public class AccountGroupServiceImpl implements AccountGroupClient {
+public class AccountGroupController implements AccountGroupClient {
 
     @Autowired
     private AccountGroupDao accountGroupDao;

@@ -1,18 +1,15 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
 import com.kiss.account.client.PermissionClient;
 import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
-import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionInput;
-import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.output.BindPermissionOutput;
-import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.DbEnumsUtil;
+import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
 import io.swagger.annotations.Api;
@@ -28,12 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @Api(tags = "Permission", description = "权限相关接口")
-public class PermissionServiceImpl implements PermissionClient {
+public class PermissionController implements PermissionClient {
 
     @Autowired
     private PermissionDao permissionDao;
@@ -97,8 +93,8 @@ public class PermissionServiceImpl implements PermissionClient {
 
         List<PermissionOutput> permissions = permissionDao.getPermissions();
         for (PermissionOutput permissionOutput : permissions) {
-            permissionOutput.setStatusText(DbEnumsUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
-            permissionOutput.setTypeText(DbEnumsUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+            permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+            permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
         }
 
         return ResultOutputUtil.success(permissions);

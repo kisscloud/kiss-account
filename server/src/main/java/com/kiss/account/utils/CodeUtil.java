@@ -1,11 +1,11 @@
 package com.kiss.account.utils;
 
 import org.springframework.stereotype.Component;
-import status.Message;
+import status.CodeMessage;
 import java.io.UnsupportedEncodingException;
 
 @Component
-public class CodeUtil extends Message {
+public class CodeUtil extends CodeMessage {
 
     public CodeUtil() throws UnsupportedEncodingException {
     }

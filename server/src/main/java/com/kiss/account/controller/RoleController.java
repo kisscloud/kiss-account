@@ -1,4 +1,4 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
@@ -14,7 +14,6 @@ import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +31,7 @@ import output.ResultOutput;
 
 @RestController
 @Api(tags = "Role", description = "角色相关接口")
-public class RoleServiceImpl implements RoleClient {
+public class RoleController implements RoleClient {
 
     @Autowired
     private RoleDao roleDao;

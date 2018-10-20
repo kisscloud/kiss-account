@@ -1,26 +1,19 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
-import com.kiss.account.client.PermissionClient;
 import com.kiss.account.client.PermissionModuleClient;
 import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
-import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
-import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
-import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
-import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.DbEnumsUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -34,7 +27,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Permission", description = "权限相关接口")
-public class PermissionModuleServiceImpl implements PermissionModuleClient {
+public class PermissionModuleController implements PermissionModuleClient {
 
     @Autowired
     private PermissionDao permissionDao;

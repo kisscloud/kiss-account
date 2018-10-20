@@ -80,7 +80,7 @@ public class AccountGroupValidator implements Validator {
             return;
         }
 
-        if (groupId.equals(0) || accountGroupDao.getAccountGroupById(groupId) == null) {
+        if (groupId.equals(0) || accountGroupDao.getAccountGroupById(groupId) != null) {
             return;
         }
 

@@ -2,7 +2,7 @@ package com.kiss.account.runner;
 
 import com.kiss.account.dao.DbEnumsDao;
 import com.kiss.account.entity.DbEnums;
-import com.kiss.account.utils.DbEnumsUtil;
+import com.kiss.account.utils.DbEnumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @Order(value = 1)
-public class DbEnumsRunner implements CommandLineRunner {
+public class DbEnumRunner implements CommandLineRunner {
 
     @Autowired
     private DbEnumsDao dbEnumsDao;
@@ -25,11 +25,11 @@ public class DbEnumsRunner implements CommandLineRunner {
         List<DbEnums> serviceStatuses = dbEnumsDao.getServiceStatus();
         for (DbEnums serviceStatus : serviceStatuses) {
             Map<String,String> map = new HashMap<>();
-            if (DbEnumsUtil.dbEnumsDao.containsKey(serviceStatus.getLanguage())) {
-                map = DbEnumsUtil.dbEnumsDao.get(serviceStatus.getLanguage());
+            if (DbEnumUtil.dbEnumsDao.containsKey(serviceStatus.getLanguage())) {
+                map = DbEnumUtil.dbEnumsDao.get(serviceStatus.getLanguage());
             }
             map.put(serviceStatus.getKey() + serviceStatus.getOption(),serviceStatus.getValue());
-            DbEnumsUtil.dbEnumsDao.put(serviceStatus.getLanguage(),map);
+            DbEnumUtil.dbEnumsDao.put(serviceStatus.getLanguage(),map);
         }
     }
 }

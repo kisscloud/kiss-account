@@ -1,4 +1,4 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
 import com.kiss.account.client.AccountClient;
 import com.kiss.account.dao.AccountDao;
@@ -9,10 +9,9 @@ import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
-import com.kiss.account.utils.DbEnumsUtil;
+import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.UserUtil;
-import com.kiss.account.validator.AccountGroupValidator;
 import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,27 +20,21 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import output.ResultOutput;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
-public class AccountServiceImpl implements AccountClient {
+public class AccountController implements AccountClient {
 
     @Autowired
     private AccountGroupDao accountGroupDao;
@@ -120,7 +113,7 @@ public class AccountServiceImpl implements AccountClient {
         List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
         for (AccountOutput accountOutput : accounts) {
-            accountOutput.setStatusText(DbEnumsUtil.getValue("accounts", String.valueOf(accountOutput.getStatus())));
+            accountOutput.setStatusText(DbEnumUtil.getValue("accounts", String.valueOf(accountOutput.getStatus())));
         }
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
 

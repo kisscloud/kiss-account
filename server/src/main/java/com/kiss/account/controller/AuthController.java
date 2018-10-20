@@ -1,4 +1,4 @@
-package com.kiss.account.service;
+package com.kiss.account.controller;
 
 import com.kiss.account.client.AuthClient;
 import com.kiss.account.dao.impl.AccountDaoImpl;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @Api(tags = "Auth", description = "认证相关接口")
-public class AuthServiceImpl implements AuthClient {
+public class AuthController implements AuthClient {
 
     @Autowired
     private AccountDaoImpl accountDao;
