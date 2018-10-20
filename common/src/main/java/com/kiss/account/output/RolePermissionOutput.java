@@ -21,7 +21,7 @@ public class RolePermissionOutput {
     /**
      * 数据权限
      */
-    private String dataScope;
+    private String limitScope;
     /**
      * 最后操作者ID
      */
