@@ -49,7 +49,7 @@
 
     </select>
 
-    <insert id="bindRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRoles">
+    <insert id="bindRoleToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRole">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values(#{roleId}, #{accountId}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>

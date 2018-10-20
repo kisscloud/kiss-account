@@ -7,7 +7,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Random;
 
+/**
+ * 加密工具类，用以加密用户的密码
+ */
 public class CryptoUtil {
+
     public static String salt() {
         return String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
     }
@@ -64,7 +68,7 @@ public class CryptoUtil {
         return hs.toString().toLowerCase();
     }
 
-    public static String sha1(String msg){
+    public static String sha1(String msg) {
         String hash = "";
         try {
             byte[] by = msg.getBytes();

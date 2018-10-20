@@ -11,7 +11,7 @@ import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.UserUtil;
+import com.kiss.account.utils.GuestUtil;
 import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,9 +67,9 @@ public class AccountController implements AccountClient {
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
-        account.setOperatorId(UserUtil.getUserId());
+        account.setOperatorId(GuestUtil.getGuestId());
         account.setOperatorIp("127.0.0.4");
-        account.setOperatorName(UserUtil.getUsername());
+        account.setOperatorName(GuestUtil.getName());
         accountDao.createAccount(account);
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
@@ -140,7 +140,7 @@ public class AccountController implements AccountClient {
     }
 
     public ResultOutput get(@Valid @RequestBody AccountInfoInput accountInfoInput) {
-        return ResultOutputUtil.success("++++" + UserUtil.getUsername() + "=====" + UserUtil.getUserId());
+        return ResultOutputUtil.success("++++" + GuestUtil.getName() + "=====" + GuestUtil.getGuestId());
     }
 
     @Override

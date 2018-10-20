@@ -21,17 +21,17 @@
     </select>
 
     <insert id="bindPermissionToRole" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.kiss.account.entity.RolePermissions">
-        insert into rolepermissions(roleId, permissionId, dataScope, operatorId, operatorName, operatorIp)
-        values(#{roleId}, #{permissionId}, #{dataScope}, #{operatorId}, #{operatorName}, #{operatorIp});
+            parameterType="com.kiss.account.entity.RolePermission">
+        insert into rolepermissions(roleId, permissionId, limitScope, operatorId, operatorName, operatorIp)
+        values(#{roleId}, #{permissionId}, #{limitScope}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
     <insert id="bindPermissionsToRole" useGeneratedKeys="true" keyProperty="id"
             parameterType="java.util.List">
-        insert into rolepermissions(roleId, permissionId, dataScope, operatorId, operatorName, operatorIp)
+        insert into rolepermissions(roleId, permissionId, limitScope, operatorId, operatorName, operatorIp)
         values
         <foreach collection="list" item="permission" index="index" separator=",">
-            (#{permission.roleId}, #{permission.permissionId}, #{permission.dataScope}, #{permission.operatorId}, #{permission.operatorName}, #{permission.operatorIp})
+            (#{permission.roleId}, #{permission.permissionId}, #{permission.limitScope}, #{permission.operatorId}, #{permission.operatorName}, #{permission.operatorIp})
         </foreach>
     </insert>
 

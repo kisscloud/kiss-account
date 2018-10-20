@@ -4,7 +4,7 @@ import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
-import com.kiss.account.entity.RolePermissions;
+import com.kiss.account.entity.RolePermission;
 import com.kiss.account.input.BindAccountsToRoleInput;
 import com.kiss.account.input.BindPermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
@@ -65,9 +65,9 @@ public class RoleController implements RoleClient {
     public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
 
         List<Integer> permissions = bindPermissionToRoleInput.getPermissions();
-        List<RolePermissions> rolePermissions = new ArrayList<>();
+        List<RolePermission> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {
-            RolePermissions rolePermission = new RolePermissions();
+            RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
             rolePermission.setOperatorId(123);
             rolePermission.setOperatorIp("127.0.0.5");
@@ -78,7 +78,7 @@ public class RoleController implements RoleClient {
         roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
         roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
-        for (RolePermissions rolePermission : rolePermissions) {
+        for (RolePermission rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
             BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
             rolePermissionOutputs.add(rolePermissionOutput);

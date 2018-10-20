@@ -2,7 +2,7 @@ package com.kiss.account.dao.impl;
 
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
-import com.kiss.account.entity.RolePermissions;
+import com.kiss.account.entity.RolePermission;
 import com.kiss.account.mapper.RoleMapper;
 import com.kiss.account.output.RoleOutput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class RoleDaoImpl implements RoleDao {
         roleMapper.createRole(role);
     }
 
-    public void bindPermissionsToRole(List<RolePermissions> rolePermissions) {
+    public void bindPermissionsToRole(List<RolePermission> rolePermissions) {
         roleMapper.bindPermissionsToRole(rolePermissions);
     }
 

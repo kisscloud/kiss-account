@@ -1,7 +1,7 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.Role;
-import com.kiss.account.entity.RolePermissions;
+import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface RoleDao {
      *
      * @param rolePermissions (List<RolePermissions>
      */
-    void bindPermissionsToRole(List<RolePermissions> rolePermissions);
+    void bindPermissionsToRole(List<RolePermission> rolePermissions);
 
     /**
      * 查询所有角色

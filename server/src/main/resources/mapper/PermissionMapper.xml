@@ -7,13 +7,13 @@
 <mapper namespace="com.kiss.account.mapper.PermissionMapper">
     <insert id="createPermission" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.kiss.account.entity.Permission">
-        insert into permissions(name, moduleId, type, code, dataFields, remark, status, seq, operatorId, operatorName, operatorIp)
-        values(#{name}, #{moduleId}, #{type}, #{code}, #{dataFields}, #{remark}, #{status}, #{seq}, #{operatorId}, #{operatorName}, #{operatorIp});
+        insert into permissions(name, moduleId, type, code, limitFields, remark, status, seq, operatorId, operatorName, operatorIp)
+        values(#{name}, #{moduleId}, #{type}, #{code}, #{limitFields}, #{remark}, #{status}, #{seq}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
     <select id="getPermissionById" resultType="com.kiss.account.output.PermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
-               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.code, permission.limitFields, permission.status, permission.seq,
                permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
                permission.createdAt, permission.updatedAt, pm.name as moduleName
         from permissions permission left join permissionModules pm
@@ -23,7 +23,7 @@
 
     <select id="getPermissionsByModuleId" resultType="com.kiss.account.output.PermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
-               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.code, permission.limitFields, permission.status, permission.seq,
                permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
                permission.createdAt, permission.updatedAt, pm.name as moduleName
         from permissions permission left join permissionModules pm
@@ -33,7 +33,7 @@
 
     <select id="getPermissions" resultType="com.kiss.account.output.PermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
-               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.code, permission.limitFields, permission.status, permission.seq,
                permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
                permission.createdAt, permission.updatedAt, pm.name as moduleName
         from permissions permission left join permissionModules pm
@@ -43,7 +43,7 @@
 
     <select id="getBindPermissions" resultType="com.kiss.account.output.BindPermissionOutput">
         select permission.id, permission.name, permission.moduleId, permission.type,
-               permission.code, permission.dataFields, permission.status, permission.seq,
+               permission.code, permission.limitFields, permission.status, permission.seq,
                permission.remark, pm.name as moduleName, pm.parentId as moduleParentId
         from permissions permission left join permissionModules pm
         on permission.moduleId = pm.id

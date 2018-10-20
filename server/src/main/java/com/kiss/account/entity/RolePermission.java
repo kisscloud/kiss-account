@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class RolePermissions {
+public class RolePermission {
     /**
      * 账户ID
      */
@@ -21,7 +21,7 @@ public class RolePermissions {
     /**
      * 数据权限
      */
-    private String dataScope;
+    private String limitScope;
     /**
      * 最后操作者ID
      */

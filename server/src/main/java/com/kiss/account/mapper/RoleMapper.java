@@ -1,7 +1,7 @@
 package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Role;
-import com.kiss.account.entity.RolePermissions;
+import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,7 +20,7 @@ public interface RoleMapper {
      * 给角色分配权限
      * @param rolePermissions
      */
-    void bindPermissionsToRole(List<RolePermissions> rolePermissions);
+    void bindPermissionsToRole(List<RolePermission> rolePermissions);
 
     /**
      * 查询所有角色

@@ -1,7 +1,6 @@
 package com.kiss.account.status;
 
 public class AccountStatusCode extends status.CodeEnums {
-
     public static final Integer PERMISSION_MODULE_NOT_EXIST = 1101;
     public static final Integer ACCOUNT_EXIST = 1210;
     public static final Integer ACCOUNT_GROUP_EXIST = 1203;

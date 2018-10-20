@@ -37,7 +37,7 @@ public class PermissionOutput {
     /**
      * 权限限制数据字段
      */
-    private String dataFields;
+    private String limitFields;
     /**
      * 权限状态
      */
