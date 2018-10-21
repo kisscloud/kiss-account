@@ -2,6 +2,9 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
+import com.kiss.account.entity.RolePermission;
+import com.kiss.account.input.BindPermissionToRoleInput;
+import com.kiss.account.input.BindRoleDataPermissions;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.input.UpdateRoleInput;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +25,7 @@ public class RoleValidator implements Validator {
     public boolean supports(Class<?> clazz) {
 
         return clazz.equals(CreateRoleInput.class)
-                || clazz.equals(UpdateRoleInput.class);
+                || clazz.equals(UpdateRoleInput.class) || clazz.equals(BindRoleDataPermissions.class) || clazz.equals(BindPermissionToRoleInput.class);
     }
 
     @Override
@@ -43,6 +46,11 @@ public class RoleValidator implements Validator {
             }
 
             validateName(updateRoleInput.getId(), updateRoleInput.getName(), errors);
+
+        } else if (BindRoleDataPermissions.class.isInstance(target)) {
+            BindRoleDataPermissions bindRoleDataPermissions = (BindRoleDataPermissions) target;
+            validateRolePermissionExist(bindRoleDataPermissions.getRoleId(),bindRoleDataPermissions.getPermissionId(),errors);
+        } else if (BindPermissionToRoleInput.class.isInstance(target)) {
 
         } else {
 
@@ -80,5 +88,24 @@ public class RoleValidator implements Validator {
         errors.rejectValue("name", "", "角色名已存在");
     }
 
+    private void validateRolePermissionExist(Integer roleId,Integer permissionId,Errors errors) {
 
+        if (roleId == null) {
+            errors.rejectValue("roleId", "", "角色id不能为空");
+            return;
+        }
+
+        if (permissionId == null) {
+            errors.rejectValue("permissionId", "", "权限id不能为空");
+            return;
+        }
+
+        RolePermission rolePermission = new RolePermission();
+        rolePermission.setRoleId(roleId);
+        rolePermission.setPermissionId(permissionId);
+        RolePermission exist = roleDao.getRolePermission(rolePermission);
+        if (exist == null) {
+            errors.rejectValue("permissionId","","角色权限不存在");
+        }
+    }
 }

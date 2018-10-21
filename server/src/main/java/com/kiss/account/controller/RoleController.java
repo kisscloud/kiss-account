@@ -1,14 +1,12 @@
 package com.kiss.account.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
-import com.kiss.account.input.BindAccountsToRoleInput;
-import com.kiss.account.input.BindPermissionToRoleInput;
-import com.kiss.account.input.CreateRoleInput;
-import com.kiss.account.input.UpdateRoleInput;
+import com.kiss.account.input.*;
 import com.kiss.account.output.AccountRoleOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
@@ -17,6 +15,7 @@ import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.RoleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import output.ResultOutput;
 
@@ -69,11 +70,21 @@ public class RoleController implements RoleClient {
 
     @Override
     @ApiOperation("分配角色权限")
+    @Transactional
     public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
 
+        List<Integer> permissionIds = roleDao.getRolesPermissionIds(bindPermissionToRoleInput.getRoleId());
+
+        if (permissionIds == null) {
+            permissionIds = new ArrayList<>();
+        }
+
+        List<RolePermission> updateRolePermissions = new ArrayList<>();
+        List<RolePermission> addRolePermissions = new ArrayList<>();
         List<Integer> permissions = bindPermissionToRoleInput.getPermissions();
         List<RolePermission> rolePermissions = new ArrayList<>();
         for (Integer permissionId : permissions) {
+
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
             rolePermission.setOperatorId(123);
@@ -81,9 +92,40 @@ public class RoleController implements RoleClient {
             rolePermission.setOperatorName("koy");
             rolePermission.setPermissionId(permissionId);
             rolePermissions.add(rolePermission);
+            if (permissionIds.contains(permissionId)) {
+                updateRolePermissions.add(rolePermission);
+                permissionIds.remove(permissionId);
+                continue;
+            }
+
+            addRolePermissions.add(rolePermission);
+            permissionIds.remove(permissionId);
         }
-        roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
-        roleDao.bindPermissionsToRole(rolePermissions);
+
+        if (addRolePermissions.size() != 0) {
+
+            roleDao.bindPermissionsToRole(addRolePermissions);
+        }
+
+        if (updateRolePermissions.size() != 0) {
+            for (RolePermission rolePermission : updateRolePermissions) {
+                roleDao.updateRolePermissions(rolePermission);
+            }
+        }
+
+        if (permissionIds.size() != 0) {
+
+            List<RolePermission> deletePermissions = new ArrayList<>();
+            for (Integer permissionId : permissionIds) {
+                RolePermission rolePermission = new RolePermission();
+                rolePermission.setPermissionId(permissionId);
+                rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
+                deletePermissions.add(rolePermission);
+            }
+
+            roleDao.deletePartRolePermissions(deletePermissions);
+        }
+
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
         for (RolePermission rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
@@ -174,6 +216,71 @@ public class RoleController implements RoleClient {
         roleDao.deleteRolePermissions(id);
 
         return ResultOutputUtil.success(id);
+    }
+
+    @Override
+    public ResultOutput bindRoleDataPermissions(@RequestBody BindRoleDataPermissions bindRoleDataPermissions) {
+
+        Map<String,String> params = new HashMap<>();
+        Map<String,String> data = new HashMap<>();
+        String dataCode = bindRoleDataPermissions.getDataCode();
+
+        String[] splits = dataCode.split("\\?");
+        if (splits.length != 2 && StringUtils.isEmpty(splits[1])) {
+            return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+        }
+
+        String[] dataScrops = splits[1].split("&");
+
+        for (String dataScrop : dataScrops) {
+            if (!dataScrop.contains("=")) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+
+            String[] dataMap = dataScrop.split("=");
+
+            if (dataMap.length != 2 || StringUtils.isEmpty(dataMap[0]) || StringUtils.isEmpty(dataMap[1])) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+
+            if (dataMap[0].contains("{") && dataMap[0].contains("}")) {
+                String key = dataMap[0];
+                data.put(key.substring(1,key.length() -1),dataMap[1]);
+                continue;
+            }
+
+            if (dataMap[0].contains("{") || dataMap[0].contains("}")) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+            params.put(dataMap[0],dataMap[1]);
+        }
+
+        Map<String,Object> limitScope = new HashMap<>();
+        if (params.size() != 0) {
+            limitScope.put("params",params);
+        }
+
+        if (data.size() != 0) {
+            limitScope.put("data",data);
+        }
+
+        if (limitScope.size() == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+        }
+
+        RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
+        rolePermissionOutput.setLimitScope(JSONObject.toJSONString(limitScope));
+        rolePermissionOutput.setLimitString(dataCode);
+        rolePermissionOutput.setLimitDescription(bindRoleDataPermissions.getDataDesc());
+        rolePermissionOutput.setPermissionId(bindRoleDataPermissions.getPermissionId());
+        rolePermissionOutput.setRoleId(bindRoleDataPermissions.getRoleId());
+        Integer count = roleDao.bindRoleDataPermissions(rolePermissionOutput);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_ADD_FAILED);
+        }
+
+        return ResultOutputUtil.success(rolePermissionOutput);
     }
 
 }
