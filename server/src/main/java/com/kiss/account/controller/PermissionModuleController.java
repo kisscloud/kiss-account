@@ -131,6 +131,12 @@ public class PermissionModuleController implements PermissionModuleClient {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
         }
 
+        List<PermissionModule> permissionModules = permissionDao.getPermissionModuleChildren(id);
+
+        if (permissionModules != null && permissionModules.size() != 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
+        }
+
         Integer count = permissionDao.deletePermissionModule(id);
 
         if (count == 0) {

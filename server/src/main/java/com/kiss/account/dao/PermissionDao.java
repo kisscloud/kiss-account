@@ -157,4 +157,11 @@ public interface PermissionDao {
      * @return Permission
      */
     Permission getPermissionByName(String name);
+
+    /**
+     * 根据模块id查询其子模块
+     * @param id
+     * @return
+     */
+    List<PermissionModule> getPermissionModuleChildren(Integer id);
 }

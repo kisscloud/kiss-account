@@ -136,5 +136,10 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionMapper.getPermissionByName(name);
     }
 
+    public List<PermissionModule>getPermissionModuleChildren(Integer id) {
+
+        return permissionModuleMapper.getPermissionModuleChildren(id);
+    };
+
 }
 

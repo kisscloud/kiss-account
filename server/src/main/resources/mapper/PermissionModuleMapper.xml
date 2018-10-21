@@ -55,4 +55,8 @@
         select * from permissionModules where name = #{name};
     </select>
 
+    <select id="getPermissionModuleChildren" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.PermissionModule">
+        select * from permissionmodules where parentId=#{id}
+    </select>
+
 </mapper>

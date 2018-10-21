@@ -46,4 +46,8 @@
     <delete id="deleteGroup" parameterType="java.lang.Integer">
         delete from accountGroups where id=#{id};
     </delete>
+
+    <select id="getAccountGroupChildren" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountGroups where parentId = #{id}
+    </select>
 </mapper>
