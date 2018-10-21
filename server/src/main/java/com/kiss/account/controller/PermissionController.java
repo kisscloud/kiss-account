@@ -57,7 +57,7 @@ public class PermissionController implements PermissionClient {
         permission.setModuleId(createPermissionInput.getModuleId());
         permission.setType(createPermissionInput.getType());
         permission.setCode(createPermissionInput.getCode());
-        // permission.setDataFields();
+        permission.setLimitFields(createPermissionInput.getLimitFields());
         permission.setStatus(createPermissionInput.getStatus());
         permission.setSeq(10);
         permission.setRemark(createPermissionInput.getRemark());

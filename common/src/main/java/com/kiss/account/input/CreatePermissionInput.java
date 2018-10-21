@@ -25,4 +25,6 @@ public class CreatePermissionInput {
     private Integer seq;
 
     private String remark;
+
+    private String limitFields;
 }

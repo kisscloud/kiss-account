@@ -2,6 +2,7 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
+import com.kiss.account.input.BindPermissionToRoleInput;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.input.UpdateRoleInput;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +23,8 @@ public class RoleValidator implements Validator {
     public boolean supports(Class<?> clazz) {
 
         return clazz.equals(CreateRoleInput.class)
-                || clazz.equals(UpdateRoleInput.class);
+                || clazz.equals(UpdateRoleInput.class)
+                || clazz.equals(BindPermissionToRoleInput.class);
     }
 
     @Override
@@ -43,6 +45,11 @@ public class RoleValidator implements Validator {
             }
 
             validateName(updateRoleInput.getId(), updateRoleInput.getName(), errors);
+
+        } else if (BindPermissionToRoleInput.class.isInstance(target)) {
+
+            BindPermissionToRoleInput bindPermissionToRoleInput = (BindPermissionToRoleInput) target;
+            validateRoleExist(bindPermissionToRoleInput.getRoleId(), errors);
 
         } else {
 
