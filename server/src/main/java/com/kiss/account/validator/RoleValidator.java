@@ -4,7 +4,6 @@ import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.input.BindPermissionToRoleInput;
 import com.kiss.account.entity.RolePermission;
-import com.kiss.account.input.BindPermissionToRoleInput;
 import com.kiss.account.input.BindRoleDataPermissions;
 import com.kiss.account.input.CreateRoleInput;
 import com.kiss.account.input.UpdateRoleInput;
@@ -57,12 +56,12 @@ public class RoleValidator implements Validator {
             BindPermissionToRoleInput bindPermissionToRoleInput = (BindPermissionToRoleInput) target;
             validateRoleExist(bindPermissionToRoleInput.getRoleId(), errors);
 
-        }
-//        else if (BindRoleDataPermissions.class.isInstance(target)) {
-//            BindRoleDataPermissions bindRoleDataPermissions = (BindRoleDataPermissions) target;
-//            validateRolePermissionExist(bindRoleDataPermissions.getRoleId(), bindRoleDataPermissions.getPermissionId(), errors);
-//        }
-        else {
+        } else if (BindRoleDataPermissions.class.isInstance(target)) {
+
+            BindRoleDataPermissions bindRoleDataPermissions = (BindRoleDataPermissions) target;
+            validateRolePermissionExist(bindRoleDataPermissions.getRoleId(), bindRoleDataPermissions.getPermissionId(), errors);
+
+        } else {
 
             errors.rejectValue("data", "", "数据格式错误");
         }

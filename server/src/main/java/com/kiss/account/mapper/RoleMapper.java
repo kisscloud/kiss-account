@@ -1,5 +1,6 @@
 package com.kiss.account.mapper;
 
+import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
@@ -40,6 +41,14 @@ public interface RoleMapper {
      * @return
      */
     List<Integer> getRolesPermissionIds(Integer id);
+
+    /**
+     * 查询角色下所有的权限
+     *
+     * @param id 角色id
+     * @return
+     */
+    List<RolePermission> getRolesPermissions(Integer id);
 
     /**
      * 查询角色下所有的账户id

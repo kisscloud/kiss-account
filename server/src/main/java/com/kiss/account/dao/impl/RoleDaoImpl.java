@@ -1,6 +1,7 @@
 package com.kiss.account.dao.impl;
 
 import com.kiss.account.dao.RoleDao;
+import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.mapper.RoleMapper;
@@ -36,6 +37,11 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public List<Integer> getRolesPermissionIds(Integer id) {
         return roleMapper.getRolesPermissionIds(id);
+    }
+
+    @Override
+    public List<RolePermission> getRolePermissions(Integer id) {
+        return roleMapper.getRolesPermissions(id);
     }
 
     @Override

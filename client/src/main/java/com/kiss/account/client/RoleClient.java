@@ -14,20 +14,26 @@ public interface RoleClient {
     @PostMapping("/role")
     ResultOutput createRole(@RequestBody CreateRoleInput createRoleInput);
 
-    @PostMapping("/roles/permissions")
+    @PostMapping("/role/permissions")
     ResultOutput bindRolePermissions(@RequestBody BindPermissionToRoleInput bindPermissionToRoleInput);
 
     @GetMapping("/roles")
-    ResultOutput<List<RoleOutput>> getRoles();
+    ResultOutput getRoles();
 
-    @GetMapping("/role/permissionIds")
-    ResultOutput<List<Integer>> getRolePermissionIds(@RequestParam("id") Integer id);
+    /**
+     * 获取角色绑定的权限列表
+     *
+     * @param id Integer 角色ID
+     * @return RoleOutput
+     */
+    @GetMapping("/role/permissions")
+    ResultOutput getRolePermissions(@RequestParam("id") Integer id);
 
     @GetMapping("/role/accountIds")
-    ResultOutput<List<Integer>> getRoleAccountIds(@RequestParam("id") Integer id);
+    ResultOutput getRoleAccountIds(@RequestParam("id") Integer id);
 
     @PostMapping("/role/accounts")
-    ResultOutput<List<AccountRoleOutput>> bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput);
+    ResultOutput bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput);
 
     @PutMapping("/role")
     ResultOutput updateRole(UpdateRoleInput updateRoleInput);

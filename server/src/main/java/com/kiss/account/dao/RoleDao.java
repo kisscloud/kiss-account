@@ -1,5 +1,6 @@
 package com.kiss.account.dao;
 
+import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
@@ -37,6 +38,14 @@ public interface RoleDao {
      * @return List<Integer>
      */
     List<Integer> getRolesPermissionIds(Integer id);
+
+    /**
+     * 根据角色id查询所有权限id
+     *
+     * @param id Integer
+     * @return List<RolePermission>
+     */
+    List<RolePermission> getRolePermissions(Integer id);
 
     /**
      * 根据角色id查询所有账号id

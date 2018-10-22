@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
+import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountRoleOutput;
+import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.status.AccountStatusCode;
@@ -152,10 +154,19 @@ public class RoleController implements RoleClient {
     }
 
     @Override
-    @ApiOperation(value = "获取角色绑定的权限ID列表")
-    public ResultOutput<List<Integer>> getRolePermissionIds(Integer id) {
-        List<Integer> permissionIds = roleDao.getRolesPermissionIds(id);
-        return ResultOutputUtil.success(permissionIds);
+    @ApiOperation(value = "获取角色绑定的所有权限")
+    public ResultOutput getRolePermissions(@RequestParam("id") Integer id) {
+
+        List<RolePermission> rolePermissions = roleDao.getRolePermissions(id);
+        List<RolePermissionOutput> rolePermissionOutputList = new ArrayList<>();
+
+        for (RolePermission rolePermission : rolePermissions) {
+            RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
+            BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
+            rolePermissionOutputList.add(rolePermissionOutput);
+        }
+
+        return ResultOutputUtil.success(rolePermissionOutputList);
     }
 
     @Override
@@ -219,10 +230,11 @@ public class RoleController implements RoleClient {
     }
 
     @Override
+    @ApiOperation(value = "绑定角色数据权限")
     public ResultOutput bindRoleDataPermissions(@RequestBody BindRoleDataPermissions bindRoleDataPermissions) {
 
-        Map<String,String> params = new HashMap<>();
-        Map<String,String> data = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         String dataCode = bindRoleDataPermissions.getDataCode();
 
         String[] splits = dataCode.split("\\?");
@@ -245,23 +257,23 @@ public class RoleController implements RoleClient {
 
             if (dataMap[0].contains("{") && dataMap[0].contains("}")) {
                 String key = dataMap[0];
-                data.put(key.substring(1,key.length() -1),dataMap[1]);
+                data.put(key.substring(1, key.length() - 1), dataMap[1]);
                 continue;
             }
 
             if (dataMap[0].contains("{") || dataMap[0].contains("}")) {
                 return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
             }
-            params.put(dataMap[0],dataMap[1]);
+            params.put(dataMap[0], dataMap[1]);
         }
 
-        Map<String,Object> limitScope = new HashMap<>();
+        Map<String, Object> limitScope = new HashMap<>();
         if (params.size() != 0) {
-            limitScope.put("params",params);
+            limitScope.put("params", params);
         }
 
         if (data.size() != 0) {
-            limitScope.put("data",data);
+            limitScope.put("data", data);
         }
 
         if (limitScope.size() == 0) {

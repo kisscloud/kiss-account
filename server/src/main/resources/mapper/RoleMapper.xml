@@ -35,6 +35,10 @@
         select permissionId from rolepermissions where roleId=#{id};
     </select>
 
+    <select id="getRolesPermissions" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.RolePermission">
+        select permissionId,limitString,limitDescription from rolePermissions where roleId=#{id};
+    </select>
+
     <select id="getRolesAccountIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select accountId from accountroles where roleId=#{id};
     </select>
@@ -58,7 +62,7 @@
         </if>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    
+
     <delete id="deleteRole" parameterType="java.lang.Integer">
         delete from roles where id = #{id}
     </delete>
