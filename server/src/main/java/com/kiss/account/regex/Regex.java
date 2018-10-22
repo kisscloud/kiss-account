@@ -1,7 +1,5 @@
 package com.kiss.account.regex;
 
-import java.util.regex.Pattern;
-
 public class Regex {
 
     public static final String INTEFACE_PERMISSION = "^(post|get|put|delete)@.+";
