@@ -3,6 +3,7 @@ package com.kiss.account.dao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
+import com.kiss.account.output.RolePermissionOutput;
 
 import java.util.List;
 
@@ -92,4 +93,27 @@ public interface RoleDao {
      * @return
      */
     Integer deleteRoleAccounts(Integer id);
+
+    /**
+     * 绑定用户权限
+     * @param rolePermission
+     * @return
+     */
+    Integer bindRoleDataPermissions(RolePermissionOutput rolePermission);
+
+    /**
+     * 根据权限id和角色id查询角色权限
+     * @param rolePermission 权限id
+     * @return
+     */
+    RolePermission getRolePermission (RolePermission rolePermission);
+
+    /**
+     * 更新角色的权限
+     * @param rolePermissions
+     * @return
+     */
+    Integer updateRolePermissions (RolePermission rolePermissions);
+
+    Integer deletePartRolePermissions (List<RolePermission> rolePermissions);
 }

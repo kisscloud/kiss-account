@@ -1,11 +1,8 @@
 package com.kiss.account.client;
 
-import com.kiss.account.input.BindAccountsToRoleInput;
-import com.kiss.account.input.BindPermissionToRoleInput;
-import com.kiss.account.input.UpdateRoleInput;
+import com.kiss.account.input.*;
 import com.kiss.account.output.AccountRoleOutput;
 import com.kiss.account.output.RoleOutput;
-import com.kiss.account.input.CreateRoleInput;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
 
@@ -37,4 +34,7 @@ public interface RoleClient {
 
     @DeleteMapping("/role")
     ResultOutput deleteRole(@RequestParam("id") Integer id);
+
+    @PostMapping("/role/dataPermissions")
+    ResultOutput bindRoleDataPermissions(BindRoleDataPermissions bindRoleDataPermissions);
 }

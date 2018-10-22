@@ -125,7 +125,7 @@
         on ar.roleId = rp.roleId
         left join permissions p
         on rp.permissionId = p.id
-        where ar.accountId=#{id}
+        where ar.accountId=#{id} and p.code is not null
     </select>
 
     <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Account">

@@ -23,6 +23,14 @@ public class RolePermission {
      */
     private String limitScope;
     /**
+     * 数据权限输入值
+     */
+    private String limitString;
+    /**
+     * 数据权限描述
+     */
+    private String limitDescription;
+    /**
      * 最后操作者ID
      */
     private int operatorId;

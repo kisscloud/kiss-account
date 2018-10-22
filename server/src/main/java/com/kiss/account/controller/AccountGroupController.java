@@ -105,7 +105,13 @@ public class AccountGroupController implements AccountGroupClient {
     public ResultOutput deleteGroup(@RequestParam("id") Integer id) {
 
         List<Account> accounts = accountDao.getAccountsByGroupId(id);
-        if (!accounts.isEmpty()) {
+        if (accounts != null && !accounts.isEmpty()) {
+            return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
+        }
+
+        List<AccountGroup> accountGroups = accountGroupDao.getAccountGroupChildren(id);
+
+        if (accountGroups != null && !accountGroups.isEmpty()) {
             return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
         }
 

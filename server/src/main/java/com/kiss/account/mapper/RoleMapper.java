@@ -3,6 +3,7 @@ package com.kiss.account.mapper;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.output.RoleOutput;
+import com.kiss.account.output.RolePermissionOutput;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -95,4 +96,32 @@ public interface RoleMapper {
      * @return
      */
     Integer deleteRoleAccounts(Integer id);
+
+    /**
+     * 绑定数据权限
+     * @param rolePermission
+     * @return
+     */
+    Integer bindRoleDataPermissions(RolePermissionOutput rolePermission);
+
+    /**
+     * 根据权限id获取角色权限
+     * @param rolePermission
+     * @return
+     */
+    RolePermission getRolePermission(RolePermission rolePermission);
+
+    /**
+     * 更新角色数据权限
+     * @param rolePermissions
+     * @return
+     */
+    Integer updateRolePermissions (RolePermission rolePermissions);
+
+    /**
+     * 删除角色权限
+     * @param rolePermissions
+     * @return
+     */
+    Integer deletePartRolePermissions (List<RolePermission> rolePermissions);
 }
