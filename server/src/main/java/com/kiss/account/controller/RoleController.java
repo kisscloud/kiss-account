@@ -142,7 +142,7 @@ public class RoleController implements RoleClient {
 
     @Override
     @ApiOperation(value = "获取角色绑定的用户ID列表")
-    public ResultOutput<List<Integer>> getRoleAccountIds(Integer id) {
+    public ResultOutput<List<Integer>> getRoleAccountIds(@RequestParam("id") Integer id) {
         List<Integer> accountIds = roleDao.getRolesAccountIds(id);
         return ResultOutputUtil.success(accountIds);
     }
