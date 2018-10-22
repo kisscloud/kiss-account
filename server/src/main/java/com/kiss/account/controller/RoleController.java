@@ -85,20 +85,19 @@ public class RoleController implements RoleClient {
             rolePermission.setOperatorIp("127.0.0.5");
             rolePermission.setOperatorName("koy");
             rolePermission.setPermissionId(dataPermission.getPermissionId());
-            rolePermission.setLimitString(dataPermission.getLimitString());
             rolePermission.setLimitDescription(dataPermission.getLimitDescription());
             String limitString = dataPermission.getLimitString();
-            if (!StringUtils.isEmpty(limitString)) {
+            if (!StringUtils.isEmpty(limitString) && !limitString.startsWith("page") && !limitString.startsWith("component")) {
                 ResultOutput resultOutput = analyseLimitString(limitString);
 
                 if (resultOutput.getCode() != 200) {
                     return resultOutput;
                 }
 
-                limitString = resultOutput.getData().toString();
+                rolePermission.setLimitScope(resultOutput.getData().toString());
+                rolePermission.setLimitString(limitString.substring(limitString.indexOf("?") + 1));
             }
 
-            rolePermission.setLimitScope(limitString);
             rolePermissions.add(rolePermission);
         }
 
