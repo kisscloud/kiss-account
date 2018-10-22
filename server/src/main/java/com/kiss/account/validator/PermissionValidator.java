@@ -6,12 +6,15 @@ import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.output.PermissionOutput;
+import com.kiss.account.regex.Regex;
 import com.kiss.account.utils.ApplicationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.util.regex.Pattern;
 
 @Component
 public class PermissionValidator implements Validator {
@@ -35,7 +38,7 @@ public class PermissionValidator implements Validator {
 
             CreatePermissionInput createPermissionInput = (CreatePermissionInput) target;
             validateName(null, createPermissionInput.getName(), errors);
-            validateCode(null, createPermissionInput.getCode(), errors);
+            validateCode(null, createPermissionInput.getCode(),createPermissionInput.getType(), errors);
             validateStatus(createPermissionInput.getStatus(), errors);
 
         } else if (UpdatePermissionInput.class.isInstance(target)) {
@@ -46,7 +49,7 @@ public class PermissionValidator implements Validator {
                 return;
             }
             validateName(updatePermissionInput.getId(), updatePermissionInput.getName(), errors);
-            validateCode(updatePermissionInput.getId(), updatePermissionInput.getCode(), errors);
+            validateCode(updatePermissionInput.getId(), updatePermissionInput.getCode(),updatePermissionInput.getType(), errors);
             validateStatus(updatePermissionInput.getStatus(), errors);
 
         } else {
@@ -87,11 +90,17 @@ public class PermissionValidator implements Validator {
         errors.rejectValue("name", "", "权限名称已存在");
     }
 
-    private void validateCode(Integer id, String code, Errors errors) {
+    private void validateCode(Integer id, String code,Integer type, Errors errors) {
 
         if (StringUtils.isEmpty(code)) {
 
             errors.rejectValue("code", "", "权限码不能为空");
+        }
+
+        if ((type == 1 && !Pattern.matches(Regex.INTEFACE_PERMISSION,code)) ||
+                (type == 2 && !Pattern.matches(Regex.PAGE_PERMISSION,code)) ||
+                (type == 3 && !Pattern.matches(Regex.COMPONENT_PERMISSION,code))) {
+            errors.rejectValue("code","","权限码格式不对");
         }
 
         Permission findPermission = permissionDao.getPermissionByCode(code);

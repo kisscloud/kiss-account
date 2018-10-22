@@ -87,13 +87,18 @@ public class RoleController implements RoleClient {
             rolePermission.setPermissionId(dataPermission.getPermissionId());
             rolePermission.setLimitString(dataPermission.getLimitString());
             rolePermission.setLimitDescription(dataPermission.getLimitDescription());
-            ResultOutput resultOutput = analyseLimitString(dataPermission.getLimitString());
+            String limitString = dataPermission.getLimitString();
+            if (!StringUtils.isEmpty(limitString)) {
+                ResultOutput resultOutput = analyseLimitString(limitString);
 
-            if (resultOutput.getCode() != 200) {
-                return resultOutput;
+                if (resultOutput.getCode() != 200) {
+                    return resultOutput;
+                }
+
+                limitString = resultOutput.getData().toString();
             }
 
-            rolePermission.setLimitScope(resultOutput.getData().toString());
+            rolePermission.setLimitScope(limitString);
             rolePermissions.add(rolePermission);
         }
 
@@ -200,12 +205,17 @@ public class RoleController implements RoleClient {
         return ResultOutputUtil.success(id);
     }
 
+    /**
+     * 解析数据权限的格式
+     * @param limitString
+     * @return
+     */
     public ResultOutput analyseLimitString (String limitString) {
         Map<String, String> params = new HashMap<>();
         Map<String, String> data = new HashMap<>();
 
         String[] splits = limitString.split("\\?");
-        if (splits.length != 2 && StringUtils.isEmpty(splits[1])) {
+        if (splits.length != 2 || StringUtils.isEmpty(splits[1])) {
             return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
         }
 
@@ -222,8 +232,25 @@ public class RoleController implements RoleClient {
                 return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
             }
 
+            if (dataScrop.contains("*") && !"*".equals(dataMap[1])) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+
             if (dataMap[0].contains("{") && dataMap[0].contains("}")) {
                 String key = dataMap[0];
+
+                if (dataScrop.contains("*") && data.containsKey(key.substring(1, key.length() - 1))) {
+                    return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+                }
+
+                if ("{*}".equals(key) && data.size() > 0) {
+                    return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+                }
+
+                if (data.containsKey("*")) {
+                    return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+                }
+
                 data.put(key.substring(1, key.length() - 1), dataMap[1]);
                 continue;
             }
@@ -231,6 +258,15 @@ public class RoleController implements RoleClient {
             if (dataMap[0].contains("{") || dataMap[0].contains("}")) {
                 return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
             }
+
+            if ("*".equals(dataMap[0]) && params.size() > 0) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+
+            if (dataScrop.contains("*") && params.containsKey(dataMap[0])) {
+                return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
+            }
+
             params.put(dataMap[0], dataMap[1]);
         }
 
