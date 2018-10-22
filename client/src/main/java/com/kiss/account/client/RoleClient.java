@@ -40,7 +40,4 @@ public interface RoleClient {
 
     @DeleteMapping("/role")
     ResultOutput deleteRole(@RequestParam("id") Integer id);
-
-    @PostMapping("/role/dataPermissions")
-    ResultOutput bindRoleDataPermissions(BindRoleDataPermissions bindRoleDataPermissions);
 }

@@ -24,10 +24,10 @@
 
     <insert id="bindPermissionsToRole" useGeneratedKeys="true" keyProperty="id"
             parameterType="java.util.List">
-        insert into rolepermissions(roleId, permissionId, limitScope, operatorId, operatorName, operatorIp)
+        insert into rolepermissions(roleId, permissionId, limitScope,limitString,limitDescription, operatorId, operatorName, operatorIp)
         values
         <foreach collection="list" item="permission" index="index" separator=",">
-            (#{permission.roleId}, #{permission.permissionId}, #{permission.limitScope}, #{permission.operatorId}, #{permission.operatorName}, #{permission.operatorIp})
+            (#{permission.roleId}, #{permission.permissionId}, #{permission.limitScope},#{permission.limitString},#{permission.limitDescription},#{permission.operatorId}, #{permission.operatorName}, #{permission.operatorIp})
         </foreach>
     </insert>
 
@@ -74,43 +74,4 @@
     <delete id="deleteRoleAccounts" parameterType="java.lang.Integer">
         delete from accountroles where roleId=#{id}
     </delete>
-
-    <update id="bindRoleDataPermissions" parameterType="com.kiss.account.output.RolePermissionOutput">
-        update rolepermissions
-        set
-        limitScope = #{limitScope},
-        limitString = #{limitString}
-        <if test="limitDescription != null">
-            ,limitDescription = #{limitDescription}
-        </if>
-        where permissionId = #{permissionId} and roleId = #{roleId}
-    </update>
-
-    <select id="getRolePermission" parameterType="com.kiss.account.entity.RolePermission" resultType="com.kiss.account.entity.RolePermission">
-        select * from rolepermissions where permissionId=#{permissionId} and roleId= #{roleId} limit 0,1;
-    </select>
-
-    <select id="updateRolePermissions" parameterType="com.kiss.account.entity.RolePermission">
-
-            update rolepermissions
-            set roleId = #{roleId}
-            <if test="operatorId != null">
-                ,operatorId = #{operatorId}
-            </if>
-            <if test="operatorName != null">
-                ,operatorName = #{operatorName}
-            </if>
-            <if test="operatorIp != null">
-                ,operatorIp = #{operatorIp}
-            </if>
-            where roleId=#{roleId} and permissionId=#{permissionId};
-
-    </select>
-
-    <select id="deletePartRolePermissions" parameterType="com.kiss.account.entity.RolePermission">
-        <foreach collection="list" separator=";" item="permission">
-            delete from rolepermissions
-            where roleId=#{permission.roleId} and permissionId=#{permission.permissionId}
-        </foreach>
-    </select>
 </mapper>

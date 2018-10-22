@@ -28,7 +28,7 @@ public class RoleValidator implements Validator {
                 || clazz.equals(UpdateRoleInput.class)
                 || clazz.equals(BindPermissionToRoleInput.class)
                 || clazz.equals(UpdateRoleInput.class)
-                || clazz.equals(BindRoleDataPermissions.class) || clazz.equals(BindPermissionToRoleInput.class);
+                || clazz.equals(BindPermissionToRoleInput.class);
     }
 
     @Override
@@ -55,11 +55,6 @@ public class RoleValidator implements Validator {
 
             BindPermissionToRoleInput bindPermissionToRoleInput = (BindPermissionToRoleInput) target;
             validateRoleExist(bindPermissionToRoleInput.getRoleId(), errors);
-
-        } else if (BindRoleDataPermissions.class.isInstance(target)) {
-
-            BindRoleDataPermissions bindRoleDataPermissions = (BindRoleDataPermissions) target;
-            validateRolePermissionExist(bindRoleDataPermissions.getRoleId(), bindRoleDataPermissions.getPermissionId(), errors);
 
         } else {
 
@@ -95,26 +90,5 @@ public class RoleValidator implements Validator {
         }
 
         errors.rejectValue("name", "", "角色名已存在");
-    }
-
-    private void validateRolePermissionExist(Integer roleId, Integer permissionId, Errors errors) {
-
-        if (roleId == null) {
-            errors.rejectValue("roleId", "", "角色id不能为空");
-            return;
-        }
-
-        if (permissionId == null) {
-            errors.rejectValue("permissionId", "", "权限id不能为空");
-            return;
-        }
-
-        RolePermission rolePermission = new RolePermission();
-        rolePermission.setRoleId(roleId);
-        rolePermission.setPermissionId(permissionId);
-        RolePermission exist = roleDao.getRolePermission(rolePermission);
-        if (exist == null) {
-            errors.rejectValue("permissionId", "", "角色权限不存在");
-        }
     }
 }

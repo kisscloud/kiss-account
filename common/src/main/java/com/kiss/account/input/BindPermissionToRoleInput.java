@@ -11,5 +11,5 @@ public class BindPermissionToRoleInput {
     @NotNull(message = "角色ID不能为空")
     private int roleId;
 
-    private List<Integer> permissions;
+    private List<BindRoleDataPermissions> permissions;
 }

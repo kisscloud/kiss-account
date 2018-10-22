@@ -75,59 +75,30 @@ public class RoleController implements RoleClient {
     @Transactional
     public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
 
-        List<Integer> permissionIds = roleDao.getRolesPermissionIds(bindPermissionToRoleInput.getRoleId());
-
-        if (permissionIds == null) {
-            permissionIds = new ArrayList<>();
-        }
-
-        List<RolePermission> updateRolePermissions = new ArrayList<>();
-        List<RolePermission> addRolePermissions = new ArrayList<>();
-        List<Integer> permissions = bindPermissionToRoleInput.getPermissions();
+        roleDao.getRolePermissions(bindPermissionToRoleInput.getRoleId());
+        List<BindRoleDataPermissions> permissions = bindPermissionToRoleInput.getPermissions();
         List<RolePermission> rolePermissions = new ArrayList<>();
-        for (Integer permissionId : permissions) {
-
+        for (BindRoleDataPermissions dataPermission : permissions) {
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
             rolePermission.setOperatorId(123);
             rolePermission.setOperatorIp("127.0.0.5");
             rolePermission.setOperatorName("koy");
-            rolePermission.setPermissionId(permissionId);
+            rolePermission.setPermissionId(dataPermission.getPermissionId());
+            rolePermission.setLimitString(dataPermission.getLimitString());
+            rolePermission.setLimitDescription(dataPermission.getLimitDescription());
+            ResultOutput resultOutput = analyseLimitString(dataPermission.getLimitString());
+
+            if (resultOutput.getCode() != 200) {
+                return resultOutput;
+            }
+
+            rolePermission.setLimitScope(resultOutput.getData().toString());
             rolePermissions.add(rolePermission);
-            if (permissionIds.contains(permissionId)) {
-                updateRolePermissions.add(rolePermission);
-                permissionIds.remove(permissionId);
-                continue;
-            }
-
-            addRolePermissions.add(rolePermission);
-            permissionIds.remove(permissionId);
         }
 
-        if (addRolePermissions.size() != 0) {
-
-            roleDao.bindPermissionsToRole(addRolePermissions);
-        }
-
-        if (updateRolePermissions.size() != 0) {
-            for (RolePermission rolePermission : updateRolePermissions) {
-                roleDao.updateRolePermissions(rolePermission);
-            }
-        }
-
-        if (permissionIds.size() != 0) {
-
-            List<RolePermission> deletePermissions = new ArrayList<>();
-            for (Integer permissionId : permissionIds) {
-                RolePermission rolePermission = new RolePermission();
-                rolePermission.setPermissionId(permissionId);
-                rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
-                deletePermissions.add(rolePermission);
-            }
-
-            roleDao.deletePartRolePermissions(deletePermissions);
-        }
-
+        roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
+        roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
         for (RolePermission rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
@@ -229,15 +200,11 @@ public class RoleController implements RoleClient {
         return ResultOutputUtil.success(id);
     }
 
-    @Override
-    @ApiOperation(value = "绑定角色数据权限")
-    public ResultOutput bindRoleDataPermissions(@RequestBody BindRoleDataPermissions bindRoleDataPermissions) {
-
+    public ResultOutput analyseLimitString (String limitString) {
         Map<String, String> params = new HashMap<>();
         Map<String, String> data = new HashMap<>();
-        String dataCode = bindRoleDataPermissions.getDataCode();
 
-        String[] splits = dataCode.split("\\?");
+        String[] splits = limitString.split("\\?");
         if (splits.length != 2 && StringUtils.isEmpty(splits[1])) {
             return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
         }
@@ -280,19 +247,6 @@ public class RoleController implements RoleClient {
             return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
         }
 
-        RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
-        rolePermissionOutput.setLimitScope(JSONObject.toJSONString(limitScope));
-        rolePermissionOutput.setLimitString(dataCode);
-        rolePermissionOutput.setLimitDescription(bindRoleDataPermissions.getDataDesc());
-        rolePermissionOutput.setPermissionId(bindRoleDataPermissions.getPermissionId());
-        rolePermissionOutput.setRoleId(bindRoleDataPermissions.getRoleId());
-        Integer count = roleDao.bindRoleDataPermissions(rolePermissionOutput);
-
-        if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_ADD_FAILED);
-        }
-
-        return ResultOutputUtil.success(rolePermissionOutput);
+        return ResultOutputUtil.success(JSONObject.toJSONString(limitScope));
     }
-
 }

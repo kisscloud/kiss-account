@@ -78,24 +78,4 @@ public class RoleDaoImpl implements RoleDao {
     public Integer deleteRoleAccounts(Integer id) {
         return roleMapper.deleteRoleAccounts(id);
     }
-
-    @Override
-    public Integer bindRoleDataPermissions(RolePermissionOutput rolePermissionOutput) {
-        return roleMapper.bindRoleDataPermissions(rolePermissionOutput);
-    }
-
-    @Override
-    public RolePermission getRolePermission(RolePermission rolePermission) {
-        return roleMapper.getRolePermission(rolePermission);
-    }
-
-    @Override
-    public Integer updateRolePermissions(RolePermission rolePermissions) {
-        return roleMapper.updateRolePermissions(rolePermissions);
-    }
-
-    @Override
-    public Integer deletePartRolePermissions(List<RolePermission> rolePermissions) {
-        return roleMapper.deletePartRolePermissions(rolePermissions);
-    }
 }
