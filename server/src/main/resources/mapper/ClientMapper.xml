@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 定义一个映射配置文件的根节点 -->
+<!-- namespace 属性用来定义配置命名空间， 主要进行 session 级别的缓存管理 -->
+<!-- namespace 默认使用当前操作实体类的全路径 -->
+<mapper namespace="com.kiss.account.mapper.ClientMapper">
+    
+    <select id="getClientOutputs" resultType="com.kiss.account.output.ClientOutput">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients
+    </select>
+    
+    <select id="getClientOutput" parameterType="java.lang.String" resultType="com.kiss.account.output.ClientOutput">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where clientID=#{clientID}
+    </select>
+
+    <select id="getClient" parameterType="java.lang.String" resultType="com.kiss.account.entity.Client">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where clientID=#{clientID}
+    </select>
+
+    <select id="getClientById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
+    </select>
+
+    <insert id="createClient" parameterType="com.kiss.account.entity.Client">
+        insert into clients (clientName,clientID,clientSecret,lastAccessAt,status)
+        value
+        (#{clientName},#{clientID},#{clientSecret},#{lastAccessAt},#{status})
+    </insert>
+    
+    <update id="updateClient" parameterType="com.kiss.account.entity.Client">
+        update clients
+        set
+        clientID = #{clientID}
+        <if test="clientName != null">
+            ,clientName = #{clientName}
+        </if>
+        <if test="lastAccessAt != null">
+            ,lastAccessAt = #{lastAccessAt}
+        </if>
+        <if test="status != null">
+            ,status = #{status}
+        </if>
+        where clientID = #{clientID}
+    </update>
+    
+    <delete id="deleteClient" parameterType="java.lang.String">
+        delete from clients where clientID = #{clientID}
+    </delete>
+
+</mapper>
