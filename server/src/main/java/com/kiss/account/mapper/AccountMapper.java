@@ -160,4 +160,6 @@ public interface AccountMapper {
      * @return List<String>
      */
     List<String> getAccountPermissionDataScope(Map<String, Object> params);
+
+    Integer getValidAccountsCount();
 }

@@ -227,6 +227,13 @@ public class AccountController implements AccountClient {
         return ResultOutputUtil.success(dataScope);
     }
 
+    @Override
+    public ResultOutput getValidAccountsCount() {
+
+        Integer count = accountDao.getValidAccountsCount();
+        return ResultOutputUtil.success(count);
+    }
+
     public ResultOutput verifyAccountExistType(Account account, String name, String username, String email, String mobile) {
         if (!StringUtils.isEmpty(account.getName()) && account.getName().equals(name)) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NAME_EXIST);

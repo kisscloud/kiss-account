@@ -85,4 +85,6 @@ public interface PermissionMapper {
      * 通过权限名称获取权限
      */
     Permission getPermissionByName(String name);
+
+    Integer getValidPermissionCount();
 }

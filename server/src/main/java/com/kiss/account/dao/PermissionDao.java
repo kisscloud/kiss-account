@@ -164,4 +164,6 @@ public interface PermissionDao {
      * @return
      */
     List<PermissionModule> getPermissionModuleChildren(Integer id);
+
+    Integer getValidPermissionCount();
 }

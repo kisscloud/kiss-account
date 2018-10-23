@@ -152,5 +152,7 @@ public interface AccountDao {
      */
     List<String> getAccountPermissionDataScope(Integer id, String code);
 
+    Integer getValidAccountsCount();
+
 
 }

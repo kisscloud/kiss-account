@@ -128,4 +128,9 @@ public class AccountDaoImpl implements AccountDao {
         params.put("code", code);
         return accountMapper.getAccountPermissionDataScope(params);
     }
+
+    @Override
+    public Integer getValidAccountsCount() {
+        return accountMapper.getValidAccountsCount();
+    }
 }

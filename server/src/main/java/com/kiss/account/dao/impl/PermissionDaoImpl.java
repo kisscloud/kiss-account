@@ -147,6 +147,11 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionModuleMapper.getPermissionModuleChildren(id);
     }
 
+    @Override
+    public Integer getValidPermissionCount() {
+        return permissionMapper.getValidPermissionCount();
+    }
+
     ;
 
 }

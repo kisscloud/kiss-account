@@ -139,4 +139,8 @@
         on rp.permissionId = pe.id
         where ar.accountId = #{id} and pe.code = #{code} and rp.dataScope is not null
     </select>
+
+    <select id="getValidAccountsCount" resultType="java.lang.Integer">
+        select count(*) from accounts where status=1
+    </select>
 </mapper>

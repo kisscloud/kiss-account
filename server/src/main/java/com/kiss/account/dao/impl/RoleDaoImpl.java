@@ -78,4 +78,9 @@ public class RoleDaoImpl implements RoleDao {
     public Integer deleteRoleAccounts(Integer id) {
         return roleMapper.deleteRoleAccounts(id);
     }
+
+    @Override
+    public Integer getValidRoleCount() {
+        return roleMapper.getValidRoleCount();
+    }
 }

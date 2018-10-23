@@ -105,4 +105,6 @@ public interface RoleMapper {
      * @return
      */
     Integer deleteRoleAccounts(Integer id);
+
+    Integer getValidRoleCount();
 }
