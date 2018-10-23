@@ -1,7 +1,7 @@
 package com.kiss.account.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kiss.account.entity.Operator;
+import com.kiss.account.entity.Guest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
@@ -19,7 +19,7 @@ public class GuestUtil {
      * @return Integer
      */
     public static Integer getGuestId() {
-        Operator operator = ThreadLocalUtil.getOperatorInfo();
+        Guest operator = ThreadLocalUtil.getGuest();
 
         if (operator == null) {
             return null;
@@ -33,7 +33,7 @@ public class GuestUtil {
      * @return String
      */
     public static String getName() {
-        Operator operator = ThreadLocalUtil.getOperatorInfo();
+        Guest operator = ThreadLocalUtil.getGuest();
         if (operator == null) {
             return null;
         }
@@ -46,8 +46,8 @@ public class GuestUtil {
      *
      * @param operator Operator
      */
-    public static void setGuest(Operator operator) {
-        ThreadLocalUtil.setOperatorInfo(operator);
+    public static void setGuest(Guest operator) {
+        ThreadLocalUtil.setGuest(operator);
     }
 
     public static byte[] getGlobalMessage(HttpServletRequest request) throws IOException {
@@ -64,10 +64,10 @@ public class GuestUtil {
         JSONObject userMessageOb = JSONObject.parseObject(userMessage);
 
         if (userMessageOb != null) {
-            Operator operator = new Operator();
-            operator.setName(userMessageOb.getString("GateUsername"));
-            operator.setId(userMessageOb.getInteger("GateUserId"));
-            ThreadLocalUtil.setOperatorInfo(operator);
+            Guest guest = new Guest();
+            guest.setName(userMessageOb.getString("GateUsername"));
+            guest.setId(userMessageOb.getInteger("GateUserId"));
+            ThreadLocalUtil.setGuest(guest);
         }
 
         return bytes;

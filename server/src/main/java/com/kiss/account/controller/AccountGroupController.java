@@ -5,10 +5,14 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
+import com.kiss.account.entity.Guest;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.GuestUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.AccountGroupValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +41,9 @@ public class AccountGroupController implements AccountGroupClient {
     @Autowired
     private AccountGroupValidator accountGroupValidator;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @Value("${max.accounts.size}")
     private String maxAccountsSize;
 
@@ -52,6 +59,8 @@ public class AccountGroupController implements AccountGroupClient {
     @ApiOperation(value = "创建部门")
     public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
         if (accountGroup != null) {
@@ -62,13 +71,15 @@ public class AccountGroupController implements AccountGroupClient {
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
         accountGroup.setLevel("0,");
         accountGroup.setSeq(0);
-        accountGroup.setOperatorId(123);
-        accountGroup.setOperatorIp("127.0.0.1");
-        accountGroup.setOperatorName("koy");
+        accountGroup.setOperatorId(guest.getId());
+        accountGroup.setOperatorIp(guest.getIp());
+        accountGroup.setOperatorName(guest.getName());
         accountGroupDao.createAccountGroup(accountGroup);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
+
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
 
+        operationLogService.saveAccountGroupLog(guest, null, accountGroup);
 
         return ResultOutputUtil.success(accountGroupOutput);
     }
@@ -104,6 +115,8 @@ public class AccountGroupController implements AccountGroupClient {
     @ApiOperation(value = "删除部门")
     public ResultOutput deleteGroup(@RequestParam("id") Integer id) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         List<Account> accounts = accountDao.getAccountsByGroupId(id);
         if (accounts != null && !accounts.isEmpty()) {
             return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
@@ -115,7 +128,12 @@ public class AccountGroupController implements AccountGroupClient {
             return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
         }
 
+        AccountGroup oldValue = accountGroupDao.getAccountGroupById(id);
+
         accountGroupDao.deleteGroup(id);
+
+        operationLogService.saveAccountGroupLog(guest, oldValue, null);
+
         return ResultOutputUtil.success();
     }
 
@@ -123,13 +141,25 @@ public class AccountGroupController implements AccountGroupClient {
     @ApiOperation(value = "更新部门")
     public ResultOutput updateAccountGroup(@Valid @RequestBody UpdateAccountGroupInput updateAccountGroupInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
+        AccountGroup oldValue = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
+
         AccountGroup accountGroup = new AccountGroup();
         BeanUtils.copyProperties(updateAccountGroupInput, accountGroup);
+        accountGroup.setOperatorId(guest.getId());
+        accountGroup.setOperatorIp(guest.getIp());
+        accountGroup.setOperatorName(guest.getName());
+
         Integer count = accountGroupDao.updateAccountGroup(accountGroup);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_GROUP_FAILED);
         }
+
+        AccountGroup newValue = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
+        operationLogService.saveAccountGroupLog(guest, oldValue, newValue);
+
         return ResultOutputUtil.success(accountGroup);
     }
 }

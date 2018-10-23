@@ -2,13 +2,16 @@ package com.kiss.account.controller;
 
 import com.kiss.account.client.PermissionModuleClient;
 import com.kiss.account.dao.PermissionDao;
+import com.kiss.account.entity.Guest;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.output.PermissionModuleOutput;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,9 @@ public class PermissionModuleController implements PermissionModuleClient {
     @Autowired
     private PermissionDao permissionDao;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(new PermissionModuleValidator());
@@ -44,26 +50,27 @@ public class PermissionModuleController implements PermissionModuleClient {
     @ApiOperation(value = "创建权限模块")
     public ResultOutput<PermissionModuleOutput> createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
 
-        PermissionModule permissionModule = new PermissionModule();
-        PermissionModule parentPermissionModule = new PermissionModule();
+        Guest guest = ThreadLocalUtil.getGuest();
 
-        // 2. 添加权限模块信息
+        PermissionModule permissionModule = new PermissionModule();
+
         permissionModule.setName(permissionModuleInput.getName());
         permissionModule.setParentId(permissionModuleInput.getParentId());
         permissionModule.setSeq(100);
         permissionModule.setRemark(permissionModuleInput.getRemark());
         permissionModule.setLevel("0,");
         permissionModule.setPermissions(0);
-        permissionModule.setOperatorId(123);
-        permissionModule.setOperatorName("koy");
-        permissionModule.setOperatorIp("0.0.0.0");
+        permissionModule.setOperatorId(guest.getId());
+        permissionModule.setOperatorName(guest.getName());
+        permissionModule.setOperatorIp(guest.getIp());
         permissionModule.setStatus(1);
-
 
         permissionDao.createPermissionModule(permissionModule);
 
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
+
+        operationLogService.savePermissionModuleLog(guest, null, permissionModule);
 
         return ResultOutputUtil.success(permissionModuleOutput);
     }
@@ -104,6 +111,8 @@ public class PermissionModuleController implements PermissionModuleClient {
     @ApiOperation(value = "更新权限模块")
     public ResultOutput<PermissionModuleOutput> updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput updatePermissionModuleInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(updatePermissionModuleInput, permissionModuleOutput);
         Integer count = permissionDao.updatePermissionModule(permissionModuleOutput);
@@ -131,11 +140,16 @@ public class PermissionModuleController implements PermissionModuleClient {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
         }
 
+        Guest guest = ThreadLocalUtil.getGuest();
+        PermissionModule oldValue = permissionDao.getPermissionModuleById(id);
+
         Integer count = permissionDao.deletePermissionModule(id);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
         }
+
+        operationLogService.savePermissionModuleLog(guest, oldValue, null);
 
         return ResultOutputUtil.success();
     }

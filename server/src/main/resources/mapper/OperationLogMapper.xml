@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 定义一个映射配置文件的根节点 -->
+<!-- namespace 属性用来定义配置命名空间， 主要进行 session 级别的缓存管理 -->
+<!-- namespace 默认使用当前操作实体类的全路径 -->
+<mapper namespace="com.kiss.account.mapper.OperationLogMapper">
+
+    <insert id="createOperatorLog" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.kiss.account.entity.OperationLog">
+        insert into permissions(operatorId, operatorName, operatorIp, targetId, targetId, beforeValue, afterValue, recoveredAt, createdAt, updatedAt)
+        values(#{operatorId}, #{operatorName}, #{operatorIp}, #{targetId}, #{targetType}, #{beforeValue}, #{afterValue}, #{recoveredAt}, #{createdAt}, #{updatedAt});
+    </insert>
+
+
+
+</mapper>

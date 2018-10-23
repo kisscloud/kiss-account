@@ -2,15 +2,18 @@ package com.kiss.account.controller;
 
 import com.kiss.account.client.PermissionClient;
 import com.kiss.account.dao.PermissionDao;
+import com.kiss.account.entity.Guest;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionOutput;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
 import com.kiss.account.validator.PermissionValidator;
 import io.swagger.annotations.Api;
@@ -38,6 +41,9 @@ public class PermissionController implements PermissionClient {
     @Autowired
     private PermissionValidator permissionValidator;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(permissionValidator);
@@ -47,6 +53,8 @@ public class PermissionController implements PermissionClient {
     @ApiOperation(value = "创建权限")
     @Transactional
     public ResultOutput<PermissionOutput> createPermission(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
+
+        Guest guest = ThreadLocalUtil.getGuest();
 
         // 1. 查询权限所属模块信息
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(createPermissionInput.getModuleId());
@@ -61,9 +69,9 @@ public class PermissionController implements PermissionClient {
         permission.setStatus(createPermissionInput.getStatus());
         permission.setSeq(10);
         permission.setRemark(createPermissionInput.getRemark());
-        permission.setOperatorId(123);
-        permission.setOperatorName("koy");
-        permission.setOperatorIp("0.0.0.0");
+        permission.setOperatorId(guest.getId());
+        permission.setOperatorName(guest.getName());
+        permission.setOperatorIp(guest.getIp());
 
         permissionDao.createPermission(permission);
 
@@ -84,6 +92,9 @@ public class PermissionController implements PermissionClient {
         permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
         permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
+
+
+        operationLogService.savePermissionLog(guest, null, permission);
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -120,34 +131,51 @@ public class PermissionController implements PermissionClient {
     @ApiOperation(value = "更新权限")
     public ResultOutput<PermissionOutput> updatePermission(@Validated @RequestBody UpdatePermissionInput updatePermissionInput) {
 
-        Permission permission = new Permission();
-        permission.setCode(updatePermissionInput.getCode());
-        permission.setName(updatePermissionInput.getName());
+        Guest guest = ThreadLocalUtil.getGuest();
 
-        PermissionOutput permissionOutput = new PermissionOutput();
-        BeanUtils.copyProperties(updatePermissionInput, permissionOutput);
-        Integer count = permissionDao.updatePermission(permissionOutput);
+        PermissionOutput oldPermissionOutput = permissionDao.getPermissionById(updatePermissionInput.getId());
+        Permission oldValue = new Permission();
+        Permission newValue = new Permission();
+        BeanUtils.copyProperties(oldPermissionOutput, oldValue);
+
+
+        PermissionOutput newPermissionOutput = new PermissionOutput();
+        BeanUtils.copyProperties(updatePermissionInput, newPermissionOutput);
+        Integer count = permissionDao.updatePermission(newPermissionOutput);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_PERMISSION_FAILD);
         }
 
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(updatePermissionInput.getModuleId());
-        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
-        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
-        permissionOutput.setModuleName(permissionModule.getName());
+        newPermissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(newPermissionOutput.getType())));
+        newPermissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(newPermissionOutput.getStatus())));
+        newPermissionOutput.setModuleName(permissionModule.getName());
 
-        return ResultOutputUtil.success(permissionOutput);
+        BeanUtils.copyProperties(newPermissionOutput, newValue);
+
+        operationLogService.savePermissionLog(guest, oldValue, newValue);
+
+        return ResultOutputUtil.success(newPermissionOutput);
     }
 
     @Override
     @ApiOperation(value = "删除权限")
     public ResultOutput deletePermission(@RequestParam("id") Integer id) {
+
+        Guest guest = ThreadLocalUtil.getGuest();
+
+        PermissionOutput oldPermissionOutput = permissionDao.getPermissionById(id);
+        Permission oldValue = new Permission();
+        BeanUtils.copyProperties(oldPermissionOutput, oldValue);
+
         Integer count = permissionDao.deletePermission(id);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_FAILED);
         }
+
+        operationLogService.savePermissionLog(guest, oldValue, null);
 
         return ResultOutputUtil.success();
     }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
+import com.kiss.account.entity.Guest;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
@@ -12,8 +13,10 @@ import com.kiss.account.output.AccountRoleOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
+import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.RoleValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,6 +51,8 @@ public class RoleController implements RoleClient {
     @Autowired
     private RoleValidator roleValidator;
 
+    @Autowired
+    private OperationLogService operationLogService;
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
@@ -58,14 +63,18 @@ public class RoleController implements RoleClient {
     @ApiOperation("添加角色")
     public ResultOutput<RoleOutput> createRole(@Validated @RequestBody CreateRoleInput createRoleInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         Role role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
-        role.setOperatorId(123);
-        role.setOperatorIp("127.0.0.5");
-        role.setOperatorName("koy");
+        role.setOperatorId(guest.getId());
+        role.setOperatorName(guest.getName());
+        role.setOperatorIp(guest.getIp());
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
+
+        operationLogService.saveRoleLog(guest, null, role);
 
         return ResultOutputUtil.success(roleOutput);
     }
@@ -75,15 +84,18 @@ public class RoleController implements RoleClient {
     @Transactional
     public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         roleDao.getRolePermissions(bindPermissionToRoleInput.getRoleId());
         List<BindRoleDataPermissions> permissions = bindPermissionToRoleInput.getPermissions();
         List<RolePermission> rolePermissions = new ArrayList<>();
+
         for (BindRoleDataPermissions dataPermission : permissions) {
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
-            rolePermission.setOperatorId(123);
-            rolePermission.setOperatorIp("127.0.0.5");
-            rolePermission.setOperatorName("koy");
+            rolePermission.setOperatorId(guest.getId());
+            rolePermission.setOperatorName(guest.getName());
+            rolePermission.setOperatorIp(guest.getIp());
             rolePermission.setPermissionId(dataPermission.getPermissionId());
             rolePermission.setLimitDescription(dataPermission.getLimitDescription());
             String limitString = dataPermission.getLimitString();
@@ -104,6 +116,7 @@ public class RoleController implements RoleClient {
         roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
         roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
+
         for (RolePermission rolePermission : rolePermissions) {
             RolePermissionOutput rolePermissionOutput = new RolePermissionOutput();
             BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
@@ -155,14 +168,15 @@ public class RoleController implements RoleClient {
     @ApiOperation(value = "绑定角色的用户")
     public ResultOutput<List<AccountRoleOutput>> bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
         List<Integer> accountIds = bindAccountsToRoleInput.getAccountIds();
         List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer accountId : accountIds) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(123);
-            accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName("koy");
+            accountRoles.setOperatorId(guest.getId());
+            accountRoles.setOperatorIp(guest.getIp());
+            accountRoles.setOperatorName(guest.getName());
             accountRoles.setAccountId(accountId);
             accountRoles.setRoleId(bindAccountsToRoleInput.getId());
             accountRolesList.add(accountRoles);
@@ -177,6 +191,8 @@ public class RoleController implements RoleClient {
     @Override
     @ApiOperation(value = "更新角色")
     public ResultOutput<RoleOutput> updateRole(@Validated @RequestBody UpdateRoleInput updateRoleInput) {
+
+        Guest guest = ThreadLocalUtil.getGuest();
 
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(updateRoleInput, roleOutput);
@@ -193,23 +209,31 @@ public class RoleController implements RoleClient {
     @Transactional
     @ApiOperation(value = "删除空角色", notes = "未绑定用户的角色")
     public ResultOutput deleteRole(@RequestParam("id") Integer id) {
+
+        Guest guest = ThreadLocalUtil.getGuest();
+
         Integer roleCount = roleDao.deleteRole(id);
 
         if (roleCount == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_ROLE_FAILED);
         }
 
+        Role oldValue = roleDao.getRoleById(id);
+
         roleDao.deleteRolePermissions(id);
+
+        operationLogService.saveRoleLog(guest, oldValue, null);
 
         return ResultOutputUtil.success(id);
     }
 
     /**
      * 解析数据权限的格式
+     *
      * @param limitString
      * @return
      */
-    public ResultOutput analyseLimitString (String limitString) {
+    public ResultOutput analyseLimitString(String limitString) {
         Map<String, String> params = new HashMap<>();
         Map<String, String> data = new HashMap<>();
 

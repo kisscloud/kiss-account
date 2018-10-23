@@ -5,13 +5,12 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
+import com.kiss.account.entity.Guest;
 import com.kiss.account.input.*;
 import com.kiss.account.output.*;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.CryptoUtil;
-import com.kiss.account.utils.DbEnumUtil;
-import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.GuestUtil;
+import com.kiss.account.utils.*;
 import com.kiss.account.validator.AccountValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +44,9 @@ public class AccountController implements AccountClient {
     @Autowired
     private AccountValidator accountValidator;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @Value("${max.accounts.size}")
     private String maxAccountsSize;
 
@@ -60,6 +62,8 @@ public class AccountController implements AccountClient {
     @ApiOperation(value = "添加账户")
     public ResultOutput<AccountOutput> createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
@@ -68,9 +72,10 @@ public class AccountController implements AccountClient {
         account.setSalt(salt);
         account.setPassword(password);
         account.setName(createAccountInput.getName());
-        account.setOperatorId(GuestUtil.getGuestId());
-        account.setOperatorIp("127.0.0.4");
-        account.setOperatorName(GuestUtil.getName());
+        account.setOperatorId(guest.getId());
+        account.setOperatorIp(guest.getIp());
+        account.setOperatorName(guest.getName());
+
         accountDao.createAccount(account);
 
         AccountOutput accountOutput = new AccountOutput();
@@ -79,22 +84,27 @@ public class AccountController implements AccountClient {
         accountOutput.setGroupName(group.getName());
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
 
+        operationLogService.saveAccountLog(guest, null, account);
+
         return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
     @ApiOperation(value = "绑定账户角色")
     @Transactional
+    @Deprecated
     public ResultOutput<List<AccountRoleOutput>> bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput) {
+
+        Guest guest = ThreadLocalUtil.getGuest();
 
         List<Integer> roles = bindRoleToAccountInput.getRoleId();
         List<AccountRoleOutput> accountRolesList = new ArrayList<>();
 
         for (Integer roleId : roles) {
             AccountRoleOutput accountRoles = new AccountRoleOutput();
-            accountRoles.setOperatorId(123);
-            accountRoles.setOperatorIp("127.0.0.4");
-            accountRoles.setOperatorName("koy");
+            accountRoles.setOperatorId(guest.getId());
+            accountRoles.setOperatorIp(guest.getIp());
+            accountRoles.setOperatorName(guest.getName());
             accountRoles.setAccountId(bindRoleToAccountInput.getAccountId());
             accountRoles.setRoleId(roleId);
             accountRolesList.add(accountRoles);
@@ -115,9 +125,11 @@ public class AccountController implements AccountClient {
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
         List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
+
         for (AccountOutput accountOutput : accounts) {
             accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
         }
+
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
 
         return ResultOutputUtil.success(getAccountsOutput);
@@ -150,16 +162,29 @@ public class AccountController implements AccountClient {
     @ApiOperation(value = "更新用户")
     public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountInput, accountOutput);
-        Integer count = accountDao.updateAccount(accountOutput);
-        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-        AccountGroup group = accountGroupDao.getGroupById(accountOutput.getGroupId());
-        accountOutput.setGroupName(group.getName());
 
+        Account oldAccount = accountDao.getAccountById(updateAccountInput.getId());
+        Account newAccount = new Account();
+
+        accountOutput.setOperatorId(guest.getId());
+        accountOutput.setOperatorName(guest.getName());
+        accountOutput.setOperatorIp(guest.getIp());
+        Integer count = accountDao.updateAccount(accountOutput);
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
         }
+
+        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+
+        AccountGroup group = accountGroupDao.getGroupById(accountOutput.getGroupId());
+        accountOutput.setGroupName(group.getName());
+
+        BeanUtils.copyProperties(accountOutput, newAccount);
+        operationLogService.saveAccountLog(guest, oldAccount, newAccount);
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -168,10 +193,13 @@ public class AccountController implements AccountClient {
     @ApiOperation(value = "重置账户密码")
     public ResultOutput updateAccountPassword(Integer id) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
 
         Account account = accountDao.getAccountById(id);
+        Account oldValue = account;
 
         if (account == null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
@@ -179,11 +207,17 @@ public class AccountController implements AccountClient {
 
         account.setSalt(salt);
         account.setPassword(password);
+        account.setOperatorId(guest.getId());
+        account.setOperatorName(guest.getName());
+        account.setOperatorIp(guest.getIp());
+
         Integer count = accountDao.updateAccountPassword(account);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
         }
+
+        operationLogService.saveAccountLog(guest, oldValue, account);
 
         return ResultOutputUtil.success();
     }
@@ -192,19 +226,33 @@ public class AccountController implements AccountClient {
     @ApiOperation(value = "更新用户状态")
     public ResultOutput updateAccountStatus(@RequestBody UpdateAccountStatusInput updateAccountStatusInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
+        Account oldValue = accountDao.getAccountById(updateAccountStatusInput.getId());
+        Account newValue = new Account();
+
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(updateAccountStatusInput, accountOutput);
+
+        accountOutput.setOperatorId(guest.getId());
+        accountOutput.setOperatorName(guest.getName());
+        accountOutput.setOperatorIp(guest.getIp());
         Integer count = accountDao.updateAccountStatus(accountOutput);
-        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
         }
 
+        BeanUtils.copyProperties(accountOutput, newValue);
+
+        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        operationLogService.saveAccountLog(guest, oldValue, newValue);
+
         return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
+    @ApiOperation(value = "获取用户拥有的所有权限")
     public ResultOutput getAccountPermissions(@RequestParam("id") Integer id) {
 
         Account account = accountDao.getAccountById(id);
@@ -221,11 +269,13 @@ public class AccountController implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "获取用户某权限对应的数据权限")
     public ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code) {
 
         List<String> dataScope = accountDao.getAccountPermissionDataScope(id, code);
         return ResultOutputUtil.success(dataScope);
     }
+
 
     public ResultOutput verifyAccountExistType(Account account, String name, String username, String email, String mobile) {
         if (!StringUtils.isEmpty(account.getName()) && account.getName().equals(name)) {
