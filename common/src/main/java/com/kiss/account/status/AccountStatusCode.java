@@ -33,4 +33,10 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer ROLE_DATA_PERMISSION_PATTERN_ERROR = 4001;
     public static final Integer ROLE_DATA_PERMISSION_ADD_FAILED = 4002;
 
+    public static final Integer CREATE_CLIENT_FAILED = 5001;
+    public static final Integer UPDATE_CLIENT_FAILED = 5002;
+    public static final Integer DELETE_CLIENT_FAILED = 5003;
+    public static final Integer CLIENT_IS_NOT_EXIST = 5004;
+    public static final Integer CREATE_CLIENT_MODULE_FAILED = 5005;
+    public static final Integer UPDATE_CLIENT_MODULE_FAILED = 5006;
 }

@@ -36,5 +36,7 @@
         <mapper resource="mapper/PermissionModuleMapper.xml"/>
         <mapper resource="mapper/LogMapper.xml"/>
         <mapper resource="mapper/DbEnumsMapper.xml"/>
+        <mapper resource="mapper/ClientMapper.xml"/>
+        <mapper resource="mapper/ClientModuleMapper.xml"/>
     </mappers>
 </configuration>
