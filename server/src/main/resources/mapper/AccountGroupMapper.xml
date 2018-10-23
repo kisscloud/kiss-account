@@ -40,6 +40,7 @@
             ,name = #{name,jdbcType=VARCHAR}
         </if>
         ,parentId=#{parentId,jdbcType=INTEGER}
+        ,level=#{level,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 

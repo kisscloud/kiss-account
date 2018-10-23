@@ -47,18 +47,12 @@ public class PermissionModuleController implements PermissionModuleClient {
         PermissionModule permissionModule = new PermissionModule();
         PermissionModule parentPermissionModule = new PermissionModule();
 
-        // 1. 如果父模块ID不等于0，则查询父模块信息；
-        //    * 绑定权限模块 level， 等于父权限模块的 level 拼接父权限模块的 id；
-        if (permissionModuleInput.getParentId() != 0) {
-            parentPermissionModule = permissionDao.getPermissionModuleById(permissionModuleInput.getParentId());
-            permissionModule.setLevel(String.format("%s,%d", parentPermissionModule.getLevel(), parentPermissionModule.getId()));
-        }
-
         // 2. 添加权限模块信息
         permissionModule.setName(permissionModuleInput.getName());
         permissionModule.setParentId(permissionModuleInput.getParentId());
         permissionModule.setSeq(100);
         permissionModule.setRemark(permissionModuleInput.getRemark());
+        permissionModule.setLevel("0,");
         permissionModule.setPermissions(0);
         permissionModule.setOperatorId(123);
         permissionModule.setOperatorName("koy");

@@ -44,6 +44,7 @@
         <if test="status != null">
             ,status = #{status,jdbcType=INTEGER}
         </if>
+        ,level = #{level,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 

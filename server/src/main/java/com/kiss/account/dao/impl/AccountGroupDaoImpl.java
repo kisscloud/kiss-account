@@ -24,7 +24,7 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
         if (accountGroup.getParentId() != 0) {
             parentAccountGroup = getGroupById(accountGroup.getParentId());
             if (parentAccountGroup != null) {
-                accountGroup.setLevel(String.format("%s,%d", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
+                accountGroup.setLevel(String.format("%s,%d,", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
             }
         }
 
@@ -58,8 +58,10 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
         if (accountGroup.getParentId() != 0) {
             parentAccountGroup = getGroupById(accountGroup.getParentId());
             if (parentAccountGroup != null) {
-                accountGroup.setLevel(String.format("%s,%d", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
+                accountGroup.setLevel(String.format("%s%d,", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
             }
+        } else {
+            accountGroup.setLevel("0,");
         }
 
         return accountGroupMapper.updateAccountGroup(accountGroup);

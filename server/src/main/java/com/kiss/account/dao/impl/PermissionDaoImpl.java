@@ -36,18 +36,17 @@ public class PermissionDaoImpl implements PermissionDao {
 
     public PermissionModule createPermissionModule(PermissionModule permissionModule) {
 
-        if (permissionModule.getLevel() == null) {
-            permissionModule.setLevel("");
-        } else {
-            permissionModule.setLevel(StringUtils.removeStart(permissionModule.getLevel(), ","));
+        if (permissionModule.getParentId() != 0) {
+            PermissionModule parentPermissionModule = getPermissionModuleById(permissionModule.getParentId());
+            permissionModule.setLevel(String.format("%s%d,", parentPermissionModule.getLevel(), parentPermissionModule.getId()));
         }
+
         permissionModuleMapper.createPermissionsModules(permissionModule);
 
         return permissionModule;
     }
 
-    public List<PermissionOutput> getPermissions()
-    {
+    public List<PermissionOutput> getPermissions() {
         return permissionMapper.getPermissions();
     }
 
@@ -97,6 +96,13 @@ public class PermissionDaoImpl implements PermissionDao {
 
     public Integer updatePermissionModule(PermissionModuleOutput permissionModuleOutput) {
 
+        if (permissionModuleOutput.getParentId() != 0) {
+            PermissionModule parentPermissionModule = getPermissionModuleById(permissionModuleOutput.getParentId());
+            permissionModuleOutput.setLevel(String.format("%s%d,", parentPermissionModule.getLevel(), parentPermissionModule.getId()));
+        } else {
+            permissionModuleOutput.setLevel("0,");
+        }
+
         return permissionModuleMapper.updatePermissionModule(permissionModuleOutput);
     }
 
@@ -136,10 +142,12 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionMapper.getPermissionByName(name);
     }
 
-    public List<PermissionModule>getPermissionModuleChildren(Integer id) {
+    public List<PermissionModule> getPermissionModuleChildren(Integer id) {
 
         return permissionModuleMapper.getPermissionModuleChildren(id);
-    };
+    }
+
+    ;
 
 }
 

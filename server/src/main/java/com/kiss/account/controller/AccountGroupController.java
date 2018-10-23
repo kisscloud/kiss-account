@@ -60,7 +60,7 @@ public class AccountGroupController implements AccountGroupClient {
 
         accountGroup = new AccountGroup();
         BeanUtils.copyProperties(createAccountGroupInput, accountGroup);
-        accountGroup.setLevel("0");
+        accountGroup.setLevel("0,");
         accountGroup.setSeq(0);
         accountGroup.setOperatorId(123);
         accountGroup.setOperatorIp("127.0.0.1");

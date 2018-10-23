@@ -2,11 +2,8 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
-import com.kiss.account.input.BindPermissionToRoleInput;
+import com.kiss.account.input.*;
 import com.kiss.account.entity.RolePermission;
-import com.kiss.account.input.BindRoleDataPermissions;
-import com.kiss.account.input.CreateRoleInput;
-import com.kiss.account.input.UpdateRoleInput;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +25,8 @@ public class RoleValidator implements Validator {
                 || clazz.equals(UpdateRoleInput.class)
                 || clazz.equals(BindPermissionToRoleInput.class)
                 || clazz.equals(UpdateRoleInput.class)
-                || clazz.equals(BindPermissionToRoleInput.class);
+                || clazz.equals(BindPermissionToRoleInput.class)
+                || clazz.equals(BindAccountsToRoleInput.class);
     }
 
     @Override
@@ -56,6 +54,9 @@ public class RoleValidator implements Validator {
             BindPermissionToRoleInput bindPermissionToRoleInput = (BindPermissionToRoleInput) target;
             validateRoleExist(bindPermissionToRoleInput.getRoleId(), errors);
 
+        } else if (BindAccountsToRoleInput.class.isInstance(target)) {
+
+            // TODO 校验绑定用户的数据
         } else {
 
             errors.rejectValue("data", "", "数据格式错误");
