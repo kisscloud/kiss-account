@@ -19,11 +19,13 @@ public class GuestUtil {
      * @return Integer
      */
     public static Integer getGuestId() {
+
         Guest operator = ThreadLocalUtil.getGuest();
 
         if (operator == null) {
             return null;
         }
+
         return operator.getId();
     }
 
@@ -33,7 +35,9 @@ public class GuestUtil {
      * @return String
      */
     public static String getName() {
+
         Guest operator = ThreadLocalUtil.getGuest();
+
         if (operator == null) {
             return null;
         }
@@ -47,15 +51,17 @@ public class GuestUtil {
      * @param operator Operator
      */
     public static void setGuest(Guest operator) {
+
         ThreadLocalUtil.setGuest(operator);
     }
 
     public static byte[] getGlobalMessage(HttpServletRequest request) throws IOException {
-        InputStream in = request.getInputStream();
 
+        InputStream in = request.getInputStream();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] bytes = new byte[4096];
         int n = 0;
+
         while ((n = in.read(bytes)) != -1) {
             output.write(bytes, 0, n);
         }

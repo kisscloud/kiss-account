@@ -3,7 +3,6 @@ package com.kiss.account.mapper;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountRole;
 import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRoleOutput;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,7 +34,7 @@ public interface AccountMapper {
      * @param size  int
      * @return List<AccountOutput>
      */
-    List<Account> getAccounts(@Param("start") int start, @Param("size") int size);
+    List<AccountOutput> getAccounts(@Param("start") int start, @Param("size") int size);
 
 
     /**
@@ -129,18 +128,18 @@ public interface AccountMapper {
     /**
      * 删除账户所拥有的所有角色
      *
-     * @param id Integer
+     * @param accountId Integer
      * @return Integer
      */
-    Integer deleteAccountRoles(Integer id);
+    Integer deleteAccountRolesByAccountId(Integer accountId);
 
     /**
      * 获取账户下所有的权限
      *
-     * @param id Integer
+     * @param accountId Integer
      * @return   List<String>
      */
-    List<String> getAccountPermissions(Integer id);
+    List<String> getAccountPermissionsByAccountId(Integer accountId);
 
 
     /**
@@ -151,5 +150,9 @@ public interface AccountMapper {
      */
     List<String> getAccountPermissionDataScope(Map<String, Object> params);
 
+    /**
+     * 查询有效账户的数量
+     * @return
+     */
     Integer getValidAccountsCount();
 }

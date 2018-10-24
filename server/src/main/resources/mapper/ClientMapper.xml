@@ -6,16 +6,8 @@
 <!-- namespace 默认使用当前操作实体类的全路径 -->
 <mapper namespace="com.kiss.account.mapper.ClientMapper">
     
-    <select id="getClientOutputs" resultType="com.kiss.account.output.ClientOutput">
+    <select id="getClients" resultType="com.kiss.account.entity.Client">
         select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients
-    </select>
-    
-    <select id="getClientOutput" parameterType="java.lang.Integer" resultType="com.kiss.account.output.ClientOutput">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
-    </select>
-
-    <select id="getClient" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
     </select>
 
     <select id="getClientById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
@@ -44,7 +36,7 @@
         where id = #{id}
     </update>
     
-    <delete id="deleteClient" parameterType="java.lang.Integer">
+    <delete id="deleteClientById" parameterType="java.lang.Integer">
         delete from clients where id = #{id}
     </delete>
 

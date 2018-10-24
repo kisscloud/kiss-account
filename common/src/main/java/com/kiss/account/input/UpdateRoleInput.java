@@ -2,7 +2,6 @@ package com.kiss.account.input;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data

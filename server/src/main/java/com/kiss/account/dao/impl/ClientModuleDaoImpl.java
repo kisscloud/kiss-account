@@ -16,16 +16,19 @@ public class ClientModuleDaoImpl implements ClientModuleDao {
 
     @Override
     public Integer createClientModules(List<ClientModule> clientModules) {
+
         return clientModulesMapper.createClientModules(clientModules);
     }
 
     @Override
-    public Integer deleteClientModules(Integer clientId) {
-        return clientModulesMapper.deleteClientModules(clientId);
+    public Integer deleteClientModulesByClientId(Integer clientId) {
+
+        return clientModulesMapper.deleteClientModulesByClientId(clientId);
     }
 
     @Override
-    public List<ClientModule> getClientModules(Integer clientId) {
-        return clientModulesMapper.getClientModules(clientId);
+    public List<ClientModule> getClientModulesByClientId(Integer clientId) {
+
+        return clientModulesMapper.getClientModulesByClientId(clientId);
     }
 }

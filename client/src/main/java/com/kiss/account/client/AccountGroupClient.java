@@ -1,7 +1,6 @@
 package com.kiss.account.client;
 
 import com.kiss.account.input.*;
-import com.kiss.account.output.AccountGroupOutput;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
 

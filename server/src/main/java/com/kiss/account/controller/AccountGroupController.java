@@ -10,7 +10,6 @@ import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.GuestUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.AccountGroupValidator;
@@ -60,7 +59,6 @@ public class AccountGroupController implements AccountGroupClient {
     public ResultOutput<AccountGroupOutput> createAccountGroup(@Validated @RequestBody CreateAccountGroupInput createAccountGroupInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         AccountGroup accountGroup = accountGroupDao.getAccountGroupByName(createAccountGroupInput.getName());
 
         if (accountGroup != null) {
@@ -76,9 +74,7 @@ public class AccountGroupController implements AccountGroupClient {
         accountGroup.setOperatorName(guest.getName());
         accountGroupDao.createAccountGroup(accountGroup);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
-
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
-
         operationLogService.saveAccountGroupLog(guest, null, accountGroup);
 
         return ResultOutputUtil.success(accountGroupOutput);
@@ -88,7 +84,7 @@ public class AccountGroupController implements AccountGroupClient {
     @ApiOperation(value = "获取部门列表")
     public ResultOutput<AccountGroupOutput> getGroups() {
 
-        List<AccountGroup> groups = accountGroupDao.getGroups();
+        List<AccountGroup> groups = accountGroupDao.getAccountGroups();
         List<AccountGroupOutput> groupsOutput = new ArrayList<>();
 
         for (AccountGroup accountGroup : groups) {
@@ -104,7 +100,7 @@ public class AccountGroupController implements AccountGroupClient {
     @ApiOperation(value = "获取部门信息")
     public ResultOutput<AccountGroupOutput> getGroup(Integer id) {
 
-        AccountGroup group = accountGroupDao.getGroupById(id);
+        AccountGroup group = accountGroupDao.getAccountGroupById(id);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(group, accountGroupOutput);
 
@@ -116,22 +112,20 @@ public class AccountGroupController implements AccountGroupClient {
     public ResultOutput deleteGroup(@RequestParam("id") Integer id) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         List<Account> accounts = accountDao.getAccountsByGroupId(id);
+
         if (accounts != null && !accounts.isEmpty()) {
             return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
         }
 
-        List<AccountGroup> accountGroups = accountGroupDao.getAccountGroupChildren(id);
+        List<AccountGroup> accountGroups = accountGroupDao.getAccountGroupChildrenByParentId(id);
 
         if (accountGroups != null && !accountGroups.isEmpty()) {
             return ResultOutputUtil.error(AccountStatusCode.NOT_EMPTY_GROUP);
         }
 
         AccountGroup oldValue = accountGroupDao.getAccountGroupById(id);
-
-        accountGroupDao.deleteGroup(id);
-
+        accountGroupDao.deleteAccountGroupById(id);
         operationLogService.saveAccountGroupLog(guest, oldValue, null);
 
         return ResultOutputUtil.success();
@@ -142,15 +136,12 @@ public class AccountGroupController implements AccountGroupClient {
     public ResultOutput updateAccountGroup(@Valid @RequestBody UpdateAccountGroupInput updateAccountGroupInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         AccountGroup oldValue = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
-
         AccountGroup accountGroup = new AccountGroup();
         BeanUtils.copyProperties(updateAccountGroupInput, accountGroup);
         accountGroup.setOperatorId(guest.getId());
         accountGroup.setOperatorIp(guest.getIp());
         accountGroup.setOperatorName(guest.getName());
-
         Integer count = accountGroupDao.updateAccountGroup(accountGroup);
 
         if (count == 0) {
@@ -167,6 +158,7 @@ public class AccountGroupController implements AccountGroupClient {
     public ResultOutput getAccountGroupCount() {
 
         Integer count = accountGroupDao.getAccountGroupCount();
+
         return ResultOutputUtil.success(count);
     }
 }

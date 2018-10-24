@@ -22,12 +22,16 @@ public class DbEnumRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         List<DbEnums> serviceStatuses = dbEnumsDao.getServiceStatus();
+
         for (DbEnums serviceStatus : serviceStatuses) {
             Map<String,String> map = new HashMap<>();
+
             if (DbEnumUtil.dbEnumsDao.containsKey(serviceStatus.getLanguage())) {
                 map = DbEnumUtil.dbEnumsDao.get(serviceStatus.getLanguage());
             }
+
             map.put(serviceStatus.getKey() + serviceStatus.getOption(),serviceStatus.getValue());
             DbEnumUtil.dbEnumsDao.put(serviceStatus.getLanguage(),map);
         }

@@ -12,6 +12,7 @@ public class InnerFilterChain implements InnerFilter {
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response,InnerFilterChain filterChain) {
+
         if (innerFilters.size() == index) {
             return;
         }
@@ -22,6 +23,7 @@ public class InnerFilterChain implements InnerFilter {
     }
 
     public InnerFilterChain addFilter(InnerFilter innerFilter) {
+
         innerFilters.add(innerFilter);
         return this;
     }

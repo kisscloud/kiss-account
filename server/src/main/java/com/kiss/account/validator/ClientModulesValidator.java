@@ -36,13 +36,13 @@ public class ClientModulesValidator implements Validator {
         }
     }
 
-    public void validateClientId (Integer clientId,Errors errors) {
+    public void validateClientId (Integer id,Errors errors) {
 
-        if (clientId == null) {
+        if (id == null) {
             errors.rejectValue("clientId","","客户端id不能为空");
         }
 
-        Client client = clientDao.getClientById(clientId);
+        Client client = clientDao.getClientById(id);
 
         if (client == null) {
             errors.rejectValue("clientId","","客户端id不存在");
@@ -57,13 +57,13 @@ public class ClientModulesValidator implements Validator {
         }
 
         for (Integer moduleId : clientModules) {
-
             if (moduleId == null) {
                 errors.rejectValue("moduleIds","","模块id不能为空");
                 return;
             }
 
             PermissionModule permissionModule = permissionDao.getPermissionModuleById(moduleId);
+
             if (permissionModule == null) {
                 errors.rejectValue("moduleIds","","部分模块id不存在");
                 return;

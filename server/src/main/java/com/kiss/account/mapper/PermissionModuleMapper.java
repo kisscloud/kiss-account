@@ -43,7 +43,7 @@ public interface PermissionModuleMapper {
      * @param id Integer
      * @return Integer
      */
-    Integer getPermissionModulePermissionsCount(Integer id);
+    Integer getPermissionModulePermissionsCountById(Integer id);
 
     /**
      * 更新权限模块所绑定的权限数
@@ -64,7 +64,7 @@ public interface PermissionModuleMapper {
      * @param id
      * @return
      */
-    Integer deletePermissionModule (Integer id);
+    Integer deletePermissionModuleById (Integer id);
 
     /**
      * 更新权限模块
@@ -78,5 +78,5 @@ public interface PermissionModuleMapper {
      * @param id
      * @return
      */
-    List<PermissionModule> getPermissionModuleChildren(Integer id);
+    List<PermissionModule> getPermissionModuleChildrenByParentId(Integer parentId);
 }

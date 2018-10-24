@@ -19,11 +19,13 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
+
         return new MyServletOutputStream(bytes); // 将数据写到 byte 中
     }
 
     @Override
     public PrintWriter getWriter() throws IOException {
+
         try{
             pwrite = new PrintWriter(new OutputStreamWriter(bytes, "utf-8"));
         } catch(UnsupportedEncodingException e) {
@@ -33,6 +35,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public byte[] getBytes() {
+
         if(null != pwrite) {
             pwrite.close();
             return bytes.toByteArray();
@@ -45,29 +48,33 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
                 e.printStackTrace();
             }
         }
+
         return bytes.toByteArray();
     }
 
     class MyServletOutputStream extends ServletOutputStream {
+
         private ByteArrayOutputStream ostream ;
 
         public MyServletOutputStream(ByteArrayOutputStream ostream) {
+
             this.ostream = ostream;
         }
 
         @Override
         public void write(int b) throws IOException {
+
             ostream.write(b); // 将数据写到 stream　中
         }
 
         @Override
         public boolean isReady() {
+
             return false;
         }
 
         @Override
         public void setWriteListener(WriteListener listener) {
-
         }
     }
 }

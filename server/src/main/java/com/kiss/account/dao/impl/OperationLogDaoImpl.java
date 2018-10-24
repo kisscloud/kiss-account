@@ -16,6 +16,7 @@ public class OperationLogDaoImpl implements OperationLogDao {
 
     @Override
     public Integer createOperatorLog(OperationLog operationLog) {
+
         return operationLogMapper.createOperatorLog(operationLog);
     }
 
@@ -27,6 +28,7 @@ public class OperationLogDaoImpl implements OperationLogDao {
 
     @Override
     public Integer getOperationLogsCount() {
+
         return operationLogMapper.getOperationLogsCount();
     }
 }

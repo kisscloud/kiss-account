@@ -9,7 +9,6 @@ import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +26,7 @@ public class PermissionDaoImpl implements PermissionDao {
     @Autowired
     private PermissionModuleMapper permissionModuleMapper;
 
+    @Override
     public Permission createPermission(Permission permission) {
 
         permissionMapper.createPermission(permission);
@@ -34,6 +34,7 @@ public class PermissionDaoImpl implements PermissionDao {
         return permission;
     }
 
+    @Override
     public PermissionModule createPermissionModule(PermissionModule permissionModule) {
 
         if (permissionModule.getParentId() != 0) {
@@ -46,54 +47,59 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionModule;
     }
 
+    @Override
     public List<PermissionOutput> getPermissions() {
+
         return permissionMapper.getPermissions();
     }
 
+    @Override
     public List<BindPermissionOutput> getBindPermissions() {
 
         return permissionMapper.getBindPermissions(1);
     }
 
+    @Override
     public PermissionModule getPermissionModuleById(Integer id) {
 
         return permissionModuleMapper.getPermissionModuleById(id);
     }
 
+    @Override
     public List<PermissionModule> getPermissionModules() {
 
         return permissionModuleMapper.getPermissionModules();
     }
 
+    @Override
     public List<PermissionModule> getBindPermissionModules() {
 
         return permissionModuleMapper.getBindPermissionModules();
     }
 
-    public Integer getPermissionModulePermissionsCount(Integer id) {
-
-        return permissionModuleMapper.getPermissionModulePermissionsCount(id);
-    }
-
+    @Override
     public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
 
-        Integer oldCount = getPermissionModulePermissionsCount(id);
+        Integer oldCount = permissionModuleMapper.getPermissionModulePermissionsCountById(id);
         PermissionModule permissionModule = new PermissionModule();
         permissionModule.setId(id);
         permissionModule.setPermissions(oldCount + permissionsCount);
         permissionModuleMapper.updatePermissionModulePermissionsCount(permissionModule);
     }
 
+    @Override
     public Permission getPermissionByNameOrCode(Permission permission) {
 
         return permissionMapper.getPermissionByNameOrCode(permission);
     }
 
-    public Integer updatePermission(PermissionOutput permissionOutput) {
+    @Override
+    public Integer updatePermission(Permission permission) {
 
-        return permissionMapper.updatePermission(permissionOutput);
+        return permissionMapper.updatePermission(permission);
     }
 
+    @Override
     public Integer updatePermissionModule(PermissionModuleOutput permissionModuleOutput) {
 
         if (permissionModuleOutput.getParentId() != 0) {
@@ -106,26 +112,32 @@ public class PermissionDaoImpl implements PermissionDao {
         return permissionModuleMapper.updatePermissionModule(permissionModuleOutput);
     }
 
-    public Integer deletePermission(Integer id) {
-        return permissionMapper.deletePermission(id);
+    @Override
+    public Integer deletePermissionById(Integer id) {
+
+        return permissionMapper.deletePermissionById(id);
     }
 
-    public Integer deletePermissionModule(Integer id) {
-        return permissionModuleMapper.deletePermissionModule(id);
+    @Override
+    public Integer deletePermissionModuleById(Integer id) {
+
+        return permissionModuleMapper.deletePermissionModuleById(id);
     }
 
+    @Override
     public PermissionModule getPermissionModuleByName(String name) {
 
         return permissionModuleMapper.getPermissionModuleByName(name);
     }
 
-    public List<Permission> getPermissionByModuleId(Integer id) {
+    @Override
+    public List<Permission> getPermissionByModuleId(Integer moduleId) {
 
-        return permissionMapper.getPermissionByModuleId(id);
+        return permissionMapper.getPermissionByModuleId(moduleId);
     }
 
     @Override
-    public PermissionOutput getPermissionById(Integer id) {
+    public Permission getPermissionById(Integer id) {
 
         return permissionMapper.getPermissionById(id);
     }
@@ -137,18 +149,14 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     @Override
-    public Permission getPermissionByName(String name) {
+    public List<PermissionModule> getPermissionModuleChildrenByParentId(Integer parentId) {
 
-        return permissionMapper.getPermissionByName(name);
-    }
-
-    public List<PermissionModule> getPermissionModuleChildren(Integer id) {
-
-        return permissionModuleMapper.getPermissionModuleChildren(id);
+        return permissionModuleMapper.getPermissionModuleChildrenByParentId(parentId);
     }
 
     @Override
     public Integer getValidPermissionCount() {
+
         return permissionMapper.getValidPermissionCount();
     }
 

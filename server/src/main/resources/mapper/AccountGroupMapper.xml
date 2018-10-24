@@ -17,15 +17,11 @@
     </select>
 
     <select id="getAccountGroups" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountGroups;
+        select * from accountGroups order by level;
     </select>
 
     <select id="getAccountGroupByName" resultType="com.kiss.account.entity.AccountGroup">
         select * from accountGroups where name=#{name};
-    </select>
-
-    <select id="getGroups" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountGroups order by level
     </select>
 
     <select id="getAccountGroupById" parameterType="java.lang.Integer"
@@ -48,8 +44,8 @@
         delete from accountGroups where id=#{id};
     </delete>
 
-    <select id="getAccountGroupChildren" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
-        select * from accountGroups where parentId = #{id}
+    <select id="getAccountGroupChildrenByParentId" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
+        select * from accountGroups where parentId = #{parentId}
     </select>
     
     <select id="getAccountGroupCount" resultType="java.lang.Integer">

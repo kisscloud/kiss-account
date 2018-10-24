@@ -40,7 +40,7 @@
       select * from accounts where groupId=#{groupId};
     </select>
 
-    <select id="getAccounts" resultType="com.kiss.account.entity.Account">
+    <select id="getAccounts" resultType="com.kiss.account.output.AccountOutput">
         select account.id,account.name,account.username,account.email,account.mobile,
         account.remark,account.groupId,account.status,account.operatorName,
         account.operatorId,account.operatorIp,account.createdAt,account.updatedAt,gr.name as groupName
@@ -112,16 +112,16 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     
-    <delete id="deleteAccountRoles" parameterType="java.lang.Integer">
-        delete from accountroles where accountId = #{id}
+    <delete id="deleteAccountRolesByAccountId" parameterType="java.lang.Integer">
+        delete from accountroles where accountId = #{accountId}
     </delete>
 
-    <select id="getAccountPermissions" parameterType="java.lang.Integer" resultType="java.lang.String">
+    <select id="getAccountPermissionsByAccountId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select p.code from accountroles ar left join rolepermissions  rp
         on ar.roleId = rp.roleId
         left join permissions p
         on rp.permissionId = p.id
-        where ar.accountId=#{id} and p.code is not null
+        where ar.accountId=#{accountId} and p.code is not null
     </select>
 
     <select id="getAccountById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Account">
@@ -133,7 +133,7 @@
         on ar.roleId = rp.roleId
         left join permissions pe
         on rp.permissionId = pe.id
-        where ar.accountId = #{id} and pe.code = #{code} and rp.dataScope is not null
+        where ar.accountId = #{accountId} and pe.code = #{code} and rp.dataScope is not null
     </select>
 
     <select id="getValidAccountsCount" resultType="java.lang.Integer">

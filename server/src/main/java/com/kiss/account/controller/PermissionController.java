@@ -14,7 +14,6 @@ import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.ThreadLocalUtil;
-import com.kiss.account.validator.PermissionModuleValidator;
 import com.kiss.account.validator.PermissionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,10 +54,8 @@ public class PermissionController implements PermissionClient {
     public ResultOutput<PermissionOutput> createPermission(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         // 1. 查询权限所属模块信息
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(createPermissionInput.getModuleId());
-
         // 2. 添加权限信息
         Permission permission = new Permission();
         permission.setName(createPermissionInput.getName());
@@ -72,14 +69,12 @@ public class PermissionController implements PermissionClient {
         permission.setOperatorId(guest.getId());
         permission.setOperatorName(guest.getName());
         permission.setOperatorIp(guest.getIp());
-
         permissionDao.createPermission(permission);
-
         // 3. 更新权限所属模块的权限数
         permissionDao.updatePermissionModulePermissionsCount(permission.getModuleId(), +1);
-
         // 4. 更新权限所属模块父模块权限数
         String[] modulesIds = permissionModule.getLevel().split(",");
+
         for (String moduleIdString : modulesIds) {
             if (!moduleIdString.equals("")) {
                 permissionDao.updatePermissionModulePermissionsCount(Integer.parseInt(moduleIdString), +1);
@@ -88,12 +83,9 @@ public class PermissionController implements PermissionClient {
 
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(permission, permissionOutput);
-
         permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
         permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
-
-
         operationLogService.savePermissionLog(guest, null, permission);
 
         return ResultOutputUtil.success(permissionOutput);
@@ -104,18 +96,13 @@ public class PermissionController implements PermissionClient {
     public ResultOutput<List<PermissionOutput>> getPermissions() {
 
         List<PermissionOutput> permissions = permissionDao.getPermissions();
+
         for (PermissionOutput permissionOutput : permissions) {
             permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
             permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
         }
 
         return ResultOutputUtil.success(permissions);
-    }
-
-    @Override
-    @ApiOperation(value = "获取权限详情")
-    public ResultOutput<PermissionOutput> getPermission() {
-        return null;
     }
 
     @Override
@@ -132,31 +119,23 @@ public class PermissionController implements PermissionClient {
     public ResultOutput<PermissionOutput> updatePermission(@Validated @RequestBody UpdatePermissionInput updatePermissionInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        PermissionOutput oldPermissionOutput = permissionDao.getPermissionById(updatePermissionInput.getId());
-        Permission oldValue = new Permission();
-        Permission newValue = new Permission();
-        BeanUtils.copyProperties(oldPermissionOutput, oldValue);
-
-
-        PermissionOutput newPermissionOutput = new PermissionOutput();
-        BeanUtils.copyProperties(updatePermissionInput, newPermissionOutput);
-        Integer count = permissionDao.updatePermission(newPermissionOutput);
+        Permission oldPermission = permissionDao.getPermissionById(updatePermissionInput.getId());
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(updatePermissionInput, permission);
+        Integer count = permissionDao.updatePermission(permission);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_PERMISSION_FAILD);
         }
 
+        PermissionOutput permissionOutput = new PermissionOutput();
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(updatePermissionInput.getModuleId());
-        newPermissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(newPermissionOutput.getType())));
-        newPermissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(newPermissionOutput.getStatus())));
-        newPermissionOutput.setModuleName(permissionModule.getName());
+        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permission.getType())));
+        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permission.getStatus())));
+        permissionOutput.setModuleName(permissionModule.getName());
+        operationLogService.savePermissionLog(guest, oldPermission, permission);
 
-        BeanUtils.copyProperties(newPermissionOutput, newValue);
-
-        operationLogService.savePermissionLog(guest, oldValue, newValue);
-
-        return ResultOutputUtil.success(newPermissionOutput);
+        return ResultOutputUtil.success(permissionOutput);
     }
 
     @Override
@@ -164,18 +143,14 @@ public class PermissionController implements PermissionClient {
     public ResultOutput deletePermission(@RequestParam("id") Integer id) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        PermissionOutput oldPermissionOutput = permissionDao.getPermissionById(id);
-        Permission oldValue = new Permission();
-        BeanUtils.copyProperties(oldPermissionOutput, oldValue);
-
-        Integer count = permissionDao.deletePermission(id);
+        Permission oldPermission = permissionDao.getPermissionById(id);
+        Integer count = permissionDao.deletePermissionById(id);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_FAILED);
         }
 
-        operationLogService.savePermissionLog(guest, oldValue, null);
+        operationLogService.savePermissionLog(guest, oldPermission, null);
 
         return ResultOutputUtil.success();
     }
@@ -185,6 +160,7 @@ public class PermissionController implements PermissionClient {
     public ResultOutput getValidPermissionCount() {
 
         Integer count = permissionDao.getValidPermissionCount();
+
         return ResultOutputUtil.success(count);
     }
 

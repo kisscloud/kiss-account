@@ -50,10 +50,10 @@ public interface PermissionMapper {
     /**
      * 更新权限
      *
-     * @param permissionOutput
+     * @param permission
      * @return
      */
-    Integer updatePermission(PermissionOutput permissionOutput);
+    Integer updatePermission(Permission permission);
 
     /**
      * 删除权限
@@ -61,20 +61,22 @@ public interface PermissionMapper {
      * @param id
      * @return
      */
-    Integer deletePermission(Integer id);
+    Integer deletePermissionById(Integer id);
 
     /**
      * 根据模块id查询权限
      *
+     * @param moduleId
+     * @return
+     */
+    List<Permission> getPermissionByModuleId(Integer moduleId);
+
+    /**
+     * 根据权限id查询权限信息
      * @param id
      * @return
      */
-    List<Permission> getPermissionByModuleId(Integer id);
-
-    /**
-     * 通过权限ID获取权限
-     */
-    PermissionOutput getPermissionById(Integer id);
+    Permission getPermissionById(Integer id);
 
     /**
      * 通过权限ID获取权限
@@ -82,9 +84,8 @@ public interface PermissionMapper {
     Permission getPermissionByCode(String code);
 
     /**
-     * 通过权限名称获取权限
+     * 查询有效权限数量
+     * @return
      */
-    Permission getPermissionByName(String name);
-
     Integer getValidPermissionCount();
 }

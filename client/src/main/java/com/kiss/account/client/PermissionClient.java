@@ -22,9 +22,6 @@ public interface PermissionClient {
     @GetMapping("/permissions")
     ResultOutput<List<PermissionOutput>> getPermissions();
 
-    @GetMapping("/permission")
-    ResultOutput<PermissionOutput> getPermission();
-
     @GetMapping("/bind/permissions")
     ResultOutput<List<BindPermissionOutput>> getbindPermissions();
 

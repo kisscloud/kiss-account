@@ -1,9 +1,7 @@
 package com.kiss.account.validator;
 
 import com.kiss.account.dao.PermissionDao;
-import com.kiss.account.entity.Account;
 import com.kiss.account.entity.PermissionModule;
-import com.kiss.account.input.CreateAccountInput;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.utils.ApplicationUtil;
@@ -32,23 +30,20 @@ public class PermissionModuleValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         if (CreatePermissionModuleInput.class.isInstance(target)) {
-
             CreatePermissionModuleInput createPermissionModuleInput = (CreatePermissionModuleInput) target;
             validateParentId(createPermissionModuleInput.getParentId(), errors);
             validateName(null, createPermissionModuleInput.getName(), errors);
-
         } else if (UpdatePermissionModuleInput.class.isInstance(target)) {
-
             UpdatePermissionModuleInput updatePermissionModuleInput = (UpdatePermissionModuleInput) target;
             validateModuleExist(updatePermissionModuleInput.getId(), errors);
+
             if (permissionModule == null) {
                 return;
             }
+
             validateParentId(updatePermissionModuleInput.getParentId(), errors);
             validateName(updatePermissionModuleInput.getId(), updatePermissionModuleInput.getName(), errors);
-
         } else {
-
             errors.rejectValue("", null, "数据格式错误");
         }
 

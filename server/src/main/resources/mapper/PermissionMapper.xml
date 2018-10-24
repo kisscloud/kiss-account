@@ -10,19 +10,9 @@
         insert into permissions(name, moduleId, type, code, limitFields, remark, status, seq, operatorId, operatorName, operatorIp)
         values(#{name}, #{moduleId}, #{type}, #{code}, #{limitFields}, #{remark}, #{status}, #{seq}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
-
-    <select id="getPermissionById" resultType="com.kiss.account.output.PermissionOutput">
-        select permission.id, permission.name, permission.moduleId, permission.type,
-               permission.code, permission.limitFields, permission.status, permission.seq,
-               permission.remark, permission.operatorId, permission.operatorName, permission.operatorIp,
-               permission.createdAt, permission.updatedAt, pm.name as moduleName
-        from permissions permission left join permissionModules pm
-        on permission.moduleId = pm.id
-        where permission.id = #{id};
-    </select>
-
-    <select id="getPermissionByName" parameterType="java.lang.String" resultType="com.kiss.account.entity.Permission">
-        select * from permissions where name=#{name} limit 0,1;
+    
+    <select id="getPermissionById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Permission">
+        select * from permissions where id = #{id}
     </select>
 
     <select id="getPermissionByCode" parameterType="java.lang.String" resultType="com.kiss.account.entity.Permission">
@@ -64,7 +54,7 @@
         select * from permissions where name = #{name} or code = #{code} limit 0,1
     </select>
 
-    <update id="updatePermission" parameterType="com.kiss.account.output.PermissionOutput">
+    <update id="updatePermission" parameterType="com.kiss.account.entity.Permission">
         update permissions
         set id = #{id}
         <if test="code != null and code != ''">
@@ -85,13 +75,13 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deletePermission" parameterType="java.lang.Integer">
+    <delete id="deletePermissionById" parameterType="java.lang.Integer">
         delete from permissions where id = #{id}
     </delete>
 
     <select id="getPermissionByModuleId" parameterType="java.lang.Integer"
             resultType="com.kiss.account.entity.Permission">
-        select * from permissions where moduleId=#{id}
+        select * from permissions where moduleId=#{moduleId}
     </select>
 
     <select id="getValidPermissionCount" resultType="java.lang.Integer">

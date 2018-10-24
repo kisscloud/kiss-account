@@ -3,8 +3,6 @@ package com.kiss.account.dao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountRole;
 import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRoleOutput;
-
 import java.util.List;
 
 public interface AccountDao {
@@ -29,7 +27,7 @@ public interface AccountDao {
      * @param size  int
      * @return List<AccountOutput>
      */
-    List<Account> getAccounts(int start, int size);
+    List<AccountOutput> getAccounts(int start, int size);
 
     /**
      * 查询部门用户
@@ -48,7 +46,7 @@ public interface AccountDao {
     Account getAccountById(Integer id);
 
     /**
-     * 根据姓名查找用户
+     * 根据姓名查询用户
      *
      * @param name String
      * @return Account
@@ -64,7 +62,7 @@ public interface AccountDao {
     Account getAccountByUsername(String username);
 
     /**
-     * 根据邮箱查找用户
+     * 根据邮箱查询用户
      *
      * @param email String
      * @return Account
@@ -72,7 +70,7 @@ public interface AccountDao {
     Account getAccountByEmail(String email);
 
     /**
-     * 根据手机号查找用户
+     * 根据手机号查询用户
      *
      * @param mobile String
      * @return Account
@@ -121,27 +119,31 @@ public interface AccountDao {
     /**
      * 删除账号所拥有的所有角色
      *
-     * @param id Integer
+     * @param accountId Integer
      * @return Integer
      */
-    Integer deleteAccountRoles(Integer id);
+    Integer deleteAccountRolesByAccountId(Integer accountId);
 
     /**
-     * 获取账户下所有的权限
+     * 查询账户下所有的权限
      *
-     * @param id 账户id
+     * @param accountId 账户id
      * @return  List<String>
      */
-    List<String> getAccountPermissions(Integer id);
+    List<String> getAccountPermissionsByAccountId(Integer accountId);
 
     /**
      * 根据账户id及权限码查询账户的数据权限
      *
-     * @param id Integer
+     * @param accountId Integer
      * @return List<String>
      */
-    List<String> getAccountPermissionDataScope(Integer id, String code);
+    List<String> getAccountPermissionDataScope(Integer accountId, String code);
 
+    /**
+     * 查询有效账户的数量
+     * @return
+     */
     Integer getValidAccountsCount();
 
 
