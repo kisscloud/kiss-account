@@ -5,6 +5,7 @@ import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.ClientModule;
 import com.kiss.account.input.UpdateClientModulesInput;
 import com.kiss.account.output.ClientModuleOutput;
+import com.kiss.account.output.ClientOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.ClientModulesValidator;
@@ -47,6 +48,22 @@ public class ClientModuleController implements ClientModuleClient {
         List<Integer> moduleIds = updateClientModulesInput.getModuleIds();
 
         return addClientModules(moduleIds,updateClientModulesInput.getClientId());
+    }
+
+    @Override
+    @ApiOperation(value = "获取客户端模块")
+    public ResultOutput getClientModules(Integer clientId) {
+
+        List<ClientModule> clientModules = clientModulesDao.getClientModules(clientId);
+        List<ClientModuleOutput> clientModuleOutputs = new ArrayList<>();
+
+        for (ClientModule clientModule : clientModules) {
+            ClientModuleOutput clientModuleOutput = new ClientModuleOutput();
+            BeanUtils.copyProperties(clientModule,clientModuleOutput);
+            clientModuleOutputs.add(clientModuleOutput);
+        }
+
+        return ResultOutputUtil.success(clientModuleOutputs);
     }
 
     public ResultOutput addClientModules (List<Integer> moduleIds,Integer clientId) {

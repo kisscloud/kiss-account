@@ -30,7 +30,7 @@ public class ClientValidator implements Validator {
             validateClientStatus(clientInput.getStatus(),errors);
         } else if (UpdateClientInput.class.isInstance(target)) {
             UpdateClientInput updateClientInput = (UpdateClientInput) target;
-            validateClientId(updateClientInput.getClientID(),errors);
+            validateClientId(updateClientInput.getId(),errors);
             validateClientName(updateClientInput.getClientName(),errors);
             validateClientStatus(updateClientInput.getStatus(),errors);
         } else {
@@ -50,8 +50,8 @@ public class ClientValidator implements Validator {
         }
     }
 
-    public void validateClientId (String clientID,Errors errors) {
-        if (StringUtils.isEmpty(clientID)) {
+    public void validateClientId (Integer clientID,Errors errors) {
+        if (clientID == null) {
             errors.rejectValue("clientID","","客户端id不能为空");
         }
 

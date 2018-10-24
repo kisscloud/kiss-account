@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UpdateClientInput {
-    private String clientID;
+    private Integer id;
 
     private String clientName;
 

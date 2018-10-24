@@ -21,13 +21,13 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public ClientOutput getClientOutput(String clientID) {
-        return clientMapper.getClientOutput(clientID);
+    public ClientOutput getClientOutput(Integer id) {
+        return clientMapper.getClientOutput(id);
     }
 
     @Override
-    public Client getClient(String clientID) {
-        return clientMapper.getClient(clientID);
+    public Client getClient(Integer id) {
+        return clientMapper.getClient(id);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Integer deleteClient(String clientID) {
-        return clientMapper.deleteClient(clientID);
+    public Integer deleteClient(Integer id) {
+        return clientMapper.deleteClient(id);
     }
 
     @Override

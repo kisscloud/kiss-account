@@ -9,15 +9,15 @@ public interface ClientDao {
 
     List<ClientOutput> getClientOutputs();
 
-    ClientOutput getClientOutput(String clientID);
+    ClientOutput getClientOutput(Integer id);
 
-    Client getClient(String clientID);
+    Client getClient(Integer id);
 
     Integer createClient(Client client);
 
     Integer updateClient(Client client);
 
-    Integer deleteClient(String clientID);
+    Integer deleteClient(Integer id);
 
     Client getClientById(Integer id);
 }

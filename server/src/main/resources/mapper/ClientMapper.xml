@@ -10,12 +10,12 @@
         select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients
     </select>
     
-    <select id="getClientOutput" parameterType="java.lang.String" resultType="com.kiss.account.output.ClientOutput">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where clientID=#{clientID}
+    <select id="getClientOutput" parameterType="java.lang.Integer" resultType="com.kiss.account.output.ClientOutput">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
     </select>
 
-    <select id="getClient" parameterType="java.lang.String" resultType="com.kiss.account.entity.Client">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where clientID=#{clientID}
+    <select id="getClient" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
+        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
     </select>
 
     <select id="getClientById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
@@ -31,7 +31,7 @@
     <update id="updateClient" parameterType="com.kiss.account.entity.Client">
         update clients
         set
-        clientID = #{clientID}
+        id = #{id}
         <if test="clientName != null">
             ,clientName = #{clientName}
         </if>
@@ -41,11 +41,11 @@
         <if test="status != null">
             ,status = #{status}
         </if>
-        where clientID = #{clientID}
+        where id = #{id}
     </update>
     
-    <delete id="deleteClient" parameterType="java.lang.String">
-        delete from clients where clientID = #{clientID}
+    <delete id="deleteClient" parameterType="java.lang.Integer">
+        delete from clients where id = #{id}
     </delete>
 
 </mapper>

@@ -49,9 +49,9 @@ public class ClientController implements ClientClient {
 
     @Override
     @ApiOperation(value = "获取客户端信息")
-    public ResultOutput getClient(@RequestParam("clientID") String clientID) {
+    public ResultOutput getClient(@RequestParam("id") Integer id) {
 
-        ClientOutput clientOutput = clientDao.getClientOutput(clientID);
+        ClientOutput clientOutput = clientDao.getClientOutput(id);
         return ResultOutputUtil.success(clientOutput == null ? "" : clientOutput);
     }
 
@@ -95,15 +95,15 @@ public class ClientController implements ClientClient {
 
     @Override
     @ApiOperation(value = "删除客户端")
-    public ResultOutput deleteClient(@RequestParam("clientID") String clientID) {
+    public ResultOutput deleteClient(@RequestParam("id") Integer id) {
 
-        Client clientOutput = clientDao.getClient(clientID);
+        Client clientOutput = clientDao.getClient(id);
 
         if (clientOutput == null) {
             return ResultOutputUtil.error(AccountStatusCode.CLIENT_IS_NOT_EXIST);
         }
 
-        Integer count = clientDao.deleteClient(clientID);
+        Integer count = clientDao.deleteClient(id);
 
         if (count == 0) {
 

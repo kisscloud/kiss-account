@@ -14,7 +14,7 @@ public interface ClientClient {
     ResultOutput getClients();
 
     @GetMapping("/client")
-    ResultOutput getClient (@RequestParam("clientID") String clientID);
+    ResultOutput getClient (@RequestParam("id") Integer id);
 
     @PostMapping("/client")
     ResultOutput createClient (@Validated @RequestBody CreateClientInput clientInput);
@@ -23,5 +23,5 @@ public interface ClientClient {
     ResultOutput updateClient (@Validated @RequestBody UpdateClientInput updateClientInput);
 
     @DeleteMapping("/client")
-    ResultOutput deleteClient (@RequestParam("clientID") String clientID);
+    ResultOutput deleteClient (@RequestParam("id") Integer id);
 }
