@@ -23,5 +23,5 @@ public interface AccountGroupClient {
     ResultOutput updateAccountGroup(UpdateAccountGroupInput updateAccountGroupInput);
 
     @GetMapping("/account/groups/count")
-    ResultOutput getAccountGroupCount();
+    ResultOutput getAccountGroupsCount();
 }

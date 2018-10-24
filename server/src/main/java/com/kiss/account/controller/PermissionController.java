@@ -181,7 +181,7 @@ public class PermissionController implements PermissionClient {
     }
 
     @Override
-    public ResultOutput getValidPermissionCount() {
+    public ResultOutput getValidPermissionsCount() {
 
         Integer count = permissionDao.getValidPermissionCount();
         return ResultOutputUtil.success(count);

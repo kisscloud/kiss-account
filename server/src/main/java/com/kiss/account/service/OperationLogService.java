@@ -30,7 +30,7 @@ public class OperationLogService {
     private void saveLog(Guest guest, OperationLog operationLog) {
         operationLog.setOperatorId(guest.getId());
         operationLog.setOperatorName(guest.getName());
-        operationLog.setOperatorIp(guest.getIp());
+        operationLog.setOperatorIp(guest.getIp() == null ? "" : guest.getIp());
         operationLog.setCreatedAt(new Date());
         operationLog.setUpdatedAt(new Date());
         operationLog.setRecoveredAt(null);

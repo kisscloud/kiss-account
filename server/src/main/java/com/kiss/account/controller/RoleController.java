@@ -228,7 +228,7 @@ public class RoleController implements RoleClient {
     }
 
     @Override
-    public ResultOutput getValidRoleCount() {
+    public ResultOutput getValidRolesCount() {
 
         Integer count = roleDao.getValidRoleCount();
         return ResultOutputUtil.success(count);

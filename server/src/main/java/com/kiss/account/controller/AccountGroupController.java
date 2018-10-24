@@ -164,7 +164,7 @@ public class AccountGroupController implements AccountGroupClient {
     }
 
     @Override
-    public ResultOutput getAccountGroupCount() {
+    public ResultOutput getAccountGroupsCount() {
 
         Integer count = accountGroupDao.getAccountGroupCount();
         return ResultOutputUtil.success(count);
