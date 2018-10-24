@@ -227,6 +227,13 @@ public class RoleController implements RoleClient {
         return ResultOutputUtil.success(id);
     }
 
+    @Override
+    public ResultOutput getValidRoleCount() {
+
+        Integer count = roleDao.getValidRoleCount();
+        return ResultOutputUtil.success(count);
+    }
+
     /**
      * 解析数据权限的格式
      *

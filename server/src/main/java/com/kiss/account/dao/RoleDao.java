@@ -102,4 +102,6 @@ public interface RoleDao {
      * @return
      */
     Integer deleteRoleAccounts(Integer id);
+
+    Integer getValidRoleCount();
 }

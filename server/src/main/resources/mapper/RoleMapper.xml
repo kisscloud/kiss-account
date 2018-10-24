@@ -74,4 +74,8 @@
     <delete id="deleteRoleAccounts" parameterType="java.lang.Integer">
         delete from accountroles where roleId=#{id}
     </delete>
+
+    <select id="getValidRoleCount" resultType="java.lang.Integer">
+        select count(*) from roles where status=1
+    </select>
 </mapper>

@@ -62,4 +62,6 @@ public interface AccountGroupDao {
     void deleteGroup(Integer id);
 
     List<AccountGroup> getAccountGroupChildren(Integer id);
+
+    Integer getAccountGroupCount();
 }

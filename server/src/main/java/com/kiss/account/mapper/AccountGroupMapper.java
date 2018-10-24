@@ -55,4 +55,6 @@ public interface AccountGroupMapper {
     void deleteGroup(Integer id);
 
     List<AccountGroup> getAccountGroupChildren(Integer id);
+
+    Integer getAccountGroupCount();
 }

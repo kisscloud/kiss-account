@@ -51,4 +51,8 @@
     <select id="getAccountGroupChildren" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.AccountGroup">
         select * from accountGroups where parentId = #{id}
     </select>
+    
+    <select id="getAccountGroupCount" resultType="java.lang.Integer">
+        select count(*) from accountgroups
+    </select>
 </mapper>

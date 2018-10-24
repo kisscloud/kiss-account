@@ -40,4 +40,7 @@ public interface RoleClient {
 
     @DeleteMapping("/role")
     ResultOutput deleteRole(@RequestParam("id") Integer id);
+
+    @GetMapping("/roles/valid/count")
+    ResultOutput getValidRoleCount();
 }

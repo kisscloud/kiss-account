@@ -39,4 +39,6 @@ public interface AccountClient {
     @RequestMapping(value = "/account/permissions/dataScope", method = RequestMethod.GET)
     ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code);
 
+    @GetMapping("/accounts/valid/count")
+    ResultOutput getValidAccountsCount();
 }

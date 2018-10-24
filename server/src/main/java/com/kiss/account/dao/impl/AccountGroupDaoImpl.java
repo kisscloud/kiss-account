@@ -76,4 +76,9 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
     public List<AccountGroup> getAccountGroupChildren(Integer id) {
         return accountGroupMapper.getAccountGroupChildren(id);
     }
+
+    @Override
+    public Integer getAccountGroupCount() {
+        return accountGroupMapper.getAccountGroupCount();
+    }
 }

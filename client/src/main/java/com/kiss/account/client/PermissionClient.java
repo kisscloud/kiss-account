@@ -33,4 +33,7 @@ public interface PermissionClient {
 
     @DeleteMapping("/permission")
     ResultOutput deletePermission(@RequestParam("id") Integer id);
+
+    @GetMapping("/permission/valid/count")
+    ResultOutput getValidPermissionCount();
 }

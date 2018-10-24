@@ -93,4 +93,8 @@
             resultType="com.kiss.account.entity.Permission">
         select * from permissions where moduleId=#{id}
     </select>
+
+    <select id="getValidPermissionCount" resultType="java.lang.Integer">
+        select count(*) from permissions where status = 1
+    </select>
 </mapper>
