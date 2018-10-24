@@ -3,13 +3,13 @@ package com.kiss.account.controller;
 import com.kiss.account.client.ClientModuleClient;
 import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.ClientModule;
-import com.kiss.account.input.CreateClientModulesInput;
 import com.kiss.account.input.UpdateClientModulesInput;
 import com.kiss.account.output.ClientModuleOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.ClientModulesValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -40,13 +40,7 @@ public class ClientModuleController implements ClientModuleClient {
     }
 
     @Override
-    public ResultOutput createClientModules(@Validated @RequestBody CreateClientModulesInput createClientModulesInput) {
-
-        List<Integer> moduleIds = createClientModulesInput.getModuleIds();
-        return addClientModules(moduleIds,createClientModulesInput.getClientId());
-    }
-
-    @Override
+    @ApiOperation(value = "更新客户端模块")
     public ResultOutput updateClientModules(@Validated @RequestBody UpdateClientModulesInput updateClientModulesInput) {
 
         clientModulesDao.deleteClientModules(updateClientModulesInput.getClientId());

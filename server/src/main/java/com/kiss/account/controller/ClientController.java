@@ -11,6 +11,7 @@ import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.StringUtil;
 import com.kiss.account.validator.ClientValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取所有客户端信息")
     public ResultOutput getClients() {
 
         List<ClientOutput> clientOutputs = clientDao.getClientOutputs();
@@ -46,6 +48,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取客户端信息")
     public ResultOutput getClient(@RequestParam("clientID") String clientID) {
 
         ClientOutput clientOutput = clientDao.getClientOutput(clientID);
@@ -53,6 +56,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "添加客户端")
     public ResultOutput createClient(@Validated @RequestBody CreateClientInput clientInput) {
 
         Client client = new Client();
@@ -72,6 +76,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "更新客户端")
     public ResultOutput updateClient(@Validated @RequestBody UpdateClientInput clientInput) {
 
         Client client = new Client();
@@ -89,6 +94,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "删除客户端")
     public ResultOutput deleteClient(@RequestParam("clientID") String clientID) {
 
         Client clientOutput = clientDao.getClient(clientID);

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
+import com.kiss.account.entity.AccountRole;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
@@ -156,10 +157,10 @@ public class RoleController implements RoleClient {
     public ResultOutput<List<AccountRoleOutput>> bindRoleAccounts(@RequestBody BindAccountsToRoleInput bindAccountsToRoleInput) {
 
         List<Integer> accountIds = bindAccountsToRoleInput.getAccountIds();
-        List<AccountRoleOutput> accountRolesList = new ArrayList<>();
+        List<AccountRole> accountRolesList = new ArrayList<>();
 
         for (Integer accountId : accountIds) {
-            AccountRoleOutput accountRoles = new AccountRoleOutput();
+            AccountRole accountRoles = new AccountRole();
             accountRoles.setOperatorId(123);
             accountRoles.setOperatorIp("127.0.0.4");
             accountRoles.setOperatorName("koy");
@@ -171,7 +172,15 @@ public class RoleController implements RoleClient {
         roleDao.deleteRoleAccounts(bindAccountsToRoleInput.getId());
         accountDao.bindRolesToAccount(accountRolesList);
 
-        return ResultOutputUtil.success(accountRolesList);
+        List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
+
+        for (AccountRole accountRole : accountRolesList) {
+            AccountRoleOutput accountRoleOutput = new AccountRoleOutput();
+            BeanUtils.copyProperties(accountRole,accountRoleOutput);
+            accountRoleOutputs.add(accountRoleOutput);
+        }
+
+        return ResultOutputUtil.success(accountRoleOutputs);
     }
 
     @Override
@@ -205,6 +214,7 @@ public class RoleController implements RoleClient {
     }
 
     @Override
+    @ApiOperation(value = "获取有效角色数量")
     public ResultOutput getValidRoleCount() {
 
         Integer count = roleDao.getValidRoleCount();

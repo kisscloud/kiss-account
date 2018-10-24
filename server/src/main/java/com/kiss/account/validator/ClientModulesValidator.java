@@ -4,9 +4,7 @@ import com.kiss.account.dao.ClientDao;
 import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Client;
 import com.kiss.account.entity.PermissionModule;
-import com.kiss.account.input.CreateClientModulesInput;
 import com.kiss.account.input.UpdateClientModulesInput;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -25,17 +23,13 @@ public class ClientModulesValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(CreateClientModulesInput.class) || clazz.equals(UpdateClientModulesInput.class);
+        return clazz.equals(UpdateClientModulesInput.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
-        if (CreateClientModulesInput.class.isInstance(target)) {
-            CreateClientModulesInput createClientModulesInput = (CreateClientModulesInput) target;
-            validateClientId(createClientModulesInput.getClientId(),errors);
-            validateClientModuleId(createClientModulesInput.getModuleIds(),errors);
-        } else if (UpdateClientModulesInput.class.isInstance(target)) {
+        if (UpdateClientModulesInput.class.isInstance(target)) {
             UpdateClientModulesInput updateClientModulesInput = (UpdateClientModulesInput) target;
             validateClientId(updateClientModulesInput.getClientId(),errors);
             validateClientModuleId(updateClientModulesInput.getModuleIds(),errors);

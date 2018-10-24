@@ -40,7 +40,7 @@
       select * from accounts where groupId=#{groupId};
     </select>
 
-    <select id="getAccounts" resultType="com.kiss.account.output.AccountOutput">
+    <select id="getAccounts" resultType="com.kiss.account.entity.Account">
         select account.id,account.name,account.username,account.email,account.mobile,
         account.remark,account.groupId,account.status,account.operatorName,
         account.operatorId,account.operatorIp,account.createdAt,account.updatedAt,gr.name as groupName
@@ -58,7 +58,7 @@
         values(#{roleId}, #{accountId}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
-    <insert id="bindRolesToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+    <insert id="bindRolesToAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.AccountRole">
         insert into accountroles(roleId, accountId, operatorId, operatorName, operatorIp)
         values
         <foreach collection="list" item="role" index="index" separator=",">
@@ -70,11 +70,7 @@
         select count(*) from accounts
     </select>
 
-    <select id="getAccountByUniqueIdentification" resultType="com.kiss.account.entity.Account">
-        select * from accounts where name=#{name} or username=#{username} or email=#{email} or mobile=#{mobile} limit 0,1
-    </select>
-
-    <update id="updateAccount" parameterType="com.kiss.account.output.AccountOutput">
+    <update id="updateAccount" parameterType="com.kiss.account.entity.Account">
         update accounts
         set id = #{id}
         <if test="name != null and name != ''">
@@ -107,7 +103,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateAccountStatus" parameterType="com.kiss.account.output.AccountOutput">
+    <update id="updateAccountStatus" parameterType="com.kiss.account.entity.Account">
         update accounts
         set id = #{id}
         <if test="status != null and status != ''">

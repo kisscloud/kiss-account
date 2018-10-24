@@ -1,6 +1,7 @@
 package com.kiss.account.mapper;
 
 import com.kiss.account.entity.Account;
+import com.kiss.account.entity.AccountRole;
 import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.AccountRoleOutput;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +26,7 @@ public interface AccountMapper {
      *
      * @param accountRoles
      */
-    void bindRolesToAccount(List<AccountRoleOutput> accountRoles);
+    void bindRolesToAccount(List<AccountRole> accountRoles);
 
     /**
      * 分页查询账号信息
@@ -34,7 +35,7 @@ public interface AccountMapper {
      * @param size  int
      * @return List<AccountOutput>
      */
-    List<AccountOutput> getAccounts(@Param("start") int start, @Param("size") int size);
+    List<Account> getAccounts(@Param("start") int start, @Param("size") int size);
 
 
     /**
@@ -102,23 +103,12 @@ public interface AccountMapper {
     Integer getAccountsCount();
 
     /**
-     * 获取满足账号唯一表示的账号(账号的部分属性是不允许重复的)
-     *
-     * @param name String
-     * @param username String
-     * @param email String
-     * @param mobile String
-     * @return Account
-     */
-    Account getAccountByUniqueIdentification(@Param("name") String name, @Param("username") String username, @Param("email") String email, @Param("mobile") String mobile);
-
-    /**
      * 更新账户
      *
      * @param account AccountOutput
      * @return Integer
      */
-    Integer updateAccount(AccountOutput account);
+    Integer updateAccount(Account account);
 
     /**
      * 更新账户密码
@@ -131,10 +121,10 @@ public interface AccountMapper {
     /**
      * 更新账户状态
      *
-     * @param accountOutput AccountOutput
+     * @param account
      * @return Integer
      */
-    Integer updateAccountStatus(AccountOutput accountOutput);
+    Integer updateAccountStatus(Account account);
 
     /**
      * 删除账户所拥有的所有角色

@@ -1,6 +1,7 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.Account;
+import com.kiss.account.entity.AccountRole;
 import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.AccountRoleOutput;
 
@@ -19,7 +20,7 @@ public interface AccountDao {
      *
      * @param accountRoles List<AccountRoleOutput>
      */
-    void bindRolesToAccount(List<AccountRoleOutput> accountRoles);
+    void bindRolesToAccount(List<AccountRole> accountRoles);
 
     /**
      * 查询账号信息
@@ -28,7 +29,7 @@ public interface AccountDao {
      * @param size  int
      * @return List<AccountOutput>
      */
-    List<AccountOutput> getAccounts(int start, int size);
+    List<Account> getAccounts(int start, int size);
 
     /**
      * 查询部门用户
@@ -94,23 +95,12 @@ public interface AccountDao {
     Integer getAccountsCount();
 
     /**
-     * 获取满足账号唯一表示的账号(账号的部分属性是不允许重复的)
-     *
-     * @param name     String
-     * @param username String
-     * @param email    String
-     * @param mobile   String
-     * @return Account
-     */
-    Account getAccountByUniqueIdentification(String name, String username, String email, String mobile);
-
-    /**
      * 更新账号信息
      *
-     * @param account AccountOutput
+     * @param account
      * @return Integer
      */
-    Integer updateAccount(AccountOutput account);
+    Integer updateAccount(Account account);
 
     /**
      * 重置账号密码
@@ -123,10 +113,10 @@ public interface AccountDao {
     /**
      * 更新账号状态
      *
-     * @param accountOutput AccountOutput
+     * @param account
      * @return Integer
      */
-    Integer updateAccountStatus(AccountOutput accountOutput);
+    Integer updateAccountStatus(Account account);
 
     /**
      * 删除账号所拥有的所有角色

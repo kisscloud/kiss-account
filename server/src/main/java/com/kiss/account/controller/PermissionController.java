@@ -153,6 +153,7 @@ public class PermissionController implements PermissionClient {
     }
 
     @Override
+    @ApiOperation(value = "获取有效权限数量")
     public ResultOutput getValidPermissionCount() {
 
         Integer count = permissionDao.getValidPermissionCount();
