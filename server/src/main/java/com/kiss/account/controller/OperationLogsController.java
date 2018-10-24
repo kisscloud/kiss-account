@@ -1,7 +1,7 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.OperationLogsClient;
-import com.kiss.account.dao.OperationLogsDao;
+import com.kiss.account.dao.OperationLogDao;
 import com.kiss.account.entity.OperationLog;
 import com.kiss.account.output.OperationLogOutput;
 import com.kiss.account.output.OperationLogsOutput;
@@ -24,7 +24,7 @@ import java.util.List;
 public class OperationLogsController implements OperationLogsClient {
 
     @Autowired
-    private OperationLogsDao operationLogsDao;
+    private OperationLogDao operationLogDao;
 
     @Value("${max.log.size}")
     private String maxLogSize;
@@ -36,7 +36,7 @@ public class OperationLogsController implements OperationLogsClient {
         Integer queryPage = StringUtils.isEmpty(page) ? 1 : Integer.parseInt(page);
         Integer maxSize = Integer.parseInt(maxLogSize);
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
-        List<OperationLog> operationLogs = operationLogsDao.getOperationLogs((queryPage - 1) * pageSize, pageSize);
+        List<OperationLog> operationLogs = operationLogDao.getOperationLogs((queryPage - 1) * pageSize, pageSize);
         List<OperationLogOutput> operationLogOutputs = new ArrayList<>();
 
         for (OperationLog operationLog : operationLogs) {
@@ -45,7 +45,7 @@ public class OperationLogsController implements OperationLogsClient {
             operationLogOutputs.add(operationLogOutput);
         }
 
-        Integer count = operationLogsDao.getOperationLogsCount();
+        Integer count = operationLogDao.getOperationLogsCount();
         OperationLogsOutput operationLogsOutput = new OperationLogsOutput(count,operationLogOutputs);
 
         return ResultOutputUtil.success(operationLogsOutput);

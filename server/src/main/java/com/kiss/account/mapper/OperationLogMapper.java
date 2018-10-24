@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface OperationLogsMapper {
+public interface OperationLogMapper {
+
+    Integer createOperatorLog(OperationLog operationLog);
 
     List<OperationLog> getOperationLogs(@Param("start") int start, @Param("size") int size);
 
