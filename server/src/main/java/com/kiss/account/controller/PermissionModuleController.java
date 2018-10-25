@@ -8,6 +8,7 @@ import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
@@ -65,7 +66,7 @@ public class PermissionModuleController implements PermissionModuleClient {
         permissionDao.createPermissionModule(permissionModule);
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-        operationLogService.savePermissionModuleLog(guest, null, permissionModule);
+        operationLogService.saveOperationLog(guest,null,permissionModule,"id",OperationTargetType.TYPE_PERMISSION_MODULE);
 
         return ResultOutputUtil.success(permissionModuleOutput);
     }
@@ -142,7 +143,7 @@ public class PermissionModuleController implements PermissionModuleClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
         }
 
-        operationLogService.savePermissionModuleLog(guest, oldValue, null);
+        operationLogService.saveOperationLog(guest,oldValue,null,"id",OperationTargetType.TYPE_PERMISSION_MODULE);
 
         return ResultOutputUtil.success();
     }

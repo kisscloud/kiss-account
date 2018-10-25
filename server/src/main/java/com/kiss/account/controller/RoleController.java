@@ -12,6 +12,7 @@ import com.kiss.account.output.AccountRoleOutput;
 import com.kiss.account.output.RoleOutput;
 import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.RoleValidator;
@@ -53,6 +54,9 @@ public class RoleController implements RoleClient {
     @Autowired
     private OperationLogService operationLogService;
 
+    @Autowired
+    private OperationLogService operationLogSer;
+
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         dataBinder.setValidator(roleValidator);
@@ -71,7 +75,7 @@ public class RoleController implements RoleClient {
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
-        operationLogService.saveRoleLog(guest, null, role);
+        operationLogService.saveOperationLog(guest,null,role,"id",OperationTargetType.TYPE_ROLE);
 
         return ResultOutputUtil.success(roleOutput);
     }
@@ -133,7 +137,7 @@ public class RoleController implements RoleClient {
 
         oldBindPermissionToRoleInput.setPermissions(oldPermissions);
         oldBindPermissionToRoleInput.setRoleId(bindPermissionToRoleInput.getRoleId());
-        operationLogService.saveRolePermissionsLog(guest,oldBindPermissionToRoleInput,bindPermissionToRoleInput);
+        operationLogService.saveOperationLog(guest,oldBindPermissionToRoleInput,bindPermissionToRoleInput,"roleId",OperationTargetType.TYPE_ROLE_PERMISSIONS);
 
         return ResultOutputUtil.success(rolePermissionOutputs);
     }
@@ -211,7 +215,7 @@ public class RoleController implements RoleClient {
         BindAccountsToRoleInput oldBindAccountsToRoleInput = new BindAccountsToRoleInput();
         oldBindAccountsToRoleInput.setAccountIds(oldAccountIds);
         oldBindAccountsToRoleInput.setId(bindAccountsToRoleInput.getId());
-        operationLogService.saveRoleAccountsLog(guest,oldBindAccountsToRoleInput,bindAccountsToRoleInput);
+        operationLogService.saveOperationLog(guest,oldBindAccountsToRoleInput,bindAccountsToRoleInput,"id",OperationTargetType.TYPE_ROLE_ACCOUNTS);
 
         return ResultOutputUtil.success(accountRoleOutputs);
     }
@@ -252,7 +256,7 @@ public class RoleController implements RoleClient {
 
         Role oldValue = roleDao.getRoleById(id);
         roleDao.deleteRolePermissionsByRoleId(id);
-        operationLogService.saveRoleLog(guest, oldValue, null);
+        operationLogService.saveOperationLog(guest, oldValue, null,"id",OperationTargetType.TYPE_ROLE);
 
         return ResultOutputUtil.success(id);
     }

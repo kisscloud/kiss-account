@@ -8,6 +8,7 @@ import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AccountGroupOutput;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.AccountGroupValidator;
@@ -75,7 +76,7 @@ public class AccountGroupController implements AccountGroupClient {
         accountGroupDao.createAccountGroup(accountGroup);
         AccountGroupOutput accountGroupOutput = new AccountGroupOutput();
         BeanUtils.copyProperties(accountGroup, accountGroupOutput);
-        operationLogService.saveAccountGroupLog(guest, null, accountGroup);
+        operationLogService.saveOperationLog(guest,null,accountGroup,"id",OperationTargetType.TYPE_ACCOUNT_GROUP);
 
         return ResultOutputUtil.success(accountGroupOutput);
     }
@@ -126,7 +127,7 @@ public class AccountGroupController implements AccountGroupClient {
 
         AccountGroup oldValue = accountGroupDao.getAccountGroupById(id);
         accountGroupDao.deleteAccountGroupById(id);
-        operationLogService.saveAccountGroupLog(guest, oldValue, null);
+        operationLogService.saveOperationLog(guest,oldValue,null,"id",OperationTargetType.TYPE_ACCOUNT_GROUP);
 
         return ResultOutputUtil.success();
     }
@@ -149,7 +150,7 @@ public class AccountGroupController implements AccountGroupClient {
         }
 
         AccountGroup newValue = accountGroupDao.getAccountGroupById(updateAccountGroupInput.getId());
-        operationLogService.saveAccountGroupLog(guest, oldValue, newValue);
+        operationLogService.saveOperationLog(guest,oldValue,newValue,"id",OperationTargetType.TYPE_ACCOUNT_GROUP);
 
         return ResultOutputUtil.success(accountGroup);
     }

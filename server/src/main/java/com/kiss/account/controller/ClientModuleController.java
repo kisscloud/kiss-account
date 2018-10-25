@@ -5,9 +5,12 @@ import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.ClientModule;
 import com.kiss.account.input.UpdateClientModulesInput;
 import com.kiss.account.output.ClientModuleOutput;
+import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.ClientModulesValidator;
+import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.ThreadLocalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,9 @@ public class ClientModuleController implements ClientModuleClient {
     @Autowired
     private ClientModuleDao clientModulesDao;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @InitBinder
     public void initBinder (WebDataBinder binder) {
 
@@ -43,10 +50,29 @@ public class ClientModuleController implements ClientModuleClient {
     @ApiOperation(value = "更新客户端模块")
     public ResultOutput updateClientModules(@Validated @RequestBody UpdateClientModulesInput updateClientModulesInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+        List<ClientModule> oldClientModules = clientModulesDao.getClientModulesByClientId(updateClientModulesInput.getClientId());
         clientModulesDao.deleteClientModulesByClientId(updateClientModulesInput.getClientId());
         List<Integer> moduleIds = updateClientModulesInput.getModuleIds();
 
-        return addClientModules(moduleIds,updateClientModulesInput.getClientId());
+        List<Integer> oldModuleIds = new ArrayList<>();
+
+        if (oldClientModules != null && oldClientModules.size() != 0) {
+            for (ClientModule clientModule : oldClientModules) {
+                oldModuleIds.add(clientModule.getModuleId());
+            }
+        }
+
+        ResultOutput resultOutput = addClientModules(moduleIds,updateClientModulesInput.getClientId());
+
+        if (resultOutput.getCode() == 200) {
+            UpdateClientModulesInput oldUpdateClientModulesInput = new UpdateClientModulesInput();
+            oldUpdateClientModulesInput.setClientId(updateClientModulesInput.getClientId());
+            oldUpdateClientModulesInput.setModuleIds(oldModuleIds);
+            operationLogService.saveOperationLog(guest,oldUpdateClientModulesInput,updateClientModulesInput,"clientId",OperationTargetType.TYPE_CLIENT_MODULES);
+        }
+
+        return resultOutput;
     }
 
     @Override

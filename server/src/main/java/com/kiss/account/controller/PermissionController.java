@@ -9,6 +9,7 @@ import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.output.BindPermissionOutput;
 import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
@@ -86,7 +87,7 @@ public class PermissionController implements PermissionClient {
         permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
         permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
-        operationLogService.savePermissionLog(guest, null, permission);
+        operationLogService.saveOperationLog(guest,null,permission,"id",OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -133,7 +134,7 @@ public class PermissionController implements PermissionClient {
         permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permission.getType())));
         permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permission.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
-        operationLogService.savePermissionLog(guest, oldPermission, permission);
+        operationLogService.saveOperationLog(guest,oldPermission,permission,"id",OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -150,7 +151,7 @@ public class PermissionController implements PermissionClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_FAILED);
         }
 
-        operationLogService.savePermissionLog(guest, oldPermission, null);
+        operationLogService.saveOperationLog(guest,oldPermission,null,"id",OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success();
     }

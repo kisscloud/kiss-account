@@ -9,6 +9,7 @@ import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.UpdateClientInput;
 import com.kiss.account.output.ClientOutput;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
@@ -100,8 +101,7 @@ public class ClientController implements ClientClient {
             return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_FAILED);
         }
 
-        operationLogService.saveClientLog(guest, null, client);
-
+        operationLogService.saveOperationLog(guest,null,client,"id",OperationTargetType.TYPE_CLIENT);
         ClientOutput clientOutput = new ClientOutput();
         BeanUtils.copyProperties(client,clientOutput);
 
@@ -130,8 +130,7 @@ public class ClientController implements ClientClient {
 
         ClientOutput clientOutput = new ClientOutput();
         BeanUtils.copyProperties(client, clientOutput);
-
-        operationLogService.saveClientLog(guest, oldValue, client);
+        operationLogService.saveOperationLog(guest,oldValue,client,"id",OperationTargetType.TYPE_CLIENT);
 
         return ResultOutputUtil.success(clientOutput);
     }
@@ -155,7 +154,7 @@ public class ClientController implements ClientClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_CLIENT_FAILED);
         }
 
-        operationLogService.saveClientLog(guest, oldValue, null);
+        operationLogService.saveOperationLog(guest,oldValue,null,"id",OperationTargetType.TYPE_CLIENT);
 
         return ResultOutputUtil.success();
     }

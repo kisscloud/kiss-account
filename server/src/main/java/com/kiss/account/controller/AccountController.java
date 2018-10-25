@@ -9,6 +9,7 @@ import com.kiss.account.entity.AccountRole;
 import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.service.OperationLogService;
+import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.*;
 import com.kiss.account.validator.AccountValidator;
@@ -81,7 +82,7 @@ public class AccountController implements AccountClient {
         AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
         accountOutput.setGroupName(group.getName());
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-        operationLogService.saveAccountLog(guest, null, account);
+        operationLogService.saveOperationLog(guest,null,account,"id",OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -184,7 +185,7 @@ public class AccountController implements AccountClient {
         AccountGroup group = accountGroupDao.getAccountGroupById(accountOutput.getGroupId());
         accountOutput.setGroupName(group.getName());
         BeanUtils.copyProperties(accountOutput, newAccount);
-        operationLogService.saveAccountLog(guest, oldAccount, newAccount);
+        operationLogService.saveOperationLog(guest,oldAccount,newAccount,"id",OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -213,7 +214,7 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
         }
 
-        operationLogService.saveAccountLog(guest, oldValue, account);
+        operationLogService.saveOperationLog(guest,oldValue,account,"id",OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success();
     }
@@ -240,7 +241,7 @@ public class AccountController implements AccountClient {
         BeanUtils.copyProperties(account,accountOutput);
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
         BeanUtils.copyProperties(accountOutput, newValue);
-        operationLogService.saveAccountLog(guest, oldValue, newValue);
+        operationLogService.saveOperationLog(guest,oldValue,newValue,"id",OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
