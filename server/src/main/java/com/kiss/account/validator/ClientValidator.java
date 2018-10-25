@@ -18,12 +18,14 @@ public class ClientValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
+
         return clazz.equals(CreateClientInput.class)
                 || clazz.equals(UpdateClientInput.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
+
         if (CreateClientInput.class.isInstance(target)) {
             CreateClientInput clientInput = (CreateClientInput) target;
             validateClientName(clientInput.getClientName(),errors);
@@ -39,26 +41,29 @@ public class ClientValidator implements Validator {
     }
 
     public void validateClientName (String clientName,Errors errors) {
+
         if (StringUtils.isEmpty(clientName)) {
             errors.rejectValue("clientName","","客户端名称不能为空");
         }
     }
 
     public void validateClientStatus (Integer status,Errors errors) {
+
         if (status != 0 && status != 1) {
             errors.rejectValue("status","","客户端状态不合法");
         }
     }
 
-    public void validateClientId (Integer clientID,Errors errors) {
-        if (clientID == null) {
+    public void validateClientId (Integer id,Errors errors) {
+
+        if (id == null) {
             errors.rejectValue("clientID","","客户端id不能为空");
         }
 
-        Client clientOutput = clientDao.getClient(clientID);
+        Client clientOutput = clientDao.getClientById(id);
+
         if (clientOutput == null) {
             errors.rejectValue("clientID","","客户端id不存在");
         }
-
     }
 }

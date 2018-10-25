@@ -17,8 +17,10 @@ public class ResponseFilter implements InnerFilter {
     }
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response,InnerFilterChain filterChain) {
+
         filterChain.doFilter(request,response,filterChain);
         byte[] bytes = responseWrapper.getBytes();
+
         try {
             String responseMsg = new String(bytes,"utf-8");
             JSONObject jsonObject = JSONObject.parseObject(responseMsg);

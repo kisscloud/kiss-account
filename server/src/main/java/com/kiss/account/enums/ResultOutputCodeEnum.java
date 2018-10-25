@@ -18,6 +18,7 @@ public enum ResultOutputCodeEnum {
     private String message;
 
     ResultOutputCodeEnum(Integer code, String message) {
+
         this.code = code;
         this.message = message;
     }

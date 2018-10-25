@@ -2,8 +2,6 @@ package com.kiss.account.input;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-
 /**
  * 创建账户输入
  */

@@ -3,7 +3,6 @@ package com.kiss.account.validator;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.input.*;
-import com.kiss.account.entity.RolePermission;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,12 +32,9 @@ public class RoleValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         if (CreateRoleInput.class.isInstance(target)) {
-
             CreateRoleInput createRoleInput = (CreateRoleInput) target;
             validateName(null, createRoleInput.getName(), errors);
-
         } else if (UpdateRoleInput.class.isInstance(target)) {
-
             UpdateRoleInput updateRoleInput = (UpdateRoleInput) target;
             validateRoleExist(updateRoleInput.getId(), errors);
 
@@ -47,18 +43,13 @@ public class RoleValidator implements Validator {
             }
 
             validateName(updateRoleInput.getId(), updateRoleInput.getName(), errors);
-
-
         } else if (BindPermissionToRoleInput.class.isInstance(target)) {
-
             BindPermissionToRoleInput bindPermissionToRoleInput = (BindPermissionToRoleInput) target;
             validateRoleExist(bindPermissionToRoleInput.getRoleId(), errors);
-
         } else if (BindAccountsToRoleInput.class.isInstance(target)) {
 
             // TODO 校验绑定用户的数据
         } else {
-
             errors.rejectValue("data", "", "数据格式错误");
         }
 
@@ -76,7 +67,6 @@ public class RoleValidator implements Validator {
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
-
             errors.rejectValue("name", "", "角色名不能为空");
         }
 

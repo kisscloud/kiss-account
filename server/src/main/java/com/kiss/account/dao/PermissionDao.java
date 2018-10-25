@@ -63,14 +63,6 @@ public interface PermissionDao {
     List<PermissionModule> getBindPermissionModules();
 
     /**
-     * 查询权限模块所绑定的权限数
-     *
-     * @param id Integer
-     * @return Integer
-     */
-    Integer getPermissionModulePermissionsCount(Integer id);
-
-    /**
      * 更新权限模块所绑定的权限数
      *
      * @param id               Integer  +1/-1 权限数加一或减一
@@ -89,13 +81,13 @@ public interface PermissionDao {
     /**
      * 更新权限
      *
-     * @param permissionOutput PermissionOutput
+     * @param permission
      * @return Integer
      */
-    Integer updatePermission(PermissionOutput permissionOutput);
+    Integer updatePermission(Permission permission);
 
     /**
-     * 根系权限模块
+     * 更新权限模块
      *
      * @param permissionModuleOutput PermissionModuleOutput
      * @return Integer
@@ -108,7 +100,7 @@ public interface PermissionDao {
      * @param id Integer
      * @return Integer
      */
-    Integer deletePermission(Integer id);
+    Integer deletePermissionById(Integer id);
 
     /**
      * 删除权限模块
@@ -116,7 +108,7 @@ public interface PermissionDao {
      * @param id Integer
      * @return Integer
      */
-    Integer deletePermissionModule(Integer id);
+    Integer deletePermissionModuleById(Integer id);
 
     /**
      * 根据模块名查询模块信息
@@ -129,18 +121,17 @@ public interface PermissionDao {
     /**
      * 根据模块id查询权限信息
      *
-     * @param id Integer
+     * @param moduleId Integer
      * @return List<Permission>
      */
-    List<Permission> getPermissionByModuleId(Integer id);
+    List<Permission> getPermissionByModuleId(Integer moduleId);
 
     /**
      * 根据权限id查询权限信息
-     *
-     * @param id Integer
-     * @return Permission
+     * @param id
+     * @return
      */
-    PermissionOutput getPermissionById(Integer id);
+    Permission getPermissionById(Integer id);
 
     /**
      * 根据权限id查询权限信息
@@ -151,19 +142,15 @@ public interface PermissionDao {
     Permission getPermissionByCode(String code);
 
     /**
-     * 根据权限名称查询权限信息
-     *
-     * @param name String
-     * @return Permission
-     */
-    Permission getPermissionByName(String name);
-
-    /**
      * 根据模块id查询其子模块
-     * @param id
+     * @param parentId
      * @return
      */
-    List<PermissionModule> getPermissionModuleChildren(Integer id);
+    List<PermissionModule> getPermissionModuleChildrenByParentId(Integer parentId);
 
+    /**
+     * 查询有效权限数量
+     * @return
+     */
     Integer getValidPermissionCount();
 }

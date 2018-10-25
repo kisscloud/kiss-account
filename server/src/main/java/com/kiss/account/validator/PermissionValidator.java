@@ -2,12 +2,9 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Permission;
-import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.UpdatePermissionInput;
-import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.regex.Regex;
-import com.kiss.account.utils.ApplicationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +19,7 @@ public class PermissionValidator implements Validator {
     @Autowired
     private PermissionDao permissionDao;
 
-    private PermissionOutput permission;
+    private Permission permission;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -35,25 +32,22 @@ public class PermissionValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         if (CreatePermissionInput.class.isInstance(target)) {
-
             CreatePermissionInput createPermissionInput = (CreatePermissionInput) target;
             validateName(null, createPermissionInput.getName(), errors);
             validateCode(null, createPermissionInput.getCode(),createPermissionInput.getType(), errors);
             validateStatus(createPermissionInput.getStatus(), errors);
-
         } else if (UpdatePermissionInput.class.isInstance(target)) {
-
             UpdatePermissionInput updatePermissionInput = (UpdatePermissionInput) target;
             validatePermissionExist(updatePermissionInput.getId(), errors);
+
             if (permission == null) {
                 return;
             }
+
             validateName(updatePermissionInput.getId(), updatePermissionInput.getName(), errors);
             validateCode(updatePermissionInput.getId(), updatePermissionInput.getCode(),updatePermissionInput.getType(), errors);
             validateStatus(updatePermissionInput.getStatus(), errors);
-
         } else {
-
             errors.rejectValue("data", "", "数据格式错误");
         }
 
@@ -71,7 +65,6 @@ public class PermissionValidator implements Validator {
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
-
             errors.rejectValue("name", "", "权限名称不能为空");
         }
 
@@ -93,7 +86,6 @@ public class PermissionValidator implements Validator {
     private void validateCode(Integer id, String code,Integer type, Errors errors) {
 
         if (StringUtils.isEmpty(code)) {
-
             errors.rejectValue("code", "", "权限码不能为空");
         }
 

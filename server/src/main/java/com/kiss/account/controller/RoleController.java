@@ -63,7 +63,6 @@ public class RoleController implements RoleClient {
     public ResultOutput<RoleOutput> createRole(@Validated @RequestBody CreateRoleInput createRoleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         Role role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
         role.setOperatorId(guest.getId());
@@ -72,7 +71,6 @@ public class RoleController implements RoleClient {
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
         BeanUtils.copyProperties(role, roleOutput);
-
         operationLogService.saveRoleLog(guest, null, role);
 
         return ResultOutputUtil.success(roleOutput);
@@ -84,8 +82,7 @@ public class RoleController implements RoleClient {
     public ResultOutput<List<RolePermissionOutput>> bindRolePermissions(@Validated @RequestBody BindPermissionToRoleInput bindPermissionToRoleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        roleDao.getRolePermissions(bindPermissionToRoleInput.getRoleId());
+        roleDao.getRolePermissionsByRoleId(bindPermissionToRoleInput.getRoleId());
         List<BindRoleDataPermissions> permissions = bindPermissionToRoleInput.getPermissions();
         List<RolePermission> rolePermissions = new ArrayList<>();
 
@@ -112,7 +109,7 @@ public class RoleController implements RoleClient {
             rolePermissions.add(rolePermission);
         }
 
-        roleDao.deleteRolePermissions(bindPermissionToRoleInput.getRoleId());
+        roleDao.deleteRolePermissionsByRoleId(bindPermissionToRoleInput.getRoleId());
         roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
 
@@ -131,6 +128,7 @@ public class RoleController implements RoleClient {
 
         List<Role> roles = roleDao.getRoles();
         List<RoleOutput> roleOutputs = new ArrayList<>();
+
         for (Role role : roles) {
             RoleOutput roleOutput = new RoleOutput();
             BeanUtils.copyProperties(role, roleOutput);
@@ -144,7 +142,7 @@ public class RoleController implements RoleClient {
     @ApiOperation(value = "获取角色绑定的所有权限")
     public ResultOutput getRolePermissions(@RequestParam("id") Integer id) {
 
-        List<RolePermission> rolePermissions = roleDao.getRolePermissions(id);
+        List<RolePermission> rolePermissions = roleDao.getRolePermissionsByRoleId(id);
         List<RolePermissionOutput> rolePermissionOutputList = new ArrayList<>();
 
         for (RolePermission rolePermission : rolePermissions) {
@@ -159,7 +157,9 @@ public class RoleController implements RoleClient {
     @Override
     @ApiOperation(value = "获取角色绑定的用户ID列表")
     public ResultOutput<List<Integer>> getRoleAccountIds(@RequestParam("id") Integer id) {
-        List<Integer> accountIds = roleDao.getRolesAccountIds(id);
+
+        List<Integer> accountIds = roleDao.getRolesAccountIdsByRoleId(id);
+
         return ResultOutputUtil.success(accountIds);
     }
 
@@ -181,9 +181,8 @@ public class RoleController implements RoleClient {
             accountRolesList.add(accountRoles);
         }
 
-        roleDao.deleteRoleAccounts(bindAccountsToRoleInput.getId());
+        roleDao.deleteRoleAccountsByRoleId(bindAccountsToRoleInput.getId());
         accountDao.bindRolesToAccount(accountRolesList);
-
         List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
 
         for (AccountRole accountRole : accountRolesList) {
@@ -200,14 +199,19 @@ public class RoleController implements RoleClient {
     public ResultOutput<RoleOutput> updateRole(@Validated @RequestBody UpdateRoleInput updateRoleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        RoleOutput roleOutput = new RoleOutput();
-        BeanUtils.copyProperties(updateRoleInput, roleOutput);
-        Integer count = roleDao.putRole(roleOutput);
+        Role role = new Role();
+        BeanUtils.copyProperties(updateRoleInput, role);
+        role.setOperatorName(guest.getName());
+        role.setOperatorIp(guest.getIp());
+        role.setOperatorId(guest.getId());
+        Integer count = roleDao.updateRole(role);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ROLE_FAILED);
         }
+
+        RoleOutput roleOutput = new RoleOutput();
+        BeanUtils.copyProperties(role,roleOutput);
 
         return ResultOutputUtil.success(roleOutput);
     }
@@ -218,17 +222,14 @@ public class RoleController implements RoleClient {
     public ResultOutput deleteRole(@RequestParam("id") Integer id) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        Integer roleCount = roleDao.deleteRole(id);
+        Integer roleCount = roleDao.deleteRoleById(id);
 
         if (roleCount == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_ROLE_FAILED);
         }
 
         Role oldValue = roleDao.getRoleById(id);
-
-        roleDao.deleteRolePermissions(id);
-
+        roleDao.deleteRolePermissionsByRoleId(id);
         operationLogService.saveRoleLog(guest, oldValue, null);
 
         return ResultOutputUtil.success(id);
@@ -238,6 +239,7 @@ public class RoleController implements RoleClient {
     @ApiOperation(value = "获取有效角色数量")
     public ResultOutput getValidRolesCount() {
         Integer count = roleDao.getValidRoleCount();
+
         return ResultOutputUtil.success(count);
     }
 
@@ -250,8 +252,8 @@ public class RoleController implements RoleClient {
     private ResultOutput analyseLimitString(String limitString) {
         Map<String, String> params = new HashMap<>();
         Map<String, String> data = new HashMap<>();
-
         String[] splits = limitString.split("\\?");
+
         if (splits.length != 2 || StringUtils.isEmpty(splits[1])) {
             return ResultOutputUtil.error(AccountStatusCode.ROLE_DATA_PERMISSION_PATTERN_ERROR);
         }
@@ -308,6 +310,7 @@ public class RoleController implements RoleClient {
         }
 
         Map<String, Object> limitScope = new HashMap<>();
+
         if (params.size() != 0) {
             limitScope.put("params", params);
         }

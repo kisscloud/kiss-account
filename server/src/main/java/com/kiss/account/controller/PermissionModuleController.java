@@ -51,9 +51,7 @@ public class PermissionModuleController implements PermissionModuleClient {
     public ResultOutput<PermissionModuleOutput> createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         PermissionModule permissionModule = new PermissionModule();
-
         permissionModule.setName(permissionModuleInput.getName());
         permissionModule.setParentId(permissionModuleInput.getParentId());
         permissionModule.setSeq(100);
@@ -64,12 +62,9 @@ public class PermissionModuleController implements PermissionModuleClient {
         permissionModule.setOperatorName(guest.getName());
         permissionModule.setOperatorIp(guest.getIp());
         permissionModule.setStatus(1);
-
         permissionDao.createPermissionModule(permissionModule);
-
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-
         operationLogService.savePermissionModuleLog(guest, null, permissionModule);
 
         return ResultOutputUtil.success(permissionModuleOutput);
@@ -112,7 +107,6 @@ public class PermissionModuleController implements PermissionModuleClient {
     public ResultOutput<PermissionModuleOutput> updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput updatePermissionModuleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(updatePermissionModuleInput, permissionModuleOutput);
         Integer count = permissionDao.updatePermissionModule(permissionModuleOutput);
@@ -134,7 +128,7 @@ public class PermissionModuleController implements PermissionModuleClient {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
         }
 
-        List<PermissionModule> permissionModules = permissionDao.getPermissionModuleChildren(id);
+        List<PermissionModule> permissionModules = permissionDao.getPermissionModuleChildrenByParentId(id);
 
         if (permissionModules != null && permissionModules.size() != 0) {
             return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
@@ -142,8 +136,7 @@ public class PermissionModuleController implements PermissionModuleClient {
 
         Guest guest = ThreadLocalUtil.getGuest();
         PermissionModule oldValue = permissionDao.getPermissionModuleById(id);
-
-        Integer count = permissionDao.deletePermissionModule(id);
+        Integer count = permissionDao.deletePermissionModuleById(id);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);

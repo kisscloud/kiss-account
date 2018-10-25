@@ -13,7 +13,17 @@ public interface OperationLogDao {
      */
     Integer createOperatorLog(OperationLog operationLog);
 
+    /**
+     * 查询操作日志
+     * @param start 分页参数
+     * @param size  分页数量
+     * @return
+     */
     List<OperationLog> getOperationLogs(int start, int size);
 
+    /**
+     * 查询操作日志数量
+     * @return
+     */
     Integer getOperationLogsCount();
 }

@@ -2,10 +2,7 @@ package com.kiss.account.dao.impl;
 
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountGroupMapper;
-import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.ResultOutputUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +19,7 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
         AccountGroup parentAccountGroup;
 
         if (accountGroup.getParentId() != 0) {
-            parentAccountGroup = getGroupById(accountGroup.getParentId());
+            parentAccountGroup = getAccountGroupById(accountGroup.getParentId());
             if (parentAccountGroup != null) {
                 accountGroup.setLevel(String.format("%s,%d,", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
             }
@@ -38,25 +35,22 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
 
     @Override
     public AccountGroup getAccountGroupById(Integer id) {
+
         return accountGroupMapper.getAccountGroupById(id);
     }
 
-    public List<AccountGroup> getGroups() {
-        List<AccountGroup> groups = accountGroupMapper.getGroups();
+    public List<AccountGroup> getAccountGroups() {
+
+        List<AccountGroup> groups = accountGroupMapper.getAccountGroups();
         return groups;
-    }
-
-    public AccountGroup getGroupById(int id) {
-        return accountGroupMapper.getAccountGroupById(id);
     }
 
     public Integer updateAccountGroup(AccountGroup accountGroup) {
 
-
         AccountGroup parentAccountGroup;
 
         if (accountGroup.getParentId() != 0) {
-            parentAccountGroup = getGroupById(accountGroup.getParentId());
+            parentAccountGroup = getAccountGroupById(accountGroup.getParentId());
             if (parentAccountGroup != null) {
                 accountGroup.setLevel(String.format("%s%d,", parentAccountGroup.getLevel(), parentAccountGroup.getId()));
             }
@@ -68,17 +62,20 @@ public class AccountGroupDaoImpl implements AccountGroupDao {
     }
 
     @Override
-    public void deleteGroup(Integer id) {
-        accountGroupMapper.deleteGroup(id);
+    public void deleteAccountGroupById(Integer id) {
+
+        accountGroupMapper.deleteAccountGroupById(id);
     }
 
     @Override
-    public List<AccountGroup> getAccountGroupChildren(Integer id) {
-        return accountGroupMapper.getAccountGroupChildren(id);
+    public List<AccountGroup> getAccountGroupChildrenByParentId(Integer parentId) {
+
+        return accountGroupMapper.getAccountGroupChildrenByParentId(parentId);
     }
 
     @Override
     public Integer getAccountGroupCount() {
+
         return accountGroupMapper.getAccountGroupCount();
     }
 }

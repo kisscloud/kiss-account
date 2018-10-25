@@ -35,35 +35,29 @@ public class AccountValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         if (CreateAccountInput.class.isInstance(target)) {
-
             CreateAccountInput createAccountInput = (CreateAccountInput) target;
             validateName(null, createAccountInput.getName(), errors);
             validateUsername(null, createAccountInput.getUsername(), errors);
             validateEmail(null, createAccountInput.getEmail(), errors);
             validateMobile(null, createAccountInput.getMobile(), errors);
-
             validateGroupId(createAccountInput.getGroupId(), errors);
             validatePassword(createAccountInput.getPassword(), errors);
-
         } else if (UpdateAccountInput.class.isInstance(target)) {
-
             UpdateAccountInput updateAccountInput = (UpdateAccountInput) target;
             validateAccountExist(updateAccountInput.getId(), errors);
+
             if (account == null) {
                 return;
             }
+
             validateName(updateAccountInput.getId(), updateAccountInput.getName(), errors);
             validateUsername(updateAccountInput.getId(), updateAccountInput.getUsername(), errors);
             validateEmail(updateAccountInput.getId(), updateAccountInput.getEmail(), errors);
             validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
-
             validateGroupId(updateAccountInput.getGroupId(), errors);
-
         } else if (UpdateAccountStatusInput.class.isInstance(target)) {
-
             UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
             validateStatus(updateAccountStatusInput.getStatus(), errors);
-
         } else {
             errors.rejectValue("data", "", "数据绑定错误");
         }
@@ -155,11 +149,11 @@ public class AccountValidator implements Validator {
             return;
         }
 
-
         errors.rejectValue("email", "", "邮箱已存在");
     }
 
     private void validateGroupId(Integer groupId, Errors errors) {
+
         if (groupId == null) {
             errors.rejectValue("groupId", "", "部门不能为空");
         }
@@ -170,18 +164,22 @@ public class AccountValidator implements Validator {
     }
 
     private void validatePassword(String password, Errors errors) {
+
         if (StringUtils.isEmpty(password)) {
             errors.rejectValue("password", "", "密码不能为空");
         }
+
         if (password.length() < 8) {
             errors.rejectValue("password", "", "密码不能小于8位");
         }
+
         if (password.length() > 32) {
             errors.rejectValue("password", "", "密码不能大于32位");
         }
     }
 
     private void validateStatus(Integer status, Errors errors) {
+
         if (status == null) {
             errors.rejectValue("status", "", "用户状态不能为空");
         }

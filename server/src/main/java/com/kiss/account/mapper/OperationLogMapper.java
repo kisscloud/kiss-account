@@ -9,9 +9,24 @@ import java.util.List;
 @Mapper
 public interface OperationLogMapper {
 
+    /**
+     * 添加操作日志
+     * @param operationLog
+     * @return
+     */
     Integer createOperatorLog(OperationLog operationLog);
 
+    /**
+     * 查询操作日志
+     * @param start
+     * @param size
+     * @return
+     */
     List<OperationLog> getOperationLogs(@Param("start") int start, @Param("size") int size);
 
+    /**
+     * 查询操作日志数量
+     * @return
+     */
     Integer getOperationLogsCount();
 }

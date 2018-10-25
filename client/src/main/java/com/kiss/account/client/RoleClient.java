@@ -1,12 +1,8 @@
 package com.kiss.account.client;
 
 import com.kiss.account.input.*;
-import com.kiss.account.output.AccountRoleOutput;
-import com.kiss.account.output.RoleOutput;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
-
-import java.util.List;
 
 @RequestMapping()
 public interface RoleClient {

@@ -1,23 +1,41 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.Client;
-import com.kiss.account.output.ClientOutput;
-
 import java.util.List;
 
 public interface ClientDao {
 
-    List<ClientOutput> getClientOutputs();
+    /**
+     * 查询所有客户端信息
+     * @return
+     */
+    List<Client> getClients();
 
-    ClientOutput getClientOutput(Integer id);
+    /**
+     * 根据id查询客户端的信息
+     * @param id
+     * @return
+     */
+    Client getClientById(Integer id);
 
-    Client getClient(Integer id);
-
+    /**
+     * 新增客户端
+     * @param client
+     * @return
+     */
     Integer createClient(Client client);
 
+    /**
+     * 更新客户端信息
+     * @param client
+     * @return
+     */
     Integer updateClient(Client client);
 
-    Integer deleteClient(Integer id);
-
-    Client getClientById(Integer id);
+    /**
+     * 删除客户端
+     * @param id
+     * @return
+     */
+    Integer deleteClientById(Integer id);
 }

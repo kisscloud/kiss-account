@@ -45,16 +45,25 @@ public interface AccountGroupMapper {
      *
      * @return List<AccountGroup>
      */
-    List<AccountGroup> getGroups();
+    List<AccountGroup> getAccountGroups();
 
     /**
      * 删除部门
      *
      * @param id Integer
      */
-    void deleteGroup(Integer id);
+    void deleteAccountGroupById(Integer id);
 
-    List<AccountGroup> getAccountGroupChildren(Integer id);
+    /**
+     * 查询部门下所有的子部门
+     * @param parentId
+     * @return
+     */
+    List<AccountGroup> getAccountGroupChildrenByParentId(Integer parentId);
 
+    /**
+     * 查询部门的数量
+     * @return
+     */
     Integer getAccountGroupCount();
 }

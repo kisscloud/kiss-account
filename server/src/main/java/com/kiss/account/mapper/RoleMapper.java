@@ -1,11 +1,7 @@
 package com.kiss.account.mapper;
 
-import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
-import com.kiss.account.output.RoleOutput;
-import com.kiss.account.output.RolePermissionOutput;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -35,28 +31,20 @@ public interface RoleMapper {
     List<Role> getRoles();
 
     /**
-     * 查询角色下所有的权限id
-     *
-     * @param id 角色id
-     * @return
-     */
-    List<Integer> getRolesPermissionIds(Integer id);
-
-    /**
      * 查询角色下所有的权限
      *
-     * @param id 角色id
+     * @param roleId 角色id
      * @return
      */
-    List<RolePermission> getRolesPermissions(Integer id);
+    List<RolePermission> getRolePermissionsByRoleId(Integer roleId);
 
     /**
      * 查询角色下所有的账户id
      *
-     * @param id 角色id
+     * @param roleId 角色id
      * @return
      */
-    List<Integer> getRolesAccountIds(Integer id);
+    List<Integer> getRolesAccountIdsByRoleId(Integer roleId);
 
     /**
      * 根据角色ID查询角色信息
@@ -77,10 +65,10 @@ public interface RoleMapper {
     /**
      * 更新角色信息
      *
-     * @param roleOutput
+     * @param role
      * @return
      */
-    Integer putRole(RoleOutput roleOutput);
+    Integer updateRole(Role role);
 
     /**
      * 删除角色
@@ -88,23 +76,27 @@ public interface RoleMapper {
      * @param id
      * @return
      */
-    Integer deleteRole(Integer id);
+    Integer deleteRoleById(Integer id);
 
     /**
      * 删除角色下所有的权限
      *
-     * @param id
+     * @param roleId
      * @return
      */
-    Integer deleteRolePermissions(Integer id);
+    Integer deleteRolePermissionsByRoleId(Integer roleId);
 
     /**
      * 删除角色下所有用户
      *
-     * @param id 角色id
+     * @param roleId 角色id
      * @return
      */
-    Integer deleteRoleAccounts(Integer id);
+    Integer deleteRoleAccountsByRoleId(Integer roleId);
 
+    /**
+     * 查询有效角色的数量
+     * @return
+     */
     Integer getValidRoleCount();
 }

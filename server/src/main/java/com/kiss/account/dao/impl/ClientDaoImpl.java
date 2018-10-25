@@ -3,7 +3,6 @@ package com.kiss.account.dao.impl;
 import com.kiss.account.dao.ClientDao;
 import com.kiss.account.entity.Client;
 import com.kiss.account.mapper.ClientMapper;
-import com.kiss.account.output.ClientOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,38 +15,32 @@ public class ClientDaoImpl implements ClientDao {
     private ClientMapper clientMapper;
 
     @Override
-    public List<ClientOutput> getClientOutputs() {
-        return clientMapper.getClientOutputs();
-    }
+    public List<Client> getClients() {
 
-    @Override
-    public ClientOutput getClientOutput(Integer id) {
-        return clientMapper.getClientOutput(id);
-    }
-
-    @Override
-    public Client getClient(Integer id) {
-        return clientMapper.getClient(id);
-    }
-
-    @Override
-    public Integer createClient(Client client) {
-        return clientMapper.createClient(client);
-    }
-
-    @Override
-    public Integer updateClient(Client client) {
-        return clientMapper.updateClient(client);
-    }
-
-    @Override
-    public Integer deleteClient(Integer id) {
-        return clientMapper.deleteClient(id);
+        return clientMapper.getClients();
     }
 
     @Override
     public Client getClientById(Integer id) {
 
         return clientMapper.getClientById(id);
+    }
+
+    @Override
+    public Integer createClient(Client client) {
+
+        return clientMapper.createClient(client);
+    }
+
+    @Override
+    public Integer updateClient(Client client) {
+
+        return clientMapper.updateClient(client);
+    }
+
+    @Override
+    public Integer deleteClientById(Integer id) {
+
+        return clientMapper.deleteClientById(id);
     }
 }

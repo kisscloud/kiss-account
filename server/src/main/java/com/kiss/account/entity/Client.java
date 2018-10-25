@@ -7,19 +7,43 @@ import java.util.Date;
 @Data
 public class Client {
 
+    /**
+     * 客户端id
+     */
     private Integer id;
 
+    /**
+     * 客户端名称
+     */
     private String clientName;
 
+    /**
+     * 客户端内部id
+     */
     private String clientID;
 
+    /**
+     * 客户端secret
+     */
     private String clientSecret;
 
+    /**
+     * 最后登录时间
+     */
     private Date lastAccessAt;
 
+    /**
+     * 客户端是否有效
+     */
     private Integer status;
 
+    /**
+     * 创建时间
+     */
     private Date createdAt;
 
+    /**
+     * 更新时间
+     */
     private Date updatedAt;
 }

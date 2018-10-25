@@ -31,16 +31,12 @@
         </foreach>
     </insert>
 
-    <select id="getRolesPermissionIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select permissionId from rolepermissions where roleId=#{id};
-    </select>
-
-    <select id="getRolesPermissions" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.RolePermission">
+    <select id="getRolePermissionsByRoleId" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.RolePermission">
         select permissionId,limitString,limitDescription from rolePermissions where roleId=#{id};
     </select>
 
     <select id="getRolesAccountIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select accountId from accountroles where roleId=#{id};
+        select accountId from accountroles where roleId=#{roleId};
     </select>
 
     <select id="getRoleById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Role">
@@ -51,7 +47,7 @@
         select * from roles where name=#{name} limit 0,1;
     </select>
 
-    <update id="putRole" parameterType="com.kiss.account.output.RoleOutput">
+    <update id="updateRole" parameterType="com.kiss.account.entity.Role">
         update roles
         set id = #{id}
         <if test="name != null and name != ''">
@@ -63,16 +59,16 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteRole" parameterType="java.lang.Integer">
+    <delete id="deleteRoleById" parameterType="java.lang.Integer">
         delete from roles where id = #{id}
     </delete>
 
-    <delete id="deleteRolePermissions" parameterType="java.lang.Integer">
-        delete from rolepermissions where roleId=#{id}
+    <delete id="deleteRolePermissionsByRoleId" parameterType="java.lang.Integer">
+        delete from rolepermissions where roleId=#{roleId}
     </delete>
 
-    <delete id="deleteRoleAccounts" parameterType="java.lang.Integer">
-        delete from accountroles where roleId=#{id}
+    <delete id="deleteRoleAccountsByRoleId" parameterType="java.lang.Integer">
+        delete from accountroles where roleId=#{roleId}
     </delete>
 
     <select id="getValidRoleCount" resultType="java.lang.Integer">

@@ -62,7 +62,6 @@ public class AccountController implements AccountClient {
     public ResultOutput<AccountOutput> createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
         String salt = CryptoUtil.salt();
@@ -74,15 +73,12 @@ public class AccountController implements AccountClient {
         account.setOperatorId(guest.getId());
         account.setOperatorIp(guest.getIp());
         account.setOperatorName(guest.getName());
-
         accountDao.createAccount(account);
-
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
-        AccountGroup group = accountGroupDao.getGroupById(account.getGroupId());
+        AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
         accountOutput.setGroupName(group.getName());
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-
         operationLogService.saveAccountLog(guest, null, account);
 
         return ResultOutputUtil.success(accountOutput);
@@ -95,7 +91,6 @@ public class AccountController implements AccountClient {
     public ResultOutput<List<AccountRoleOutput>> bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         List<Integer> roles = bindRoleToAccountInput.getRoleId();
         List<AccountRole> accountRolesList = new ArrayList<>();
 
@@ -109,9 +104,8 @@ public class AccountController implements AccountClient {
             accountRolesList.add(accountRoles);
         }
 
-        accountDao.deleteAccountRoles(bindRoleToAccountInput.getAccountId());
+        accountDao.deleteAccountRolesByAccountId(bindRoleToAccountInput.getAccountId());
         accountDao.bindRolesToAccount(accountRolesList);
-
         List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
 
         for (AccountRole accountRole : accountRolesList) {
@@ -130,15 +124,11 @@ public class AccountController implements AccountClient {
         Integer queryPage = StringUtils.isEmpty(page) ? 1 : Integer.parseInt(page);
         Integer maxSize = Integer.parseInt(maxAccountsSize);
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
-        List<Account> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
+        List<AccountOutput> accountOutputs = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
-        List<AccountOutput> accountOutputs = new ArrayList<>();
 
-        for (Account account : accounts) {
-            AccountOutput accountOutput = new AccountOutput();
-            BeanUtils.copyProperties(account,accountOutput);
+        for (AccountOutput accountOutput : accountOutputs) {
             accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-            accountOutputs.add(accountOutput);
         }
 
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accountOutputs, count);
@@ -149,10 +139,13 @@ public class AccountController implements AccountClient {
     @Override
     @ApiOperation(value = "获取账户信息")
     public ResultOutput<AccountOutput> getAccount(String id) {
+
         if (StringUtils.isEmpty(id)) {
             return ResultOutputUtil.error(AccountStatusCode.PARAMETER_ERROR);
         }
+
         AccountOutput account = accountDao.getAccountOutputById(Integer.parseInt(id));
+
         return ResultOutputUtil.success(account);
     }
 
@@ -186,7 +179,7 @@ public class AccountController implements AccountClient {
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account,accountOutput);
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-        AccountGroup group = accountGroupDao.getGroupById(accountOutput.getGroupId());
+        AccountGroup group = accountGroupDao.getAccountGroupById(accountOutput.getGroupId());
         accountOutput.setGroupName(group.getName());
         BeanUtils.copyProperties(accountOutput, newAccount);
         operationLogService.saveAccountLog(guest, oldAccount, newAccount);
@@ -199,23 +192,19 @@ public class AccountController implements AccountClient {
     public ResultOutput updateAccountPassword(Integer id) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
-
         Account account = accountDao.getAccountById(id);
         Account oldValue = account;
 
         if (account == null) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
         }
-
         account.setSalt(salt);
         account.setPassword(password);
         account.setOperatorId(guest.getId());
         account.setOperatorName(guest.getName());
         account.setOperatorIp(guest.getIp());
-
         Integer count = accountDao.updateAccountPassword(account);
 
         if (count == 0) {
@@ -266,7 +255,7 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.success(permissions);
         }
 
-        permissions = accountDao.getAccountPermissions(id);
+        permissions = accountDao.getAccountPermissionsByAccountId(id);
 
         return ResultOutputUtil.success(permissions);
     }
@@ -276,6 +265,7 @@ public class AccountController implements AccountClient {
     public ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code) {
 
         List<String> dataScope = accountDao.getAccountPermissionDataScope(id, code);
+
         return ResultOutputUtil.success(dataScope);
     }
 
@@ -285,6 +275,7 @@ public class AccountController implements AccountClient {
     public ResultOutput getValidAccountsCount() {
 
         Integer count = accountDao.getValidAccountsCount();
+
         return ResultOutputUtil.success(count);
     }
 }

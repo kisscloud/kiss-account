@@ -36,10 +36,8 @@ public class ExceptionAdvice {
     public ResultOutput exceptionHandle(HttpServletRequest request, Exception e) {
 
         System.out.println("系统异常,接口：" + request.getRequestURI());
-        System.out.println(e.getClass());
 
         if (e instanceof MethodArgumentNotValidException) {
-
             MethodArgumentNotValidException methodException = ((MethodArgumentNotValidException) e);
             BindingResult bindingResult = methodException.getBindingResult();
             List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
@@ -47,9 +45,7 @@ public class ExceptionAdvice {
             String language = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
 
             if (fieldErrorList != null) {
-
                 for (FieldError fieldError : fieldErrorList) {
-
                     String message = fieldError.getDefaultMessage();
                     String field = fieldError.getField();
                     List<String> messageList = new ArrayList<>();
@@ -60,7 +56,6 @@ public class ExceptionAdvice {
 
                     String returnMessage = CodeUtil.getMessage(language, message);
                     messageList.add(returnMessage == null ? message : returnMessage);
-
                     formVerifieds.put(field, messageList);
                 }
             }
@@ -69,6 +64,7 @@ public class ExceptionAdvice {
         } else {
             e.printStackTrace();
         }
+
         return ResultOutputUtil.error(AccountStatusCode.SERVICE_ERROR);
     }
 }

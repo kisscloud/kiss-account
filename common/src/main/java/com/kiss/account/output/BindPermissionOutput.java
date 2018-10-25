@@ -2,8 +2,6 @@ package com.kiss.account.output;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class BindPermissionOutput {
     /**

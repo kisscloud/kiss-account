@@ -36,20 +36,21 @@ public class AuthController implements AuthClient {
         //校验用户名密码
         String username = loginInput.getUsername();
         String password = loginInput.getPassword();
-
         //查询用户信息
         Account account = accountDao.getAccountByUsername(username);
+
         if (account == null) {
             return ResultOutputUtil.error(100001);
         }
 
         String salt = account.getSalt();
         String passwordLegal = account.getPassword();
+
         if (!passwordLegal.equals(CryptoUtil.hmacSHA256(password, salt))) {
             return ResultOutputUtil.error(100001);
         }
 
-        List<String> permissions = accountDao.getAccountPermissions(account.getId());
+        List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
         //生成token
         Map<String,Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
         AuthOutput authOutput = new AuthOutput();

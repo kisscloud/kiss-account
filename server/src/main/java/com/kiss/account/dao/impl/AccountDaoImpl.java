@@ -6,7 +6,6 @@ import com.kiss.account.entity.AccountRole;
 import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
-import com.kiss.account.output.AccountRoleOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,13 +32,14 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> getAccounts(int start, int size) {
+    public List<AccountOutput> getAccounts(int start, int size) {
 
         return accountMapper.getAccounts(start, size);
     }
 
     @Override
     public List<Account> getAccountsByGroupId(Integer groupId) {
+
         return accountMapper.getAccountsByGroupId(groupId);
     }
 
@@ -87,20 +87,20 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Integer updateAccountStatus(Account account) {
+
         return accountMapper.updateAccountStatus(account);
-
     }
 
     @Override
-    public Integer deleteAccountRoles(Integer id) {
+    public Integer deleteAccountRolesByAccountId(Integer accountId) {
 
-        return accountMapper.deleteAccountRoles(id);
+        return accountMapper.deleteAccountRolesByAccountId(accountId);
     }
 
     @Override
-    public List<String> getAccountPermissions(Integer id) {
+    public List<String> getAccountPermissionsByAccountId(Integer accountId) {
 
-        return accountMapper.getAccountPermissions(id);
+        return accountMapper.getAccountPermissionsByAccountId(accountId);
     }
 
     @Override
@@ -116,16 +116,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<String> getAccountPermissionDataScope(Integer id, String code) {
+    public List<String> getAccountPermissionDataScope(Integer accountId, String code) {
 
         Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
+        params.put("accountId", accountId);
         params.put("code", code);
         return accountMapper.getAccountPermissionDataScope(params);
     }
 
     @Override
     public Integer getValidAccountsCount() {
+
         return accountMapper.getValidAccountsCount();
     }
 }

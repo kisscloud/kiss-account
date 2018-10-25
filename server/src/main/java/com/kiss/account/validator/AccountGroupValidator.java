@@ -28,21 +28,19 @@ public class AccountGroupValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         if (CreateAccountGroupInput.class.isInstance(target)) {
-
             CreateAccountGroupInput createAccountGroupInput = (CreateAccountGroupInput) target;
             validateName(null, createAccountGroupInput.getName(), errors);
             validateParentId(createAccountGroupInput.getParentId(), errors);
-
         } else if (UpdateAccountGroupInput.class.isInstance(target)) {
-
             UpdateAccountGroupInput updateAccountGroupInput = (UpdateAccountGroupInput) target;
             validateAccountExist(updateAccountGroupInput.getId(), errors);
+
             if (accountGroup == null) {
                 return;
             }
+
             validateName(updateAccountGroupInput.getId(), updateAccountGroupInput.getName(), errors);
             validateParentId(updateAccountGroupInput.getParentId(), errors);
-
         }
 
     }

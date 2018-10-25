@@ -44,16 +44,28 @@ public class ClientController implements ClientClient {
     @ApiOperation(value = "获取所有客户端信息")
     public ResultOutput getClients() {
 
-        List<ClientOutput> clientOutputs = clientDao.getClientOutputs();
-        return ResultOutputUtil.success(clientOutputs == null ? new ArrayList<>() : clientOutputs);
+
+        List<Client> clients = clientDao.getClients();
+        List<ClientOutput> clientOutputs = new ArrayList<>();
+
+        for (Client client : clients) {
+            ClientOutput clientOutput = new ClientOutput();
+            BeanUtils.copyProperties(client,clientOutput);
+            clientOutputs.add(clientOutput);
+        }
+
+        return ResultOutputUtil.success(clientOutputs);
     }
 
     @Override
     @ApiOperation(value = "获取客户端信息")
     public ResultOutput getClient(@RequestParam("id") Integer id) {
 
-        ClientOutput clientOutput = clientDao.getClientOutput(id);
-        return ResultOutputUtil.success(clientOutput == null ? "" : clientOutput);
+        Client client = clientDao.getClientById(id);
+        ClientOutput clientOutput = new ClientOutput();
+        BeanUtils.copyProperties(client,clientOutput);
+
+        return ResultOutputUtil.success(clientOutput);
     }
 
     @Override
@@ -84,7 +96,6 @@ public class ClientController implements ClientClient {
         Integer count = clientDao.updateClient(client);
 
         if (count == 0) {
-
             return ResultOutputUtil.error(AccountStatusCode.UPDATE_CLIENT_FAILED);
         }
 
@@ -97,16 +108,15 @@ public class ClientController implements ClientClient {
     @ApiOperation(value = "删除客户端")
     public ResultOutput deleteClient(@RequestParam("id") Integer id) {
 
-        Client clientOutput = clientDao.getClient(id);
+        Client clientOutput = clientDao.getClientById(id);
 
         if (clientOutput == null) {
             return ResultOutputUtil.error(AccountStatusCode.CLIENT_IS_NOT_EXIST);
         }
 
-        Integer count = clientDao.deleteClient(id);
+        Integer count = clientDao.deleteClientById(id);
 
         if (count == 0) {
-
             return ResultOutputUtil.error(AccountStatusCode.DELETE_CLIENT_FAILED);
         }
 

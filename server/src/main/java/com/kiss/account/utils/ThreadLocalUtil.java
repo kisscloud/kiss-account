@@ -17,10 +17,13 @@ public class ThreadLocalUtil {
      * @Description: TODO
      */
     public static String getString(String key) {
+
         Map<String, String> map = threadLocal.get();
+
         if (map == null) {
             return null;
         }
+
         return map.get(key);
     }
 
@@ -29,11 +32,14 @@ public class ThreadLocalUtil {
      * @Description: TODO
      */
     public static void setString(String key, String value) {
+
         Map<String, String> map = threadLocal.get();
+
         if (map == null) {
             map = new HashMap<>();
             threadLocal.set(map);
         }
+
         map.put(key, value);
     }
 
@@ -42,19 +48,23 @@ public class ThreadLocalUtil {
      * @Description: TODO
      */
     public static String getLang() {
+
         String lang = getString("X-LANGUAGE");
         return StringUtils.hasText(lang) ? lang : "zh-CN";
     }
 
     public static void setGuest(Guest guest) {
+
         guestThreadLocal.set(guest);
     }
 
     public static void remove() {
+
         guestThreadLocal.remove();
     }
 
     public static Guest getGuest() {
+
         return guestThreadLocal.get();
     }
 }

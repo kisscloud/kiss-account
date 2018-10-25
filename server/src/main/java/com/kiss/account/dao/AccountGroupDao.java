@@ -2,7 +2,6 @@ package com.kiss.account.dao;
 
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.exception.ResultException;
-
 import java.util.List;
 
 public interface AccountGroupDao {
@@ -16,7 +15,7 @@ public interface AccountGroupDao {
     void createAccountGroup(AccountGroup accountGroup) throws ResultException;
 
     /**
-     * 根据部门的名字获取部门
+     * 根据部门的名字查询部门
      *
      * @param name String
      * @return AccountGroup
@@ -24,7 +23,7 @@ public interface AccountGroupDao {
     AccountGroup getAccountGroupByName(String name);
 
     /**
-     * 根据部门ID获取部门
+     * 根据部门ID查询部门
      *
      * @param id Integer
      * @return AccountGroup
@@ -36,15 +35,7 @@ public interface AccountGroupDao {
      *
      * @return List<AccountGroup>
      */
-    List<AccountGroup> getGroups();
-
-    /**
-     * 根据部门id查询部门信息
-     *
-     * @param id int
-     * @return AccountGroup
-     */
-    AccountGroup getGroupById(int id);
+    List<AccountGroup> getAccountGroups();
 
     /**
      * 更新部门信息
@@ -59,9 +50,18 @@ public interface AccountGroupDao {
      *
      * @param id Integer
      */
-    void deleteGroup(Integer id);
+    void deleteAccountGroupById(Integer id);
 
-    List<AccountGroup> getAccountGroupChildren(Integer id);
+    /**
+     * 查询部门下所有的子部门
+     * @param parentId
+     * @return
+     */
+    List<AccountGroup> getAccountGroupChildrenByParentId(Integer parentId);
 
+    /**
+     * 查询部门的数量
+     * @return
+     */
     Integer getAccountGroupCount();
 }

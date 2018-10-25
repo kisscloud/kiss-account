@@ -1,10 +1,7 @@
 package com.kiss.account.dao;
 
-import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
-import com.kiss.account.output.RoleOutput;
-import com.kiss.account.output.RolePermissionOutput;
 
 import java.util.List;
 
@@ -34,26 +31,18 @@ public interface RoleDao {
     /**
      * 根据角色id查询所有权限id
      *
-     * @param id Integer
-     * @return List<Integer>
-     */
-    List<Integer> getRolesPermissionIds(Integer id);
-
-    /**
-     * 根据角色id查询所有权限id
-     *
-     * @param id Integer
+     * @param roleId Integer
      * @return List<RolePermission>
      */
-    List<RolePermission> getRolePermissions(Integer id);
+    List<RolePermission> getRolePermissionsByRoleId(Integer roleId);
 
     /**
      * 根据角色id查询所有账号id
      *
-     * @param id Integer
+     * @param roleId Integer
      * @return List<Integer>
      */
-    List<Integer> getRolesAccountIds(Integer id);
+    List<Integer> getRolesAccountIdsByRoleId(Integer roleId);
 
     /**
      * 根据角色ID查询角色信息
@@ -74,10 +63,10 @@ public interface RoleDao {
     /**
      * 更新角色
      *
-     * @param roleOutput RoleOutput
+     * @param role
      * @return Integer
      */
-    Integer putRole(RoleOutput roleOutput);
+    Integer updateRole(Role role);
 
     /**
      * 删除角色
@@ -85,23 +74,27 @@ public interface RoleDao {
      * @param id 角色id
      * @return Integer
      */
-    Integer deleteRole(Integer id);
+    Integer deleteRoleById(Integer id);
 
     /**
      * 删除角色对应的所有权限
      *
-     * @param id 角色id
+     * @param roleId 角色id
      * @return Integer
      */
-    Integer deleteRolePermissions(Integer id);
+    Integer deleteRolePermissionsByRoleId(Integer roleId);
 
     /**
      * 删除角色对应的用户
      *
-     * @param id 角色id
+     * @param roleId 角色id
      * @return
      */
-    Integer deleteRoleAccounts(Integer id);
+    Integer deleteRoleAccountsByRoleId(Integer roleId);
 
+    /**
+     * 查询有效角色的数量
+     * @return
+     */
     Integer getValidRoleCount();
 }
