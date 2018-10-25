@@ -81,6 +81,8 @@ public class PermissionDaoImpl implements PermissionDao {
     public void updatePermissionModulePermissionsCount(Integer id, Integer permissionsCount) {
 
         Integer oldCount = permissionModuleMapper.getPermissionModulePermissionsCountById(id);
+        oldCount = oldCount == null ? 0 : oldCount;
+
         PermissionModule permissionModule = new PermissionModule();
         permissionModule.setId(id);
         permissionModule.setPermissions(oldCount + permissionsCount);
