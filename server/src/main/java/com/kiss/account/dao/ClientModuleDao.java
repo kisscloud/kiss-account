@@ -9,4 +9,6 @@ public interface ClientModuleDao {
     Integer createClientModules (List<ClientModule> clientModules);
 
     Integer deleteClientModules (Integer clientId);
+
+    List<ClientModule> getClientModules(Integer clientId);
 }

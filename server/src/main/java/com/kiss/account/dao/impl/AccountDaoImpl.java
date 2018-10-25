@@ -2,6 +2,7 @@ package com.kiss.account.dao.impl;
 
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
+import com.kiss.account.entity.AccountRole;
 import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
@@ -26,13 +27,13 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void bindRolesToAccount(List<AccountRoleOutput> accountRoles) {
+    public void bindRolesToAccount(List<AccountRole> accountRoles) {
 
         accountMapper.bindRolesToAccount(accountRoles);
     }
 
     @Override
-    public List<AccountOutput> getAccounts(int start, int size) {
+    public List<Account> getAccounts(int start, int size) {
 
         return accountMapper.getAccounts(start, size);
     }
@@ -73,13 +74,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getAccountByUniqueIdentification(String name, String username, String email, String mobile) {
-
-        return accountMapper.getAccountByUniqueIdentification(name, username, email, mobile);
-    }
-
-    @Override
-    public Integer updateAccount(AccountOutput account) {
+    public Integer updateAccount(Account account) {
 
         return accountMapper.updateAccount(account);
     }
@@ -91,8 +86,8 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Integer updateAccountStatus(AccountOutput accountOutput) {
-        return accountMapper.updateAccountStatus(accountOutput);
+    public Integer updateAccountStatus(Account account) {
+        return accountMapper.updateAccountStatus(account);
 
     }
 

@@ -13,15 +13,19 @@ public class ClientModuleDaoImpl implements ClientModuleDao {
 
     @Autowired
     private ClientModuleMapper clientModulesMapper;
+
     @Override
     public Integer createClientModules(List<ClientModule> clientModules) {
-
         return clientModulesMapper.createClientModules(clientModules);
     }
 
     @Override
     public Integer deleteClientModules(Integer clientId) {
-
         return clientModulesMapper.deleteClientModules(clientId);
+    }
+
+    @Override
+    public List<ClientModule> getClientModules(Integer clientId) {
+        return clientModulesMapper.getClientModules(clientId);
     }
 }

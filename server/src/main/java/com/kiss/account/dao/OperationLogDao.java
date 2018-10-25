@@ -2,6 +2,8 @@ package com.kiss.account.dao;
 
 import com.kiss.account.entity.OperationLog;
 
+import java.util.List;
+
 public interface OperationLogDao {
 
     /**
@@ -10,4 +12,8 @@ public interface OperationLogDao {
      * @return Integer
      */
     Integer createOperatorLog(OperationLog operationLog);
+
+    List<OperationLog> getOperationLogs(int start, int size);
+
+    Integer getOperationLogsCount();
 }

@@ -12,6 +12,16 @@
         values(#{operatorId}, #{operatorName}, #{operatorIp}, #{targetId}, #{targetType}, #{beforeValue}, #{afterValue}, #{recoveredAt}, #{createdAt}, #{updatedAt});
     </insert>
 
+    <select id="getOperationLogs" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.OperationLog">
+        select * from operationlogs
+        <if test="size != 0">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="getOperationLogsCount" resultType="java.lang.Integer">
+        select count(*) from operationlogs
+    </select>
 
 
 </mapper>

@@ -11,6 +11,7 @@ import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.StringUtil;
 import com.kiss.account.validator.ClientValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,20 +41,23 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取所有客户端信息")
     public ResultOutput getClients() {
 
         List<ClientOutput> clientOutputs = clientDao.getClientOutputs();
-        return ResultOutputUtil.success(clientOutputs == null ? "" : clientOutputs);
+        return ResultOutputUtil.success(clientOutputs == null ? new ArrayList<>() : clientOutputs);
     }
 
     @Override
-    public ResultOutput getClient(@RequestParam("clientID") String clientID) {
+    @ApiOperation(value = "获取客户端信息")
+    public ResultOutput getClient(@RequestParam("id") Integer id) {
 
-        ClientOutput clientOutput = clientDao.getClientOutput(clientID);
+        ClientOutput clientOutput = clientDao.getClientOutput(id);
         return ResultOutputUtil.success(clientOutput == null ? "" : clientOutput);
     }
 
     @Override
+    @ApiOperation(value = "添加客户端")
     public ResultOutput createClient(@Validated @RequestBody CreateClientInput clientInput) {
 
         Client client = new Client();
@@ -62,7 +67,6 @@ public class ClientController implements ClientClient {
         Integer count = clientDao.createClient(client);
 
         if (count == 0) {
-
             return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_FAILED);
         }
 
@@ -72,6 +76,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "更新客户端")
     public ResultOutput updateClient(@Validated @RequestBody UpdateClientInput clientInput) {
 
         Client client = new Client();
@@ -89,15 +94,16 @@ public class ClientController implements ClientClient {
     }
 
     @Override
-    public ResultOutput deleteClient(@RequestParam("clientID") String clientID) {
+    @ApiOperation(value = "删除客户端")
+    public ResultOutput deleteClient(@RequestParam("id") Integer id) {
 
-        Client clientOutput = clientDao.getClient(clientID);
+        Client clientOutput = clientDao.getClient(id);
 
         if (clientOutput == null) {
             return ResultOutputUtil.error(AccountStatusCode.CLIENT_IS_NOT_EXIST);
         }
 
-        Integer count = clientDao.deleteClient(clientID);
+        Integer count = clientDao.deleteClient(id);
 
         if (count == 0) {
 

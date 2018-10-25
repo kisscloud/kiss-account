@@ -5,6 +5,7 @@ import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
+import com.kiss.account.entity.AccountRole;
 import com.kiss.account.entity.Guest;
 import com.kiss.account.input.*;
 import com.kiss.account.output.*;
@@ -26,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,10 +97,10 @@ public class AccountController implements AccountClient {
         Guest guest = ThreadLocalUtil.getGuest();
 
         List<Integer> roles = bindRoleToAccountInput.getRoleId();
-        List<AccountRoleOutput> accountRolesList = new ArrayList<>();
+        List<AccountRole> accountRolesList = new ArrayList<>();
 
         for (Integer roleId : roles) {
-            AccountRoleOutput accountRoles = new AccountRoleOutput();
+            AccountRole accountRoles = new AccountRole();
             accountRoles.setOperatorId(guest.getId());
             accountRoles.setOperatorIp(guest.getIp());
             accountRoles.setOperatorName(guest.getName());
@@ -113,7 +112,15 @@ public class AccountController implements AccountClient {
         accountDao.deleteAccountRoles(bindRoleToAccountInput.getAccountId());
         accountDao.bindRolesToAccount(accountRolesList);
 
-        return ResultOutputUtil.success(accountRolesList);
+        List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
+
+        for (AccountRole accountRole : accountRolesList) {
+            AccountRoleOutput accountRoleOutput = new AccountRoleOutput();
+            BeanUtils.copyProperties(accountRole,accountRoleOutput);
+            accountRoleOutputs.add(accountRoleOutput);
+        }
+
+        return ResultOutputUtil.success(accountRoleOutputs);
     }
 
     @Override
@@ -123,14 +130,18 @@ public class AccountController implements AccountClient {
         Integer queryPage = StringUtils.isEmpty(page) ? 1 : Integer.parseInt(page);
         Integer maxSize = Integer.parseInt(maxAccountsSize);
         Integer pageSize = (StringUtils.isEmpty(size) || Integer.parseInt(size) > maxSize) ? maxSize : Integer.parseInt(size);
-        List<AccountOutput> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
+        List<Account> accounts = accountDao.getAccounts((queryPage - 1) * pageSize, pageSize);
         Integer count = accountDao.getAccountsCount();
+        List<AccountOutput> accountOutputs = new ArrayList<>();
 
-        for (AccountOutput accountOutput : accounts) {
+        for (Account account : accounts) {
+            AccountOutput accountOutput = new AccountOutput();
+            BeanUtils.copyProperties(account,accountOutput);
             accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+            accountOutputs.add(accountOutput);
         }
 
-        GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accounts, count);
+        GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accountOutputs, count);
 
         return ResultOutputUtil.success(getAccountsOutput);
     }
@@ -154,35 +165,29 @@ public class AccountController implements AccountClient {
         return ResultOutputUtil.success(count);
     }
 
-    public ResultOutput get(@Valid @RequestBody AccountInfoInput accountInfoInput) {
-        return ResultOutputUtil.success("++++" + GuestUtil.getName() + "=====" + GuestUtil.getGuestId());
-    }
-
     @Override
     @ApiOperation(value = "更新用户")
     public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
-        AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(updateAccountInput, accountOutput);
-
+        Account account = new Account();
+        BeanUtils.copyProperties(updateAccountInput, account);
         Account oldAccount = accountDao.getAccountById(updateAccountInput.getId());
         Account newAccount = new Account();
+        account.setOperatorId(guest.getId());
+        account.setOperatorName(guest.getName());
+        account.setOperatorIp(guest.getIp());
+        Integer count = accountDao.updateAccount(account);
 
-        accountOutput.setOperatorId(guest.getId());
-        accountOutput.setOperatorName(guest.getName());
-        accountOutput.setOperatorIp(guest.getIp());
-        Integer count = accountDao.updateAccount(accountOutput);
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
         }
 
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(account,accountOutput);
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
-
         AccountGroup group = accountGroupDao.getGroupById(accountOutput.getGroupId());
         accountOutput.setGroupName(group.getName());
-
         BeanUtils.copyProperties(accountOutput, newAccount);
         operationLogService.saveAccountLog(guest, oldAccount, newAccount);
 
@@ -227,25 +232,23 @@ public class AccountController implements AccountClient {
     public ResultOutput updateAccountStatus(@RequestBody UpdateAccountStatusInput updateAccountStatusInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-
         Account oldValue = accountDao.getAccountById(updateAccountStatusInput.getId());
         Account newValue = new Account();
-
-        AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(updateAccountStatusInput, accountOutput);
-
-        accountOutput.setOperatorId(guest.getId());
-        accountOutput.setOperatorName(guest.getName());
-        accountOutput.setOperatorIp(guest.getIp());
-        Integer count = accountDao.updateAccountStatus(accountOutput);
+        Account account = new Account();
+        BeanUtils.copyProperties(updateAccountStatusInput, account);
+        account.setOperatorId(guest.getId());
+        account.setOperatorName(guest.getName());
+        account.setOperatorIp(guest.getIp());
+        Integer count = accountDao.updateAccountStatus(account);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
         }
 
-        BeanUtils.copyProperties(accountOutput, newValue);
-
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(account,accountOutput);
         accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        BeanUtils.copyProperties(accountOutput, newValue);
         operationLogService.saveAccountLog(guest, oldValue, newValue);
 
         return ResultOutputUtil.success(accountOutput);
@@ -278,29 +281,10 @@ public class AccountController implements AccountClient {
 
 
     @Override
+    @ApiOperation(value = "获取有效账户数量")
     public ResultOutput getValidAccountsCount() {
 
         Integer count = accountDao.getValidAccountsCount();
         return ResultOutputUtil.success(count);
-    }
-
-    public ResultOutput verifyAccountExistType(Account account, String name, String username, String email, String mobile) {
-        if (!StringUtils.isEmpty(account.getName()) && account.getName().equals(name)) {
-            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NAME_EXIST);
-        }
-
-        if (!StringUtils.isEmpty(account.getUsername()) && account.getUsername().equals(username)) {
-            return ResultOutputUtil.error(AccountStatusCode.USERNAME_EXIST);
-        }
-
-        if (!StringUtils.isEmpty(account.getEmail()) && account.getEmail().equals(email)) {
-            return ResultOutputUtil.error(AccountStatusCode.EMAIL_EXIST);
-        }
-
-        if (!StringUtils.isEmpty(account.getMobile()) && account.getMobile().equals(mobile)) {
-            return ResultOutputUtil.error(AccountStatusCode.MOBILE_EXIST);
-        }
-
-        return ResultOutputUtil.error(AccountStatusCode.Account_EXIST);
     }
 }

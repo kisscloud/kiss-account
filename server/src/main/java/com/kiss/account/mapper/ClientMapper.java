@@ -11,9 +11,9 @@ public interface ClientMapper {
 
     List<ClientOutput> getClientOutputs();
 
-    ClientOutput getClientOutput(String clientID);
+    ClientOutput getClientOutput(Integer id);
 
-    Client getClient(String clientID);
+    Client getClient(Integer id);
 
     Client getClientById(Integer id);
 
@@ -21,6 +21,6 @@ public interface ClientMapper {
 
     Integer updateClient(Client client);
 
-    Integer deleteClient(String clientID);
+    Integer deleteClient(Integer id);
 
 }

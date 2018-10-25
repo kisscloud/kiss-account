@@ -19,4 +19,8 @@
     <delete id="deleteClientModules" parameterType="java.lang.Integer">
         delete from clientmodules where clientId = #{clientId}
     </delete>
+    
+    <select id="getClientModules" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.ClientModule">
+        select * from clientmodules where clientId = #{clientId}
+    </select>
 </mapper>
