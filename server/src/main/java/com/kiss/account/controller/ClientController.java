@@ -49,7 +49,7 @@ public class ClientController implements ClientClient {
     private OperationLogService operationLogService;
 
     @InitBinder
-    public void initBinder (WebDataBinder binder) {
+    public void initBinder(WebDataBinder binder) {
         binder.setValidator(clientValidator);
     }
 
@@ -63,7 +63,7 @@ public class ClientController implements ClientClient {
 
         for (Client client : clients) {
             ClientOutput clientOutput = new ClientOutput();
-            BeanUtils.copyProperties(client,clientOutput);
+            BeanUtils.copyProperties(client, clientOutput);
             clientOutputs.add(clientOutput);
         }
 
@@ -76,7 +76,7 @@ public class ClientController implements ClientClient {
 
         Client client = clientDao.getClientById(id);
         ClientOutput clientOutput = new ClientOutput();
-        BeanUtils.copyProperties(client,clientOutput);
+        BeanUtils.copyProperties(client, clientOutput);
 
         return ResultOutputUtil.success(clientOutput);
     }
@@ -85,8 +85,13 @@ public class ClientController implements ClientClient {
     @ApiOperation(value = "添加客户端")
     public ResultOutput createClient(@Validated @RequestBody CreateClientInput clientInput) {
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
         Client client = new Client();
-        BeanUtils.copyProperties(clientInput,client);
+        BeanUtils.copyProperties(clientInput, client);
+        client.setOperatorId(guest.getId());
+        client.setClientName(guest.getName());
+        client.setOperatorIp(guest.getIp());
         client.setClientID(StringUtil.randomUUIDString());
         client.setClientSecret(StringUtil.randomUUIDString());
         Integer count = clientDao.createClient(client);
@@ -94,6 +99,8 @@ public class ClientController implements ClientClient {
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_FAILED);
         }
+
+        operationLogService.saveClientLog(guest, null, client);
 
         ClientOutput clientOutput = new ClientOutput();
         BeanUtils.copyProperties(client,clientOutput);
@@ -105,16 +112,27 @@ public class ClientController implements ClientClient {
     @ApiOperation(value = "更新客户端")
     public ResultOutput updateClient(@Validated @RequestBody UpdateClientInput clientInput) {
 
-        Client client = new Client();
-        BeanUtils.copyProperties(clientInput,client);
-        Integer count = clientDao.updateClient(client);
 
+        Guest guest = ThreadLocalUtil.getGuest();
+
+        Client oldValue = clientDao.getClientById(clientInput.getId());
+
+        Client client = new Client();
+        BeanUtils.copyProperties(clientInput, client);
+        client.setOperatorId(guest.getId());
+        client.setOperatorName(guest.getName());
+        client.setOperatorIp(guest.getIp());
+
+        Integer count = clientDao.updateClient(client);
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.UPDATE_CLIENT_FAILED);
         }
 
         ClientOutput clientOutput = new ClientOutput();
-        BeanUtils.copyProperties(client,clientOutput);
+        BeanUtils.copyProperties(client, clientOutput);
+
+        operationLogService.saveClientLog(guest, oldValue, client);
+
         return ResultOutputUtil.success(clientOutput);
     }
 
@@ -122,17 +140,22 @@ public class ClientController implements ClientClient {
     @ApiOperation(value = "删除客户端")
     public ResultOutput deleteClient(@RequestParam("id") Integer id) {
 
-        Client clientOutput = clientDao.getClientById(id);
+        Client client = clientDao.getClientById(id);
 
-        if (clientOutput == null) {
+        if (client == null) {
             return ResultOutputUtil.error(AccountStatusCode.CLIENT_IS_NOT_EXIST);
         }
+
+        Guest guest = ThreadLocalUtil.getGuest();
+        Client oldValue = clientDao.getClientById(id);
 
         Integer count = clientDao.deleteClientById(id);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_CLIENT_FAILED);
         }
+
+        operationLogService.saveClientLog(guest, oldValue, null);
 
         return ResultOutputUtil.success();
     }

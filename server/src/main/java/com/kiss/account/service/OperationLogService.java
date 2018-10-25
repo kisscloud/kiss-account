@@ -5,6 +5,7 @@ import com.kiss.account.dao.OperationLogDao;
 import com.kiss.account.entity.*;
 import com.kiss.account.input.BindAccountsToRoleInput;
 import com.kiss.account.input.BindPermissionToRoleInput;
+import com.kiss.account.input.UpdateClientModulesInput;
 import entity.Guest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,7 @@ public class OperationLogService {
         saveLog(guest, operationLog);
     }
 
-    public void saveClientLog(Guest guest, Permission before, Permission after) {
+    public void saveClientLog(Guest guest, Client before, Client after) {
         OperationLog operationLog = new OperationLog();
         operationLog.setTargetType(TYPE_CLIENT);
         operationLog.setTargetId(before == null ? after.getId() : before.getId());
@@ -113,10 +114,10 @@ public class OperationLogService {
         saveLog(guest, operationLog);
     }
 
-    public void saveClientModulesLog(Guest guest, Permission before, Permission after) {
+    public void saveClientModulesLog(Guest guest, UpdateClientModulesInput before, UpdateClientModulesInput after) {
         OperationLog operationLog = new OperationLog();
         operationLog.setTargetType(TYPE_CLIENT_MODULES);
-        operationLog.setTargetId(before == null ? after.getId() : before.getId());
+        operationLog.setTargetId(before == null ? after.getClientId() : before.getClientId());
         operationLog.setBeforeValue(before == null ? "" : JSON.toJSONString(before));
         operationLog.setAfterValue(after == null ? "" : JSON.toJSONString(after));
         saveLog(guest, operationLog);

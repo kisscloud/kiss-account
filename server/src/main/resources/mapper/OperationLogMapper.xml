@@ -8,8 +8,8 @@
 
     <insert id="createOperatorLog" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.kiss.account.entity.OperationLog">
-        insert into operationLogs(operatorId, operatorName, operatorIp, targetId, targetType, beforeValue, afterValue, recoveredAt, createdAt, updatedAt)
-        values(#{operatorId}, #{operatorName}, #{operatorIp}, #{targetId}, #{targetType}, #{beforeValue}, #{afterValue}, #{recoveredAt}, #{createdAt}, #{updatedAt});
+        insert into operationLogs(operatorId, operatorName, operatorIp, targetId, targetType, beforeValue, afterValue, type, recoveredAt, createdAt, updatedAt)
+        values(#{operatorId}, #{operatorName}, #{operatorIp}, #{targetId}, #{targetType}, #{beforeValue}, #{afterValue},#{type}, #{recoveredAt}, #{createdAt}, #{updatedAt});
     </insert>
 
     <select id="getOperationLogs" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.OperationLog">

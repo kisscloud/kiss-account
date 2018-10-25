@@ -38,6 +38,21 @@ public class Client {
     private Integer status;
 
     /**
+     * 最后操作者ID
+     */
+    private Integer operatorId;
+
+    /**
+     * 最后添加者姓名
+     */
+    private String operatorName;
+
+    /**
+     * 最后操作者IP
+     */
+    private String operatorIp;
+
+    /**
      * 创建时间
      */
     private Date createdAt;
