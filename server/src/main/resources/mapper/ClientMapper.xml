@@ -39,5 +39,9 @@
     <delete id="deleteClientById" parameterType="java.lang.Integer">
         delete from clients where id = #{id}
     </delete>
+    
+    <select id="getClientSecretById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select clientSecret from clients where id = #{id}
+    </select>
 
 </mapper>

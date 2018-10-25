@@ -26,10 +26,12 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer EMAIL_EXIST = 1019;
     public static final Integer MOBILE_EXIST = 1020;
     public static final Integer Account_EXIST = 1021;
+    public static final Integer ACCOUNT_PASSWORD_ERROR = 1021;
     public static final Integer REQUEST_PARAMETER_ERROR = 2001;
     public static final Integer PERMISSION_CODE_IS_NOT_EMPTY = 2002;
     public static final Integer MODULE_ID_IS_NOT_NULL = 2003;
     public static final Integer SERVICE_ERROR = 3001;
+    public static final Integer LOGIN_STATUS_INVALID = 3002;
     public static final Integer ROLE_DATA_PERMISSION_PATTERN_ERROR = 4001;
     public static final Integer ROLE_DATA_PERMISSION_ADD_FAILED = 4002;
 

@@ -24,4 +24,7 @@ public interface ClientClient {
 
     @DeleteMapping("/client")
     ResultOutput deleteClient (@RequestParam("id") Integer id);
+
+    @GetMapping("/client/secret")
+    ResultOutput getClientSecret (@RequestParam("password") String password,@RequestParam("id") Integer id);
 }

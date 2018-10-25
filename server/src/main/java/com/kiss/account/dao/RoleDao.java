@@ -29,7 +29,7 @@ public interface RoleDao {
     List<Role> getRoles();
 
     /**
-     * 根据角色id查询所有权限id
+     * 根据角色id查询所有权限
      *
      * @param roleId Integer
      * @return List<RolePermission>

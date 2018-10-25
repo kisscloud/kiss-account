@@ -1,15 +1,20 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.ClientClient;
+import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.ClientDao;
+import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.UpdateClientInput;
 import com.kiss.account.output.ClientOutput;
+import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.StringUtil;
 import com.kiss.account.validator.ClientValidator;
+import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.GuestUtil;
+import utils.ThreadLocalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +41,12 @@ public class ClientController implements ClientClient {
 
     @Autowired
     private ClientDao clientDao;
+
+    @Autowired
+    private AccountDao accountDao;
+
+    @Autowired
+    private OperationLogService operationLogService;
 
     @InitBinder
     public void initBinder (WebDataBinder binder) {
@@ -84,6 +97,7 @@ public class ClientController implements ClientClient {
 
         ClientOutput clientOutput = new ClientOutput();
         BeanUtils.copyProperties(client,clientOutput);
+
         return ResultOutputUtil.success(clientOutput);
     }
 
@@ -121,5 +135,26 @@ public class ClientController implements ClientClient {
         }
 
         return ResultOutputUtil.success();
+    }
+
+    @Override
+    public ResultOutput getClientSecret(@RequestParam("password") String password,@RequestParam("id") Integer id) {
+
+        Integer guestId = GuestUtil.getGuestId();
+
+        if (guestId == null) {
+            return ResultOutputUtil.error(AccountStatusCode.LOGIN_STATUS_INVALID);
+        }
+
+        Account account = accountDao.getAccountById(guestId);
+        String encryPassword = CryptoUtil.hmacSHA256(password, account.getSalt());
+
+        if (!encryPassword.equals(account.getPassword())) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
+        }
+
+        String clientSecret = clientDao.getClientSecretById(id);
+
+        return ResultOutputUtil.success(clientSecret);
     }
 }

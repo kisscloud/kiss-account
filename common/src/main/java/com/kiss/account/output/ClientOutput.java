@@ -13,6 +13,8 @@ public class ClientOutput {
 
     private String clientID;
 
+    private String clientSecret;
+
     private Date lastAccessAt;
 
     private Integer status;

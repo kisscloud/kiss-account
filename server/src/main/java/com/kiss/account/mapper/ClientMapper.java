@@ -42,4 +42,10 @@ public interface ClientMapper {
      */
     Integer deleteClientById(Integer id);
 
+    /**
+     * 根据id查询客户端密钥
+     * @param id
+     * @return
+     */
+    String getClientSecretById(Integer id);
 }

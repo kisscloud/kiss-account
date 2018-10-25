@@ -109,6 +109,7 @@ public class RoleController implements RoleClient {
             rolePermissions.add(rolePermission);
         }
 
+        List<RolePermission> oldRolePermissions = roleDao.getRolePermissionsByRoleId(bindPermissionToRoleInput.getRoleId());
         roleDao.deleteRolePermissionsByRoleId(bindPermissionToRoleInput.getRoleId());
         roleDao.bindPermissionsToRole(rolePermissions);
         List<RolePermissionOutput> rolePermissionOutputs = new ArrayList<>();
@@ -118,6 +119,21 @@ public class RoleController implements RoleClient {
             BeanUtils.copyProperties(rolePermission, rolePermissionOutput);
             rolePermissionOutputs.add(rolePermissionOutput);
         }
+
+        BindPermissionToRoleInput oldBindPermissionToRoleInput = new BindPermissionToRoleInput();
+        List<BindRoleDataPermissions> oldPermissions = new ArrayList<>();
+
+        if (oldRolePermissions != null && oldRolePermissions.size() != 0) {
+            for (RolePermission rolePermission : oldRolePermissions) {
+                BindRoleDataPermissions bindRoleDataPermissions = new BindRoleDataPermissions();
+                BeanUtils.copyProperties(rolePermission,bindRoleDataPermissions);
+                oldPermissions.add(bindRoleDataPermissions);
+            }
+        }
+
+        oldBindPermissionToRoleInput.setPermissions(oldPermissions);
+        oldBindPermissionToRoleInput.setRoleId(bindPermissionToRoleInput.getRoleId());
+        operationLogService.saveRolePermissionsLog(guest,oldBindPermissionToRoleInput,bindPermissionToRoleInput);
 
         return ResultOutputUtil.success(rolePermissionOutputs);
     }
@@ -181,6 +197,7 @@ public class RoleController implements RoleClient {
             accountRolesList.add(accountRoles);
         }
 
+        List<Integer> oldAccountIds = roleDao.getRolesAccountIdsByRoleId(bindAccountsToRoleInput.getId());
         roleDao.deleteRoleAccountsByRoleId(bindAccountsToRoleInput.getId());
         accountDao.bindRolesToAccount(accountRolesList);
         List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
@@ -190,6 +207,11 @@ public class RoleController implements RoleClient {
             BeanUtils.copyProperties(accountRole,accountRoleOutput);
             accountRoleOutputs.add(accountRoleOutput);
         }
+
+        BindAccountsToRoleInput oldBindAccountsToRoleInput = new BindAccountsToRoleInput();
+        oldBindAccountsToRoleInput.setAccountIds(oldAccountIds);
+        oldBindAccountsToRoleInput.setId(bindAccountsToRoleInput.getId());
+        operationLogService.saveRoleAccountsLog(guest,oldBindAccountsToRoleInput,bindAccountsToRoleInput);
 
         return ResultOutputUtil.success(accountRoleOutputs);
     }

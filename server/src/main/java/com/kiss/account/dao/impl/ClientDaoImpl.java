@@ -43,4 +43,10 @@ public class ClientDaoImpl implements ClientDao {
 
         return clientMapper.deleteClientById(id);
     }
+
+    @Override
+    public String getClientSecretById(Integer id) {
+
+        return clientMapper.getClientSecretById(id);
+    }
 }
