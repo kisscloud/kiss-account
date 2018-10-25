@@ -6,13 +6,13 @@ import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.entity.AccountRole;
-import com.kiss.account.entity.Guest;
 import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.*;
 import com.kiss.account.validator.AccountValidator;
+import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.ThreadLocalUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 

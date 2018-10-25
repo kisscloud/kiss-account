@@ -5,6 +5,7 @@ import com.kiss.account.dao.OperationLogDao;
 import com.kiss.account.entity.*;
 import com.kiss.account.input.BindAccountsToRoleInput;
 import com.kiss.account.input.BindPermissionToRoleInput;
+import entity.Guest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

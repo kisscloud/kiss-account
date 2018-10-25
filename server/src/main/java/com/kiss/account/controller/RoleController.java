@@ -5,7 +5,6 @@ import com.kiss.account.client.RoleClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.AccountRole;
-import com.kiss.account.entity.Guest;
 import com.kiss.account.entity.Role;
 import com.kiss.account.entity.RolePermission;
 import com.kiss.account.input.*;
@@ -15,8 +14,8 @@ import com.kiss.account.output.RolePermissionOutput;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.RoleValidator;
+import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import output.ResultOutput;
+import utils.ThreadLocalUtil;
 
 @RestController
 @Api(tags = "Role", description = "角色相关接口")

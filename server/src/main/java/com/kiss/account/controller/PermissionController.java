@@ -2,7 +2,6 @@ package com.kiss.account.controller;
 
 import com.kiss.account.client.PermissionClient;
 import com.kiss.account.dao.PermissionDao;
-import com.kiss.account.entity.Guest;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionInput;
@@ -13,8 +12,8 @@ import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.DbEnumUtil;
 import com.kiss.account.utils.ResultOutputUtil;
-import com.kiss.account.utils.ThreadLocalUtil;
 import com.kiss.account.validator.PermissionValidator;
+import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.ThreadLocalUtil;
 
 import java.util.List;
 

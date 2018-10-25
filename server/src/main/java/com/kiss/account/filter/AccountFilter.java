@@ -1,7 +1,9 @@
 package com.kiss.account.filter;
 
-import com.kiss.account.utils.ThreadLocalUtil;
+import filter.GuestFilter;
+import filter.InnerFilterChain;
 import org.springframework.stereotype.Component;
+import utils.ThreadLocalUtil;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -25,8 +27,12 @@ public class AccountFilter implements Filter {
         ResponseWrapper responseWrapper = new ResponseWrapper(httpServletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         InnerFilterChain preFilterChain = new InnerFilterChain();
-        GuestFilter userInfoFilter = new GuestFilter();
-        preFilterChain.addFilter(userInfoFilter);
+
+        if (!httpServletRequest.getRequestURI().contains("/login")) {
+            GuestFilter userInfoFilter = new GuestFilter();
+            preFilterChain.addFilter(userInfoFilter);
+        }
+
         preFilterChain.doFilter(httpServletRequest,httpServletResponse,preFilterChain);
         chain.doFilter(httpServletRequest,responseWrapper);
         InnerFilterChain suffixFilterChain = new InnerFilterChain();

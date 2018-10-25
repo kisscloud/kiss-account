@@ -2,6 +2,8 @@ package com.kiss.account.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kiss.account.utils.CodeUtil;
+import filter.InnerFilter;
+import filter.InnerFilterChain;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ public class ResponseFilter implements InnerFilter {
         this.responseWrapper = responseWrapper;
     }
     @Override
-    public void doFilter(HttpServletRequest request, HttpServletResponse response,InnerFilterChain filterChain) {
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, InnerFilterChain filterChain) {
 
         filterChain.doFilter(request,response,filterChain);
         byte[] bytes = responseWrapper.getBytes();

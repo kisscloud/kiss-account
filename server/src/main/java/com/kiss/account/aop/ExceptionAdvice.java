@@ -8,6 +8,7 @@ package com.kiss.account.aop;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CodeUtil;
 import com.kiss.account.utils.ResultOutputUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -30,12 +31,13 @@ import java.util.Map;
  * @Description: TODO
  */
 @ControllerAdvice
+@Slf4j
 public class ExceptionAdvice {
     @ExceptionHandler(value = Throwable.class)
     @ResponseBody
     public ResultOutput exceptionHandle(HttpServletRequest request, Exception e) {
 
-        System.out.println("系统异常,接口：" + request.getRequestURI());
+        log.info("{}系统异常,接口：",request.getRequestURI());
 
         if (e instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException methodException = ((MethodArgumentNotValidException) e);
