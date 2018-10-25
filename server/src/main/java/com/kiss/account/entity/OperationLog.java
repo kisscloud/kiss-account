@@ -48,6 +48,13 @@ public class OperationLog {
     private String afterValue;
 
     /**
+     * 操作日志类型
+     *  0: 不支持任何操作
+     *  1：支持恢复操作
+     */
+    private Integer type;
+
+    /**
      * 回滚时间
      */
     private Date recoveredAt;
