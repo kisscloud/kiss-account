@@ -224,7 +224,9 @@ public class ClientController implements ClientClient {
         List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
         List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
 
-        permissions.retainAll(clientPermissions);
+        if (account.getType() != 1) {
+            clientPermissions.retainAll(permissions);
+        }
 
         //生成token
         String token = JwtUtil.getToken(account.getId(), account.getUsername(),expired * 1000);
@@ -234,7 +236,7 @@ public class ClientController implements ClientClient {
         authOutput.setAccessToken(token);
         authOutput.setExpiredAt(expiredAt);
         authOutput.setName(account.getName());
-        authOutput.setPermissions(permissions);
+        authOutput.setPermissions(clientPermissions);
 
         return ResultOutputUtil.success(authOutput);
     }
