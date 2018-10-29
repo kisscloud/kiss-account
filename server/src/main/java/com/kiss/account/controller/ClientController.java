@@ -169,12 +169,8 @@ public class ClientController implements ClientClient {
 
 
     @Override
-<<<<<<< HEAD
-    public ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput) {
-=======
     @ApiOperation(value = "获取客户端密钥")
-    public ResultOutput getClientSecret(@RequestParam("password") String password,@RequestParam("id") Integer id) {
->>>>>>> 19307e5ec165c2fd3bfa6ba47de087614af2efe6
+    public ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput) {
 
         Integer guestId = GuestUtil.getGuestId();
 
