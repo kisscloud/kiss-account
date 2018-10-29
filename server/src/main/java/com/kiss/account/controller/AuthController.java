@@ -10,6 +10,7 @@ import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,23 +58,26 @@ public class AuthController implements AuthClient {
         }
 
         List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
-        String authorizationCode = "authorization@" + clientId;
-        Boolean authorization = false;
 
-        for (String permissionCode : permissions) {
-            if (authorizationCode.equals(permissionCode)) {
-                authorization = true;
-                break;
+        if (!StringUtils.isEmpty(clientId)) {
+            String authorizationCode = "authorization@" + clientId;
+            Boolean authorization = false;
+
+            for (String permissionCode : permissions) {
+                if (authorizationCode.equals(permissionCode)) {
+                    authorization = true;
+                    break;
+                }
             }
+
+            if (!authorization) {
+                return ResultOutputUtil.error(100002);
+            }
+
+            List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
+
+            permissions.retainAll(clientPermissions);
         }
-
-        if (!authorization) {
-            return ResultOutputUtil.error(100002);
-        }
-
-        List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
-
-        clientPermissions.retainAll(permissions);
 
         //生成token
         Map<String,Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
@@ -81,7 +85,7 @@ public class AuthController implements AuthClient {
         authOutput.setAccessToken(authMap.get("token").toString());
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));
         authOutput.setName(account.getName());
-        authOutput.setPermissions(clientPermissions);
+        authOutput.setPermissions(permissions);
 
         return ResultOutputUtil.success(authOutput);
     }
