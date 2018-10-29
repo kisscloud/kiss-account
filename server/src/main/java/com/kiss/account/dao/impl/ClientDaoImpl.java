@@ -49,4 +49,10 @@ public class ClientDaoImpl implements ClientDao {
 
         return clientMapper.getClientSecretById(id);
     }
+
+    @Override
+    public Client getClientByClientId(String clientId) {
+
+        return clientMapper.getClientByClientId(clientId);
+    }
 }

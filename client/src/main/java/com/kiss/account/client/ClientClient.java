@@ -1,6 +1,7 @@
 package com.kiss.account.client;
 
 
+import com.kiss.account.input.ClientAuthorizationInput;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.UpdateClientInput;
 import org.springframework.validation.annotation.Validated;
@@ -27,4 +28,7 @@ public interface ClientClient {
 
     @GetMapping("/client/secret")
     ResultOutput getClientSecret (@RequestParam("password") String password,@RequestParam("id") Integer id);
+
+    @PostMapping("/client/authorization")
+    ResultOutput ClientAuthorization(@Validated @RequestBody ClientAuthorizationInput clientAuthorizationInput);
 }

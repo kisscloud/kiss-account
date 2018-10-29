@@ -7,16 +7,16 @@
 <mapper namespace="com.kiss.account.mapper.ClientMapper">
     
     <select id="getClients" resultType="com.kiss.account.entity.Client">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients
+        select id,clientName,clientId,lastAccessAt,status,createdAt,updatedAt from clients
     </select>
 
     <select id="getClientById" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.Client">
-        select id,clientName,clientID,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
+        select id,clientName,clientId,lastAccessAt,status,createdAt,updatedAt from clients where id=#{id}
     </select>
 
     <insert id="createClient" useGeneratedKeys="true" keyProperty="id"  parameterType="com.kiss.account.entity.Client">
-        insert into clients (clientName,clientID,clientSecret,lastAccessAt,status,operatorId,operatorName,operatorIp)
-        value (#{clientName},#{clientID},#{clientSecret},#{lastAccessAt},#{status},#{operatorId},#{operatorName},#{operatorIp})
+        insert into clients (clientName,clientId,clientSecret,lastAccessAt,status,operatorId,operatorName,operatorIp)
+        value (#{clientName},#{clientId},#{clientSecret},#{lastAccessAt},#{status},#{operatorId},#{operatorName},#{operatorIp})
     </insert>
     
     <update id="updateClient" parameterType="com.kiss.account.entity.Client">
@@ -46,4 +46,7 @@
         select clientSecret from clients where id = #{id}
     </select>
 
+    <select id="getClientByClientId" parameterType="java.lang.String" resultType="com.kiss.account.entity.Client">
+        select * from clients where clientId = #{clientId};
+    </select>
 </mapper>

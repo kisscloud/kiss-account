@@ -20,7 +20,7 @@ public class Client {
     /**
      * 客户端内部id
      */
-    private String clientID;
+    private String clientId;
 
     /**
      * 客户端secret
