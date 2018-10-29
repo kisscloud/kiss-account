@@ -66,18 +66,21 @@ public class AuthController implements AuthClient {
         List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
 
         if (!StringUtils.isEmpty(clientId)) {
-            String authorizationCode = "authorization@" + clientId;
-            Boolean authorization = false;
 
-            for (String permissionCode : permissions) {
-                if (authorizationCode.equals(permissionCode)) {
-                    authorization = true;
-                    break;
+            if (account.getType() != 1) {
+                String authorizationCode = "authorization@" + clientId;
+                Boolean authorization = false;
+
+                for (String permissionCode : permissions) {
+                    if (authorizationCode.equals(permissionCode)) {
+                        authorization = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!authorization) {
-                return ResultOutputUtil.error(100002);
+                if (!authorization) {
+                    return ResultOutputUtil.error(100002);
+                }
             }
 
             return ResultOutputUtil.success(JwtUtil.getToken(account.getId(),clientId,Long.valueOf(authorizationCodeExpired)));

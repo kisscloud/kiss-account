@@ -2,6 +2,7 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.ClientDao;
 import com.kiss.account.entity.Client;
+import com.kiss.account.input.ClientAuthorizationInput;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
@@ -22,7 +23,8 @@ public class ClientValidator implements Validator {
 
         return clazz.equals(CreateClientInput.class)
                 || clazz.equals(UpdateClientInput.class)
-                || clazz.equals(GetClientSecretInput.class);
+                || clazz.equals(GetClientSecretInput.class)
+                || clazz.equals(ClientAuthorizationInput.class);
     }
 
     @Override
@@ -40,6 +42,8 @@ public class ClientValidator implements Validator {
         } else if (GetClientSecretInput.class.isInstance(target)) {
             GetClientSecretInput getClientSecretInput = (GetClientSecretInput) target;
             validateClientId(getClientSecretInput.getId(), errors);
+        } else if (ClientAuthorizationInput.class.isInstance(target)) {
+
         } else {
             errors.rejectValue("clientName", "", "数据格式错误");
         }
