@@ -21,6 +21,7 @@ import utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,11 +84,14 @@ public class AuthController implements AuthClient {
                 }
             }
 
-            return ResultOutputUtil.success(JwtUtil.getToken(account.getId(),clientId,Long.valueOf(authorizationCodeExpired)));
+            Map<String, Object> authMap = new HashMap<>();
+            authMap.put("authorizationCode", JwtUtil.getToken(account.getId(), clientId, Long.valueOf(authorizationCodeExpired)));
+
+            return ResultOutputUtil.success(authMap);
         }
 
         //生成token
-        Map<String,Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
+        Map<String, Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
         AuthOutput authOutput = new AuthOutput();
         authOutput.setAccessToken(authMap.get("token").toString());
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));
