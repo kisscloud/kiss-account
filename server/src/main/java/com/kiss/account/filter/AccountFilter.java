@@ -1,8 +1,11 @@
 package com.kiss.account.filter;
 
+import com.kiss.account.utils.CodeUtil;
 import filter.GuestFilter;
 import filter.InnerFilterChain;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import utils.ThreadLocalUtil;
 
 import javax.servlet.*;
@@ -15,9 +18,13 @@ import java.io.IOException;
 @WebFilter(filterName = "responseFilter",urlPatterns = "/*")
 public class AccountFilter implements Filter {
 
+    private CodeUtil codeUtil;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        ServletContext servletContext = filterConfig.getServletContext();
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        codeUtil = context.getBean(CodeUtil.class);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class AccountFilter implements Filter {
         preFilterChain.doFilter(httpServletRequest,httpServletResponse,preFilterChain);
         chain.doFilter(httpServletRequest,responseWrapper);
         InnerFilterChain suffixFilterChain = new InnerFilterChain();
-        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper));
+        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper,codeUtil));
         suffixFilterChain.doFilter(httpServletRequest,httpServletResponse,suffixFilterChain);
         ThreadLocalUtil.remove();
     }

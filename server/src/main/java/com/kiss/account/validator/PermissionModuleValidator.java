@@ -4,10 +4,10 @@ import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
-import com.kiss.account.utils.ApplicationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import utils.ApplicationUtil;
 
 public class PermissionModuleValidator implements Validator {
 

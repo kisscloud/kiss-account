@@ -14,8 +14,11 @@ public class ResponseFilter implements InnerFilter {
 
     private ResponseWrapper responseWrapper;
 
-    public ResponseFilter (ResponseWrapper responseWrapper) {
+    private CodeUtil codeUtil;
+
+    public ResponseFilter (ResponseWrapper responseWrapper,CodeUtil codeUtil) {
         this.responseWrapper = responseWrapper;
+        this.codeUtil = codeUtil;
     }
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, InnerFilterChain filterChain) {
@@ -28,7 +31,7 @@ public class ResponseFilter implements InnerFilter {
             JSONObject jsonObject = JSONObject.parseObject(responseMsg);
             String lang = StringUtils.isEmpty(request.getHeader("X-LANGUAGE")) ? "zh-CN" : request.getHeader("X-LANGUAGE");
             if(jsonObject != null && !StringUtils.isEmpty(jsonObject.getInteger("code")) && StringUtils.isEmpty(jsonObject.getString("message"))) {
-                String message = CodeUtil.getMessage(lang,jsonObject.get("code"));
+                String message = codeUtil.getMessage(Integer.parseInt(jsonObject.get("code").toString()));
                 jsonObject.put("message",message);
                 bytes = jsonObject.toJSONString().getBytes();
             }

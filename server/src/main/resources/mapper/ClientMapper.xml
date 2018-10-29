@@ -15,8 +15,8 @@
     </select>
 
     <insert id="createClient" useGeneratedKeys="true" keyProperty="id"  parameterType="com.kiss.account.entity.Client">
-        insert into clients (clientName,clientID,clientSecret,lastAccessAt,status,oeratorId,operatorName,operatorIp)
-        value (#{clientName},#{clientID},#{clientSecret},#{lastAccessAt},#{status},#{oeratorId},#{operatorName},#{operatorIp})
+        insert into clients (clientName,clientID,clientSecret,lastAccessAt,status,operatorId,operatorName,operatorIp)
+        value (#{clientName},#{clientID},#{clientSecret},#{lastAccessAt},#{status},#{operatorId},#{operatorName},#{operatorIp})
     </insert>
     
     <update id="updateClient" parameterType="com.kiss.account.entity.Client">

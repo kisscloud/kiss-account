@@ -91,7 +91,7 @@ public class ClientController implements ClientClient {
         Client client = new Client();
         BeanUtils.copyProperties(clientInput, client);
         client.setOperatorId(guest.getId());
-        client.setClientName(guest.getName());
+        client.setOperatorName(guest.getName());
         client.setOperatorIp(guest.getIp());
         client.setClientID(StringUtil.randomUUIDString());
         client.setClientSecret(StringUtil.randomUUIDString());
