@@ -1,12 +1,13 @@
 package com.kiss.account.status;
 
 public class AccountStatusCode extends status.CodeEnums {
-
-    public static final Integer ACCOUNT_NOT_EXIST = 1001;
-    public static final Integer PUT_ACCOUNT_FAILED = 1002;
-
-
-    public static final Integer ACCOUNT_GROUP_NAME_EXIST = 1001;
+    public static final Integer PERMISSION_MODULE_NOT_EXIST = 1101;
+    public static final Integer ACCOUNT_NOT_EXIST = 1210;
+    public static final Integer ACCOUNT_GROUP_EXIST = 1203;
+    public static final Integer ACCOUNT_GROUP_NOT_EXIST = 1004;
+    public static final Integer ACCOUNT_GROUP_NAME_EXIST = 1004;
+    public static final Integer PUT_ACCOUNT_FAILED = 1005;
+    public static final Integer ACCOUNT_NAME_EXIST = 1200;
     public static final Integer PUT_ACCOUNT_GROUP_FAILED = 1006;
     public static final Integer NOT_EMPTY_GROUP = 1009;
     public static final Integer PUT_ACCOUNT_PASSWORD_FAILED = 1007;
@@ -41,6 +42,6 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 5005;
     public static final Integer UPDATE_CLIENT_MODULE_FAILED = 5006;
     public static final Integer CLIENT_ID_ERROR = 5007;
-    public static final Integer CLIENT_SECRET_ERROR = 5007;
+    public static final Integer CLIENT_SECRET_ERROR = 5008;
 
 }
