@@ -167,6 +167,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取客户端密钥")
     public ResultOutput getClientSecret(@RequestParam("password") String password,@RequestParam("id") Integer id) {
 
         Integer guestId = GuestUtil.getGuestId();
@@ -188,6 +189,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "客户端授权")
     public ResultOutput ClientAuthorization(@Validated @RequestBody ClientAuthorizationInput clientAuthorizationInput) {
 
         String code = clientAuthorizationInput.getCode();
