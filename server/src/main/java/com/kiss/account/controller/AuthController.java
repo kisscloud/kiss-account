@@ -6,6 +6,7 @@ import com.kiss.account.dao.impl.AccountDaoImpl;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
 import com.kiss.account.output.AuthOutput;
+import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
@@ -54,14 +55,14 @@ public class AuthController implements AuthClient {
         Account account = accountDao.getAccountByUsername(username);
 
         if (account == null) {
-            return ResultOutputUtil.error(100001);
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
         }
 
         String salt = account.getSalt();
         String passwordLegal = account.getPassword();
 
         if (!passwordLegal.equals(CryptoUtil.hmacSHA256(password, salt))) {
-            return ResultOutputUtil.error(100001);
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 
         List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
@@ -80,7 +81,7 @@ public class AuthController implements AuthClient {
                 }
 
                 if (!authorization) {
-                    return ResultOutputUtil.error(100002);
+                    return ResultOutputUtil.error(AccountStatusCode.CLIENT_AUTHORIZATION_NOT_ENOUGH);
                 }
             }
 
