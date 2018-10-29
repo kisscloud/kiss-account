@@ -6,6 +6,7 @@ import com.kiss.account.dao.ClientDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
 import com.kiss.account.input.CreateClientInput;
+import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
 import com.kiss.account.output.ClientOutput;
 import com.kiss.account.service.OperationLogService;
@@ -101,9 +102,9 @@ public class ClientController implements ClientClient {
             return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_FAILED);
         }
 
-        operationLogService.saveOperationLog(guest,null,client,"id",OperationTargetType.TYPE_CLIENT);
+        operationLogService.saveOperationLog(guest, null, client, "id", OperationTargetType.TYPE_CLIENT);
         ClientOutput clientOutput = new ClientOutput();
-        BeanUtils.copyProperties(client,clientOutput);
+        BeanUtils.copyProperties(client, clientOutput);
 
         return ResultOutputUtil.success(clientOutput);
     }
@@ -130,7 +131,7 @@ public class ClientController implements ClientClient {
 
         ClientOutput clientOutput = new ClientOutput();
         BeanUtils.copyProperties(client, clientOutput);
-        operationLogService.saveOperationLog(guest,oldValue,client,"id",OperationTargetType.TYPE_CLIENT);
+        operationLogService.saveOperationLog(guest, oldValue, client, "id", OperationTargetType.TYPE_CLIENT);
 
         return ResultOutputUtil.success(clientOutput);
     }
@@ -154,13 +155,14 @@ public class ClientController implements ClientClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_CLIENT_FAILED);
         }
 
-        operationLogService.saveOperationLog(guest,oldValue,null,"id",OperationTargetType.TYPE_CLIENT);
+        operationLogService.saveOperationLog(guest, oldValue, null, "id", OperationTargetType.TYPE_CLIENT);
 
         return ResultOutputUtil.success();
     }
 
+
     @Override
-    public ResultOutput getClientSecret(@RequestParam("password") String password,@RequestParam("id") Integer id) {
+    public ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput) {
 
         Integer guestId = GuestUtil.getGuestId();
 
@@ -169,13 +171,13 @@ public class ClientController implements ClientClient {
         }
 
         Account account = accountDao.getAccountById(guestId);
-        String encryPassword = CryptoUtil.hmacSHA256(password, account.getSalt());
+        String encryPassword = CryptoUtil.hmacSHA256(getClientSecretInput.getPassword(), account.getSalt());
 
         if (!encryPassword.equals(account.getPassword())) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 
-        String clientSecret = clientDao.getClientSecretById(id);
+        String clientSecret = clientDao.getClientSecretById(getClientSecretInput.getId());
 
         return ResultOutputUtil.success(clientSecret);
     }

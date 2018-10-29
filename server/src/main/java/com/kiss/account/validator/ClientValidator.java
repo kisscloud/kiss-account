@@ -3,6 +3,7 @@ package com.kiss.account.validator;
 import com.kiss.account.dao.ClientDao;
 import com.kiss.account.entity.Client;
 import com.kiss.account.input.CreateClientInput;
+import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class ClientValidator implements Validator {
     public boolean supports(Class<?> clazz) {
 
         return clazz.equals(CreateClientInput.class)
-                || clazz.equals(UpdateClientInput.class);
+                || clazz.equals(UpdateClientInput.class)
+                || clazz.equals(GetClientSecretInput.class);
     }
 
     @Override
@@ -28,42 +30,45 @@ public class ClientValidator implements Validator {
 
         if (CreateClientInput.class.isInstance(target)) {
             CreateClientInput clientInput = (CreateClientInput) target;
-            validateClientName(clientInput.getClientName(),errors);
-            validateClientStatus(clientInput.getStatus(),errors);
+            validateClientName(clientInput.getClientName(), errors);
+            validateClientStatus(clientInput.getStatus(), errors);
         } else if (UpdateClientInput.class.isInstance(target)) {
             UpdateClientInput updateClientInput = (UpdateClientInput) target;
-            validateClientId(updateClientInput.getId(),errors);
-            validateClientName(updateClientInput.getClientName(),errors);
-            validateClientStatus(updateClientInput.getStatus(),errors);
+            validateClientId(updateClientInput.getId(), errors);
+            validateClientName(updateClientInput.getClientName(), errors);
+            validateClientStatus(updateClientInput.getStatus(), errors);
+        } else if (GetClientSecretInput.class.isInstance(target)) {
+            GetClientSecretInput getClientSecretInput = (GetClientSecretInput) target;
+            validateClientId(getClientSecretInput.getId(), errors);
         } else {
             errors.rejectValue("clientName", "", "数据格式错误");
         }
     }
 
-    public void validateClientName (String clientName,Errors errors) {
+    public void validateClientName(String clientName, Errors errors) {
 
         if (StringUtils.isEmpty(clientName)) {
-            errors.rejectValue("clientName","","客户端名称不能为空");
+            errors.rejectValue("clientName", "", "客户端名称不能为空");
         }
     }
 
-    public void validateClientStatus (Integer status,Errors errors) {
+    public void validateClientStatus(Integer status, Errors errors) {
 
         if (status != 0 && status != 1) {
-            errors.rejectValue("status","","客户端状态不合法");
+            errors.rejectValue("status", "", "客户端状态不合法");
         }
     }
 
-    public void validateClientId (Integer id,Errors errors) {
+    public void validateClientId(Integer id, Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("clientID","","客户端id不能为空");
+            errors.rejectValue("clientID", "", "客户端id不能为空");
         }
 
         Client clientOutput = clientDao.getClientById(id);
 
         if (clientOutput == null) {
-            errors.rejectValue("clientID","","客户端id不存在");
+            errors.rejectValue("clientID", "", "客户端id不存在");
         }
     }
 }

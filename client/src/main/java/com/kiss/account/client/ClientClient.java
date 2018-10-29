@@ -2,6 +2,7 @@ package com.kiss.account.client;
 
 
 import com.kiss.account.input.CreateClientInput;
+import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +15,17 @@ public interface ClientClient {
     ResultOutput getClients();
 
     @GetMapping("/client")
-    ResultOutput getClient (@RequestParam("id") Integer id);
+    ResultOutput getClient(@RequestParam("id") Integer id);
 
     @PostMapping("/client")
-    ResultOutput createClient (@Validated @RequestBody CreateClientInput clientInput);
+    ResultOutput createClient(@Validated @RequestBody CreateClientInput clientInput);
 
     @PutMapping("/client")
-    ResultOutput updateClient (@Validated @RequestBody UpdateClientInput updateClientInput);
+    ResultOutput updateClient(@Validated @RequestBody UpdateClientInput updateClientInput);
 
     @DeleteMapping("/client")
-    ResultOutput deleteClient (@RequestParam("id") Integer id);
+    ResultOutput deleteClient(@RequestParam("id") Integer id);
 
-    @GetMapping("/client/secret")
-    ResultOutput getClientSecret (@RequestParam("password") String password,@RequestParam("id") Integer id);
+    @PostMapping("/client/secret")
+    ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput);
 }
