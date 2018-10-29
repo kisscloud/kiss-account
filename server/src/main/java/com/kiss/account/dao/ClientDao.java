@@ -45,4 +45,11 @@ public interface ClientDao {
      * @return
      */
     String getClientSecretById(Integer id);
+
+    /**
+     * 根据客户端id获取客户端信息
+     * @param clientId
+     * @return
+     */
+    Client getClientByClientId(String clientId);
 }

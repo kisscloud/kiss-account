@@ -41,4 +41,7 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer CLIENT_IS_NOT_EXIST = 5004;
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 5005;
     public static final Integer UPDATE_CLIENT_MODULE_FAILED = 5006;
+    public static final Integer CLIENT_ID_ERROR = 5007;
+    public static final Integer CLIENT_SECRET_ERROR = 5007;
+
 }

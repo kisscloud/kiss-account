@@ -12,6 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
@@ -35,6 +37,9 @@ public class AuthController implements AuthClient {
     @Autowired
     HttpServletRequest request;
 
+    @Value("${authorization.code.expired}")
+    private String authorizationCodeExpired;
+
     @Override
     @ApiOperation(value = "用户名密码登录")
     public ResultOutput<AuthOutput> loginWithUsernameAndPassword(@RequestBody LoginInput loginInput) {
@@ -43,6 +48,7 @@ public class AuthController implements AuthClient {
         String username = loginInput.getUsername();
         String password = loginInput.getPassword();
         String clientId = loginInput.getClientId();
+
         //查询用户信息
         Account account = accountDao.getAccountByUsername(username);
 
@@ -74,9 +80,7 @@ public class AuthController implements AuthClient {
                 return ResultOutputUtil.error(100002);
             }
 
-            List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
-
-            permissions.retainAll(clientPermissions);
+            return ResultOutputUtil.success(JwtUtil.getToken(account.getId(),clientId,Long.valueOf(authorizationCodeExpired)));
         }
 
         //生成token

@@ -10,6 +10,7 @@ import com.kiss.account.utils.CodeUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,6 +34,10 @@ import java.util.Map;
 @ControllerAdvice
 @Slf4j
 public class ExceptionAdvice {
+
+    @Autowired
+    private CodeUtil codeUtil;
+
     @ExceptionHandler(value = Throwable.class)
     @ResponseBody
     public ResultOutput exceptionHandle(HttpServletRequest request, Exception e) {
@@ -56,13 +61,13 @@ public class ExceptionAdvice {
                         messageList = formVerifieds.get(field);
                     }
 
-                    String returnMessage = CodeUtil.getMessage(language, message);
+                    String returnMessage = codeUtil.getMessage(Integer.parseInt(message));
                     messageList.add(returnMessage == null ? message : returnMessage);
                     formVerifieds.put(field, messageList);
                 }
             }
 
-            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR, CodeUtil.getMessage(language, AccountStatusCode.VALIDATE_ERROR), formVerifieds);
+            return ResultOutputUtil.error(AccountStatusCode.VALIDATE_ERROR, codeUtil.getMessage(AccountStatusCode.VALIDATE_ERROR), formVerifieds);
         } else {
             e.printStackTrace();
         }

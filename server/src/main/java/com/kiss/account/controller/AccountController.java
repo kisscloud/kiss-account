@@ -55,6 +55,9 @@ public class AccountController implements AccountClient {
     @Value("${account.default.password}")
     private String accountDefaultPassword;
 
+    @Autowired
+    private CodeUtil codeUtil;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(accountValidator);
@@ -81,7 +84,7 @@ public class AccountController implements AccountClient {
         BeanUtils.copyProperties(account, accountOutput);
         AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
         accountOutput.setGroupName(group.getName());
-        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         operationLogService.saveOperationLog(guest,null,account,"id",OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
@@ -131,7 +134,7 @@ public class AccountController implements AccountClient {
         Integer count = accountDao.getAccountsCount();
 
         for (AccountOutput accountOutput : accountOutputs) {
-            accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+            accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         }
 
         GetAccountsOutput getAccountsOutput = new GetAccountsOutput(accountOutputs, count);
@@ -181,7 +184,7 @@ public class AccountController implements AccountClient {
 
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account,accountOutput);
-        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         AccountGroup group = accountGroupDao.getAccountGroupById(accountOutput.getGroupId());
         accountOutput.setGroupName(group.getName());
         BeanUtils.copyProperties(accountOutput, newAccount);
@@ -239,7 +242,7 @@ public class AccountController implements AccountClient {
 
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account,accountOutput);
-        accountOutput.setStatusText(DbEnumUtil.getValue("accounts.status", String.valueOf(accountOutput.getStatus())));
+        accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         BeanUtils.copyProperties(accountOutput, newValue);
         operationLogService.saveOperationLog(guest,oldValue,newValue,"id",OperationTargetType.TYPE_ACCOUNT);
 
@@ -280,5 +283,25 @@ public class AccountController implements AccountClient {
         Integer count = accountDao.getValidAccountsCount();
 
         return ResultOutputUtil.success(count);
+    }
+
+    @Override
+    public ResultOutput get() {
+
+//        String message = messageSource.getMessage("accounts.status1", null, new Locale("zh-CN"));
+
+//        try {
+//            System.out.println(new String(message.getBytes("iso-8859-1"),"utf-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            System.out.println(codeUtil.getEnumsMessage("accounts.status","1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResultOutputUtil.success();
     }
 }

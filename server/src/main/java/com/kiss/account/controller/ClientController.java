@@ -3,11 +3,14 @@ package com.kiss.account.controller;
 import com.kiss.account.client.ClientClient;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.dao.ClientDao;
+import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
+import com.kiss.account.input.ClientAuthorizationInput;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
+import com.kiss.account.output.AuthOutput;
 import com.kiss.account.output.ClientOutput;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
@@ -19,6 +22,7 @@ import com.kiss.account.validator.ClientValidator;
 import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,10 +33,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 import utils.GuestUtil;
+import utils.JwtUtil;
 import utils.ThreadLocalUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @Api(tags = "Client", description = "客户端相关接口")
@@ -49,6 +53,9 @@ public class ClientController implements ClientClient {
 
     @Autowired
     private OperationLogService operationLogService;
+
+    @Autowired
+    private ClientModuleDao clientModuleDao;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -92,9 +99,9 @@ public class ClientController implements ClientClient {
         Client client = new Client();
         BeanUtils.copyProperties(clientInput, client);
         client.setOperatorId(guest.getId());
-        client.setClientName(guest.getName());
+        client.setOperatorName(guest.getName());
         client.setOperatorIp(guest.getIp());
-        client.setClientID(StringUtil.randomUUIDString());
+        client.setClientId(StringUtil.randomUUIDString());
         client.setClientSecret(StringUtil.randomUUIDString());
         Integer count = clientDao.createClient(client);
 
@@ -162,7 +169,12 @@ public class ClientController implements ClientClient {
 
 
     @Override
+<<<<<<< HEAD
     public ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput) {
+=======
+    @ApiOperation(value = "获取客户端密钥")
+    public ResultOutput getClientSecret(@RequestParam("password") String password,@RequestParam("id") Integer id) {
+>>>>>>> 19307e5ec165c2fd3bfa6ba47de087614af2efe6
 
         Integer guestId = GuestUtil.getGuestId();
 
@@ -180,5 +192,54 @@ public class ClientController implements ClientClient {
         String clientSecret = clientDao.getClientSecretById(getClientSecretInput.getId());
 
         return ResultOutputUtil.success(clientSecret);
+    }
+
+    @Override
+    @ApiOperation(value = "客户端授权")
+    public ResultOutput ClientAuthorization(@Validated @RequestBody ClientAuthorizationInput clientAuthorizationInput) {
+
+        String code = clientAuthorizationInput.getCode();
+        String clientId = clientAuthorizationInput.getClientId();
+        String secret = clientAuthorizationInput.getSecret();
+        Long expired = clientAuthorizationInput.getExpired();
+        Integer userId = JwtUtil.getUserId(code);
+        String authClientId = JwtUtil.getClientId(code);
+
+        if (!clientId.equals(authClientId)) {
+            return ResultOutputUtil.error(AccountStatusCode.CLIENT_ID_ERROR);
+        }
+
+        Account account = accountDao.getAccountById(userId);
+
+        if (account == null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
+        }
+
+        Client client = clientDao.getClientByClientId(clientId);
+
+        if (client == null) {
+            return ResultOutputUtil.error(AccountStatusCode.CLIENT_IS_NOT_EXIST);
+        }
+
+        if (!secret.equals(client.getClientSecret())) {
+            return ResultOutputUtil.error(AccountStatusCode.CLIENT_SECRET_ERROR);
+        }
+
+        List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
+        List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
+
+        permissions.retainAll(clientPermissions);
+
+        //生成token
+        String token = JwtUtil.getToken(account.getId(), account.getUsername(),expired * 1000);
+        Long expiredAt = new Date(System.currentTimeMillis() + expired * 1000).getTime();
+
+        AuthOutput authOutput = new AuthOutput();
+        authOutput.setAccessToken(token);
+        authOutput.setExpiredAt(expiredAt);
+        authOutput.setName(account.getName());
+        authOutput.setPermissions(permissions);
+
+        return ResultOutputUtil.success(authOutput);
     }
 }

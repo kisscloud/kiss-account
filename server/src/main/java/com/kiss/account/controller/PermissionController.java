@@ -11,7 +11,7 @@ import com.kiss.account.output.PermissionOutput;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.DbEnumUtil;
+import com.kiss.account.utils.CodeUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionValidator;
 import entity.Guest;
@@ -43,6 +43,9 @@ public class PermissionController implements PermissionClient {
 
     @Autowired
     private OperationLogService operationLogService;
+
+    @Autowired
+    private CodeUtil codeUtil;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -84,8 +87,10 @@ public class PermissionController implements PermissionClient {
 
         PermissionOutput permissionOutput = new PermissionOutput();
         BeanUtils.copyProperties(permission, permissionOutput);
-        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
-        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+//        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+////        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
+        permissionOutput.setTypeText(codeUtil.getEnumsMessage("permissions.type", String.valueOf(permissionOutput.getType())));
+        permissionOutput.setStatusText(codeUtil.getEnumsMessage("permissions.status", String.valueOf(permissionOutput.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
         operationLogService.saveOperationLog(guest,null,permission,"id",OperationTargetType.TYPE_PERMISSION);
 
@@ -99,8 +104,8 @@ public class PermissionController implements PermissionClient {
         List<PermissionOutput> permissions = permissionDao.getPermissions();
 
         for (PermissionOutput permissionOutput : permissions) {
-            permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permissionOutput.getStatus())));
-            permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permissionOutput.getType())));
+            permissionOutput.setStatusText(codeUtil.getEnumsMessage("permissions.status", String.valueOf(permissionOutput.getStatus())));
+            permissionOutput.setTypeText(codeUtil.getEnumsMessage("permissions.type", String.valueOf(permissionOutput.getType())));
         }
 
         return ResultOutputUtil.success(permissions);
@@ -131,8 +136,8 @@ public class PermissionController implements PermissionClient {
 
         PermissionOutput permissionOutput = new PermissionOutput();
         PermissionModule permissionModule = permissionDao.getPermissionModuleById(updatePermissionInput.getModuleId());
-        permissionOutput.setTypeText(DbEnumUtil.getValue("permissions.type", String.valueOf(permission.getType())));
-        permissionOutput.setStatusText(DbEnumUtil.getValue("permissions.status", String.valueOf(permission.getStatus())));
+        permissionOutput.setTypeText(codeUtil.getEnumsMessage("permissions.type", String.valueOf(permission.getType())));
+        permissionOutput.setStatusText(codeUtil.getEnumsMessage("permissions.status", String.valueOf(permission.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
         operationLogService.saveOperationLog(guest,oldPermission,permission,"id",OperationTargetType.TYPE_PERMISSION);
 

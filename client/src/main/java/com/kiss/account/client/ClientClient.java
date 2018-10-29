@@ -1,6 +1,7 @@
 package com.kiss.account.client;
 
 
+import com.kiss.account.input.ClientAuthorizationInput;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
@@ -28,4 +29,7 @@ public interface ClientClient {
 
     @PostMapping("/client/secret")
     ResultOutput getClientSecret(@RequestBody GetClientSecretInput getClientSecretInput);
+
+    @PostMapping("/client/authorization")
+    ResultOutput ClientAuthorization(@Validated @RequestBody ClientAuthorizationInput clientAuthorizationInput);
 }

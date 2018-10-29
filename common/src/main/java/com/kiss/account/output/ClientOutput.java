@@ -11,7 +11,7 @@ public class ClientOutput {
 
     private String clientName;
 
-    private String clientID;
+    private String clientId;
 
     private String clientSecret;
 
