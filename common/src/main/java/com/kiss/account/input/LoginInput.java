@@ -11,4 +11,6 @@ public class LoginInput {
 
     @NotEmpty(message = "密码不能为空")
     private String password;
+    
+    private String clientId;
 }

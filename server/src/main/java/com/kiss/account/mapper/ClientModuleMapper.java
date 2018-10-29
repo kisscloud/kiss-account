@@ -28,4 +28,11 @@ public interface ClientModuleMapper {
      * @return
      */
     List<ClientModule> getClientModulesByClientId(Integer clientId);
+
+    /**
+     * 查询客户端所有权限
+     * @param clientId
+     * @return
+     */
+    List<String> getClientModulePermissionsByClientId(String clientId);
 }

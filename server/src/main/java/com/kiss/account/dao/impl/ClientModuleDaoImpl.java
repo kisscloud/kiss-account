@@ -31,4 +31,10 @@ public class ClientModuleDaoImpl implements ClientModuleDao {
 
         return clientModulesMapper.getClientModulesByClientId(clientId);
     }
+
+    @Override
+    public List<String> getClientModulePermissionsByClientId(String clientId) {
+
+        return clientModulesMapper.getClientModulePermissionsByClientId(clientId);
+    }
 }

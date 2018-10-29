@@ -1,6 +1,7 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.AuthClient;
+import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.dao.impl.AccountDaoImpl;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
@@ -16,6 +17,7 @@ import output.ResultOutput;
 import utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,9 @@ public class AuthController implements AuthClient {
     private AccountDaoImpl accountDao;
 
     @Autowired
+    private ClientModuleDao clientModuleDao;
+
+    @Autowired
     HttpServletRequest request;
 
     @Override
@@ -36,6 +41,7 @@ public class AuthController implements AuthClient {
         //校验用户名密码
         String username = loginInput.getUsername();
         String password = loginInput.getPassword();
+        String clientId = loginInput.getClientId();
         //查询用户信息
         Account account = accountDao.getAccountByUsername(username);
 
@@ -51,13 +57,31 @@ public class AuthController implements AuthClient {
         }
 
         List<String> permissions = accountDao.getAccountPermissionsByAccountId(account.getId());
+        String authorizationCode = "authorization@" + clientId;
+        Boolean authorization = false;
+
+        for (String permissionCode : permissions) {
+            if (authorizationCode.equals(permissionCode)) {
+                authorization = true;
+                break;
+            }
+        }
+
+        if (!authorization) {
+            return ResultOutputUtil.error(100002);
+        }
+
+        List<String> clientPermissions = clientModuleDao.getClientModulePermissionsByClientId(clientId);
+
+        clientPermissions.retainAll(permissions);
+
         //生成token
         Map<String,Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
         AuthOutput authOutput = new AuthOutput();
         authOutput.setAccessToken(authMap.get("token").toString());
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));
         authOutput.setName(account.getName());
-        authOutput.setPermissions(permissions);
+        authOutput.setPermissions(clientPermissions);
 
         return ResultOutputUtil.success(authOutput);
     }

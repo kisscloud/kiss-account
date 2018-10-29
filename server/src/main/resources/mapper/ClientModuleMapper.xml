@@ -23,4 +23,11 @@
     <select id="getClientModulesByClientId" parameterType="java.lang.Integer" resultType="com.kiss.account.entity.ClientModule">
         select * from clientmodules where clientId = #{clientId}
     </select>
+    
+    <select id="getClientModulePermissionsByClientId" parameterType="java.lang.String" resultType="java.lang.String">
+        select per.code from clientmodules cli
+        left join permissions per
+        on cli.moduleId = per.moduleId
+        where cli.clientId = #{clientId};
+    </select>
 </mapper>
