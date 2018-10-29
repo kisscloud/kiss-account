@@ -179,9 +179,9 @@ public class ClientController implements ClientClient {
         }
 
         Account account = accountDao.getAccountById(guestId);
-        String encryPassword = CryptoUtil.hmacSHA256(getClientSecretInput.getPassword(), account.getSalt());
+        String encryptPassword = CryptoUtil.hmacSHA256(getClientSecretInput.getPassword(), account.getSalt());
 
-        if (!encryPassword.equals(account.getPassword())) {
+        if (!encryptPassword.equals(account.getPassword())) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 
