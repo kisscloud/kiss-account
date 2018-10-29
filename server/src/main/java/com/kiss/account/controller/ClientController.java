@@ -198,6 +198,14 @@ public class ClientController implements ClientClient {
         String clientId = clientAuthorizationInput.getClientId();
         String secret = clientAuthorizationInput.getSecret();
         Long expired = clientAuthorizationInput.getExpired();
+
+        //判断是否过期
+        boolean isExpired = JwtUtil.isNotExpired(code);
+
+        if (!isExpired) {
+            return ResultOutputUtil.error(AccountStatusCode.CLIENT_AUTHORIZATION_EXPIRED);
+        }
+
         Integer userId = JwtUtil.getUserId(code);
         String authClientId = JwtUtil.getClientId(code);
 
