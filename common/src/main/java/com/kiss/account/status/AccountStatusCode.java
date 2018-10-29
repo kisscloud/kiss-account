@@ -32,6 +32,7 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer CLIENT_ID_ERROR = 8005;
     public static final Integer CLIENT_SECRET_ERROR = 8006;
     public static final Integer CLIENT_AUTHORIZATION_NOT_ENOUGH = 8006;
+    public static final Integer CLIENT_AUTHORIZATION_EXPIRED = 8007;
 
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 9001;
 
