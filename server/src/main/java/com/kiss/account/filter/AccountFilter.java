@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@WebFilter(filterName = "responseFilter",urlPatterns = "/*")
+@WebFilter(filterName = "responseFilter", urlPatterns = "/*")
 public class AccountFilter implements Filter {
 
     private CodeUtil codeUtil;
@@ -35,16 +35,16 @@ public class AccountFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         InnerFilterChain preFilterChain = new InnerFilterChain();
 
-        if (!httpServletRequest.getRequestURI().contains("/login")|| !httpServletRequest.getRequestURI().contains("/client/authorization")) {
+        if (!httpServletRequest.getRequestURI().contains("/login") && !httpServletRequest.getRequestURI().contains("/client/authorization")) {
             GuestFilter userInfoFilter = new GuestFilter();
             preFilterChain.addFilter(userInfoFilter);
         }
 
-        preFilterChain.doFilter(httpServletRequest,httpServletResponse,preFilterChain);
-        chain.doFilter(httpServletRequest,responseWrapper);
+        preFilterChain.doFilter(httpServletRequest, httpServletResponse, preFilterChain);
+        chain.doFilter(httpServletRequest, responseWrapper);
         InnerFilterChain suffixFilterChain = new InnerFilterChain();
-        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper,codeUtil));
-        suffixFilterChain.doFilter(httpServletRequest,httpServletResponse,suffixFilterChain);
+        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper, codeUtil));
+        suffixFilterChain.doFilter(httpServletRequest, httpServletResponse, suffixFilterChain);
         ThreadLocalUtil.remove();
     }
 
