@@ -30,15 +30,16 @@ public class OperationLogServiceImpl implements OperationLogService {
                 operationLog.setBeforeValue("");
                 operationLog.setAfterValue(JSON.toJSONString(after));
             } else {
-                Field field = before.getClass().getField(targetField);
+                Field field = before.getClass().getDeclaredField(targetField);
                 field.setAccessible(true);
-                operationLog.setTargetId(field.getInt(before));
+                operationLog.setTargetId(Integer.parseInt(field.get(before).toString()));
                 operationLog.setBeforeValue(JSON.toJSONString(before));
                 operationLog.setAfterValue("");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         operationLog.setTargetType(targetType);
         saveLog(guest, operationLog);

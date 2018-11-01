@@ -55,7 +55,7 @@ public class PermissionController implements PermissionClient {
     @Override
     @ApiOperation(value = "创建权限")
     @Transactional
-    public ResultOutput<PermissionOutput> createPermission(@Validated @RequestBody CreatePermissionInput createPermissionInput) {
+    public ResultOutput<PermissionOutput> createPermission(@Validated @RequestBody CreatePermissionInput createPermissionInput) throws NoSuchFieldException, IllegalAccessException {
 
         Guest guest = ThreadLocalUtil.getGuest();
         // 1. 查询权限所属模块信息

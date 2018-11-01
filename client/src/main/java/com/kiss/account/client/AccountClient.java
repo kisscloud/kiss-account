@@ -6,14 +6,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
 
+import javax.naming.InvalidNameException;
+
 @RequestMapping
 public interface AccountClient {
 
     @PostMapping("/account")
-    ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput);
+    ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
 
     @PutMapping("/account")
-    ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput);
+    ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;
 
     @PostMapping("/account/roles")
     ResultOutput bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput);
@@ -28,10 +30,10 @@ public interface AccountClient {
     ResultOutput getAccountsCount();
 
     @PutMapping("/account/password")
-    ResultOutput updateAccountPassword(@RequestParam("id") Integer id);
+    ResultOutput updateAccountPassword(@RequestParam("id") Integer id) throws InvalidNameException;
 
     @PutMapping("/account/status")
-    ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput);
+    ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput) throws InvalidNameException;
 
     @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
     ResultOutput getAccountPermissions(@RequestParam("id") Integer id);

@@ -1,18 +1,18 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.AccountClient;
+import com.kiss.account.config.LdapConfig;
 import com.kiss.account.dao.AccountDao;
+import com.kiss.account.dao.AccountEntryDao;
 import com.kiss.account.dao.AccountGroupDao;
-import com.kiss.account.entity.Account;
-import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.entity.AccountRole;
+import com.kiss.account.entity.*;
 import com.kiss.account.input.*;
 import com.kiss.account.output.*;
 import com.kiss.account.service.OperationLogService;
-import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.*;
 import com.kiss.account.validator.AccountValidator;
+import com.sun.javafx.binding.StringFormatter;
 import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ldap.odm.annotations.Attribute;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -30,6 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 import utils.ThreadLocalUtil;
 
+import javax.lang.model.element.Name;
+import javax.naming.CompositeName;
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +49,9 @@ public class AccountController implements AccountClient {
     private AccountDao accountDao;
 
     @Autowired
+    private AccountEntryDao accountEntryDao;
+
+    @Autowired
     private AccountValidator accountValidator;
 
     @Autowired
@@ -56,6 +64,9 @@ public class AccountController implements AccountClient {
     private String accountDefaultPassword;
 
     @Autowired
+    private LdapConfig ldapConfig;
+
+    @Autowired
     private CodeUtil codeUtil;
 
     @InitBinder
@@ -65,13 +76,17 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "添加账户")
+    @Transactional
     public ResultOutput<AccountOutput> createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
+
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
+
         String salt = CryptoUtil.salt();
         String password = CryptoUtil.hmacSHA256(createAccountInput.getPassword(), salt);
+
         account.setStatus(1);
         account.setSalt(salt);
         account.setPassword(password);
@@ -80,12 +95,28 @@ public class AccountController implements AccountClient {
         account.setOperatorIp(guest.getIp());
         account.setOperatorName(guest.getName());
         accountDao.createAccount(account);
+
+        if (ldapConfig.enable) {
+            AccountEntry accountEntry = new AccountEntry();
+            accountEntry.setUid(String.valueOf(account.getId()));
+            accountEntry.setName(account.getName());
+            accountEntry.setUsername(account.getUsername());
+            accountEntry.setPassword(account.getPassword());
+            accountEntry.setEmail(account.getEmail());
+            accountEntry.setMobile(account.getMobile());
+            accountEntryDao.save(accountEntry);
+        }
+
+
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
+
         AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
+
         accountOutput.setGroupName(group.getName());
         accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
-        operationLogService.saveOperationLog(guest,null,account,"id",OperationTargetType.TYPE_ACCOUNT);
+
+        operationLogService.saveOperationLog(guest, null, account, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -116,7 +147,7 @@ public class AccountController implements AccountClient {
 
         for (AccountRole accountRole : accountRolesList) {
             AccountRoleOutput accountRoleOutput = new AccountRoleOutput();
-            BeanUtils.copyProperties(accountRole,accountRoleOutput);
+            BeanUtils.copyProperties(accountRole, accountRoleOutput);
             accountRoleOutputs.add(accountRoleOutput);
         }
 
@@ -166,7 +197,8 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "更新用户")
-    public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) {
+    @Transactional
+    public ResultOutput<AccountOutput> updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException {
 
         Guest guest = ThreadLocalUtil.getGuest();
         Account account = new Account();
@@ -182,20 +214,35 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
         }
 
+        if (ldapConfig.enable) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
+            accountEntry.setUid(String.valueOf(account.getId()));
+            accountEntry.setName(account.getName());
+            accountEntry.setUsername(account.getUsername());
+            accountEntry.setEmail(account.getEmail());
+            accountEntry.setMobile(account.getMobile());
+            accountEntry.setPassword(oldAccount.getPassword());
+            accountEntryDao.save(accountEntry);
+        }
+
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(account,accountOutput);
+        BeanUtils.copyProperties(account, accountOutput);
+        accountOutput.setStatus(oldAccount.getStatus());
+
         accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         AccountGroup group = accountGroupDao.getAccountGroupById(accountOutput.getGroupId());
         accountOutput.setGroupName(group.getName());
+
         BeanUtils.copyProperties(accountOutput, newAccount);
-        operationLogService.saveOperationLog(guest,oldAccount,newAccount,"id",OperationTargetType.TYPE_ACCOUNT);
+        operationLogService.saveOperationLog(guest, oldAccount, newAccount, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
     @ApiOperation(value = "重置账户密码")
-    public ResultOutput updateAccountPassword(Integer id) {
+    public ResultOutput updateAccountPassword(Integer id) throws InvalidNameException {
 
         Guest guest = ThreadLocalUtil.getGuest();
         String salt = CryptoUtil.salt();
@@ -217,14 +264,22 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
         }
 
-        operationLogService.saveOperationLog(guest,oldValue,account,"id",OperationTargetType.TYPE_ACCOUNT);
+        if (ldapConfig.enable) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
+            accountEntry.setPassword(account.getPassword());
+            accountEntryDao.save(accountEntry);
+        }
+
+
+        operationLogService.saveOperationLog(guest, oldValue, account, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success();
     }
 
     @Override
     @ApiOperation(value = "更新用户状态")
-    public ResultOutput updateAccountStatus(@RequestBody UpdateAccountStatusInput updateAccountStatusInput) {
+    public ResultOutput updateAccountStatus(@RequestBody UpdateAccountStatusInput updateAccountStatusInput) throws InvalidNameException {
 
         Guest guest = ThreadLocalUtil.getGuest();
         Account oldValue = accountDao.getAccountById(updateAccountStatusInput.getId());
@@ -240,11 +295,19 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
         }
 
+        if (ldapConfig.enable && account.getStatus().equals(2)) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
+            accountEntryDao.delete(accountEntry);
+        }
+
         AccountOutput accountOutput = new AccountOutput();
-        BeanUtils.copyProperties(account,accountOutput);
+        BeanUtils.copyProperties(account, accountOutput);
+
         accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
         BeanUtils.copyProperties(accountOutput, newValue);
-        operationLogService.saveOperationLog(guest,oldValue,newValue,"id",OperationTargetType.TYPE_ACCOUNT);
+
+        operationLogService.saveOperationLog(guest, oldValue, newValue, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
     }
@@ -297,7 +360,7 @@ public class AccountController implements AccountClient {
 //        }
 
         try {
-            System.out.println(codeUtil.getEnumsMessage("accounts.status","1"));
+            System.out.println(codeUtil.getEnumsMessage("accounts.status", "1"));
         } catch (Exception e) {
             e.printStackTrace();
         }

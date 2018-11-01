@@ -7,6 +7,7 @@ import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

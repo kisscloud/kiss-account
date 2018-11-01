@@ -17,7 +17,7 @@ import java.util.List;
 public interface PermissionClient {
 
     @PostMapping("/permission")
-    ResultOutput createPermission(CreatePermissionInput createPermissionInput);
+    ResultOutput createPermission(CreatePermissionInput createPermissionInput) throws NoSuchFieldException, IllegalAccessException;
 
     @GetMapping("/permissions")
     ResultOutput<List<PermissionOutput>> getPermissions();
