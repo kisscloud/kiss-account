@@ -12,7 +12,6 @@ import com.kiss.account.service.OperationLogService;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.*;
 import com.kiss.account.validator.AccountValidator;
-import com.sun.javafx.binding.StringFormatter;
 import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ldap.odm.annotations.Attribute;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -30,9 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 import utils.ThreadLocalUtil;
-
-import javax.lang.model.element.Name;
-import javax.naming.CompositeName;
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import java.util.ArrayList;
@@ -96,9 +91,9 @@ public class AccountController implements AccountClient {
         account.setOperatorName(guest.getName());
         accountDao.createAccount(account);
 
-        if (ldapConfig.enable) {
+        if (ldapConfig.enabled) {
             AccountEntry accountEntry = new AccountEntry();
-            accountEntry.setUid(String.valueOf(account.getId()));
+            accountEntry.setUid(account.getUsername());
             accountEntry.setName(account.getName());
             accountEntry.setUsername(account.getUsername());
             accountEntry.setPassword(account.getPassword());
@@ -214,10 +209,10 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_FAILED);
         }
 
-        if (ldapConfig.enable) {
-            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+        if (ldapConfig.enabled) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", oldAccount.getUsername()));
             AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
-            accountEntry.setUid(String.valueOf(account.getId()));
+            accountEntry.setUid(account.getUsername());
             accountEntry.setName(account.getName());
             accountEntry.setUsername(account.getUsername());
             accountEntry.setEmail(account.getEmail());
@@ -264,8 +259,8 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
         }
 
-        if (ldapConfig.enable) {
-            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+        if (ldapConfig.enabled) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
             AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
             accountEntry.setPassword(account.getPassword());
             accountEntryDao.save(accountEntry);
@@ -295,8 +290,8 @@ public class AccountController implements AccountClient {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
         }
 
-        if (ldapConfig.enable && account.getStatus().equals(2)) {
-            LdapName accountEntryId = new LdapName(String.format("uid=%d,o=accounts", account.getId()));
+        if (ldapConfig.enabled && account.getStatus().equals(2)) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
             AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
             accountEntryDao.delete(accountEntry);
         }

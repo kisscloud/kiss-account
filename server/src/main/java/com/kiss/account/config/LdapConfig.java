@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LdapConfig {
 
-    @Value("${account.ldap.enable}")
-    public Boolean enable;
+    @Value("${account.ldap.enabled}")
+    public Boolean enabled;
 }
