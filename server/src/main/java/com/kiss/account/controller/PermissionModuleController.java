@@ -126,13 +126,13 @@ public class PermissionModuleController implements PermissionModuleClient {
         List<Permission> permissions = permissionDao.getPermissionByModuleId(id);
 
         if (permissions != null && permissions.size() != 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
+            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
         }
 
         List<PermissionModule> permissionModules = permissionDao.getPermissionModuleChildrenByParentId(id);
 
         if (permissionModules != null && permissionModules.size() != 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_IS_NOT_EMPTY);
+            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
         }
 
         Guest guest = ThreadLocalUtil.getGuest();

@@ -3,6 +3,7 @@ package com.kiss.account.validator;
 import com.kiss.account.dao.AccountGroupDao;
 import com.kiss.account.entity.AccountGroup;
 import com.kiss.account.input.*;
+import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,8 @@ public class AccountGroupValidator implements Validator {
 
             validateName(updateAccountGroupInput.getId(), updateAccountGroupInput.getName(), errors);
             validateParentId(updateAccountGroupInput.getParentId(), errors);
+        } else {
+            errors.rejectValue("data", String.valueOf(AccountStatusCode.DATA_BIND_ERROR), "数据绑定错误");
         }
 
     }
@@ -50,14 +53,14 @@ public class AccountGroupValidator implements Validator {
         accountGroup = accountGroupDao.getAccountGroupById(id);
 
         if (accountGroup == null) {
-            errors.rejectValue("id", "", "部门不存在");
+            errors.rejectValue("id", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_NOT_EXIST), "部门不存在");
         }
     }
 
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
-            errors.rejectValue("name", "", "部门名称不能为空");
+            errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_NAME_NOT_EMPTY), "部门名称不能为空");
         }
 
         AccountGroup findAccountGroup = accountGroupDao.getAccountGroupByName(name);
@@ -70,14 +73,14 @@ public class AccountGroupValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("name", "", "部门名称已存在");
+        errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_NAME_EXIST), "部门名称已存在");
     }
 
 
     private void validateParentId(Integer groupId, Errors errors) {
 
         if (groupId == null) {
-            errors.rejectValue("parentId", "", "父部门不能为空");
+            errors.rejectValue("parentId", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_PARENT_NOT_EMPTY), "父部门不能为空");
             return;
         }
 
@@ -85,7 +88,7 @@ public class AccountGroupValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("parentId", "", "父部门不存在");
+        errors.rejectValue("parentId", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_PARENT_NOT_EXIST), "父部门不存在");
     }
 
 }

@@ -6,6 +6,7 @@ import com.kiss.account.input.ClientAuthorizationInput;
 import com.kiss.account.input.CreateClientInput;
 import com.kiss.account.input.GetClientSecretInput;
 import com.kiss.account.input.UpdateClientInput;
+import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,34 +46,34 @@ public class ClientValidator implements Validator {
         } else if (ClientAuthorizationInput.class.isInstance(target)) {
 
         } else {
-            errors.rejectValue("clientName", "", "数据格式错误");
+            errors.rejectValue("data", "", "数据格式错误");
         }
     }
 
     public void validateClientName(String clientName, Errors errors) {
 
         if (StringUtils.isEmpty(clientName)) {
-            errors.rejectValue("clientName", "", "客户端名称不能为空");
+            errors.rejectValue("clientName", String.valueOf(AccountStatusCode.CLIENT_NAME_NOT_EMPTY), "客户端名称不能为空");
         }
     }
 
     public void validateClientStatus(Integer status, Errors errors) {
 
         if (status != 0 && status != 1) {
-            errors.rejectValue("status", "", "客户端状态不合法");
+            errors.rejectValue("status", String.valueOf(AccountStatusCode.CLIENT_STATUS_NOT_EMPTY), "客户端状态不合法");
         }
     }
 
     public void validateClientId(Integer id, Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("clientID", "", "客户端id不能为空");
+            errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY), "客户端id不能为空");
         }
 
         Client clientOutput = clientDao.getClientById(id);
 
         if (clientOutput == null) {
-            errors.rejectValue("clientID", "", "客户端id不存在");
+            errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EXIST), "客户端id不存在");
         }
     }
 }

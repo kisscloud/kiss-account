@@ -5,6 +5,7 @@ import com.kiss.account.entity.Permission;
 import com.kiss.account.input.CreatePermissionInput;
 import com.kiss.account.input.UpdatePermissionInput;
 import com.kiss.account.regex.Regex;
+import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,14 +59,14 @@ public class PermissionValidator implements Validator {
         permission = permissionDao.getPermissionById(id);
 
         if (permission == null) {
-            errors.rejectValue("id", "", "权限不存在");
+            errors.rejectValue("id", String.valueOf(AccountStatusCode.PERMISSION_NOT_EXIST), "权限不存在");
         }
     }
 
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
-            errors.rejectValue("name", "", "权限名称不能为空");
+            errors.rejectValue("name", String.valueOf(AccountStatusCode.PERMISSION_NAME_NOT_EMPTY), "权限名称不能为空");
         }
 
         Permission findPermission = new Permission();
@@ -80,19 +81,19 @@ public class PermissionValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("name", "", "权限名称已存在");
+        errors.rejectValue("name", String.valueOf(AccountStatusCode.PERMISSION_NAME_EXIST), "权限名称已存在");
     }
 
     private void validateCode(Integer id, String code,Integer type, Errors errors) {
 
         if (StringUtils.isEmpty(code)) {
-            errors.rejectValue("code", "", "权限码不能为空");
+            errors.rejectValue("code", String.valueOf(AccountStatusCode.PERMISSION_CODE_NOT_EMPTY), "权限码不能为空");
         }
 
         if ((type == 1 && !Pattern.matches(Regex.INTEFACE_PERMISSION,code)) ||
                 (type == 2 && !Pattern.matches(Regex.PAGE_PERMISSION,code)) ||
                 (type == 3 && !Pattern.matches(Regex.COMPONENT_PERMISSION,code))) {
-            errors.rejectValue("code","","权限码格式不对");
+            errors.rejectValue("code",String.valueOf(AccountStatusCode.PERMISSION_CODE_STYLE_ERROR),"权限码格式不对");
         }
 
         Permission findPermission = permissionDao.getPermissionByCode(code);
@@ -105,18 +106,18 @@ public class PermissionValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("code", "", "权限码已存在");
+        errors.rejectValue("code", String.valueOf(AccountStatusCode.PERMISSION_CODE_EXIST), "权限码已存在");
     }
 
     private void validateModuleId(Integer moduleId, Errors errors) {
 
         if (moduleId == null) {
-            errors.rejectValue("moduleId", "", "所属模块不能为空");
+            errors.rejectValue("moduleId", String.valueOf(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY), "所属模块不能为空");
             return;
         }
 
         if (permissionDao.getPermissionModuleById(moduleId) == null) {
-            errors.rejectValue("moduleId", "", "所属模块不存在");
+            errors.rejectValue("moduleId", String.valueOf(AccountStatusCode.PERMISSION_MODULE_NOT_EXIST), "所属模块不存在");
         }
     }
 
@@ -124,12 +125,12 @@ public class PermissionValidator implements Validator {
     private void validateStatus(Integer status, Errors errors) {
 
         if (status == null) {
-            errors.rejectValue("status", "", "权限类型不能为空");
+            errors.rejectValue("status", String.valueOf(AccountStatusCode.PERMISSION_TYPE_NOT_EMPTY), "权限类型不能为空");
             return;
         }
 
         if (status != 1 && status != 2 && status != 3) {
-            errors.rejectValue("status", "", "权限类型不正确");
+            errors.rejectValue("status", String.valueOf(AccountStatusCode.PERMISSION_TYPE_ERROR), "权限类型不正确");
         }
     }
 

@@ -3,6 +3,7 @@ package com.kiss.account.validator;
 import com.kiss.account.dao.RoleDao;
 import com.kiss.account.entity.Role;
 import com.kiss.account.input.*;
+import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,14 +61,14 @@ public class RoleValidator implements Validator {
         role = roleDao.getRoleById(id);
 
         if (role == null) {
-            errors.rejectValue("id", "", "角色不存在");
+            errors.rejectValue("id", String.valueOf(AccountStatusCode.ROLE_NOT_EXIST), "角色不存在");
         }
     }
 
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
-            errors.rejectValue("name", "", "角色名不能为空");
+            errors.rejectValue("name", String.valueOf(AccountStatusCode.ROLE_NAME_NOT_EMPTY), "角色名不能为空");
         }
 
         Role findRole = roleDao.getRoleByName(name);
@@ -80,6 +81,6 @@ public class RoleValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("name", "", "角色名已存在");
+        errors.rejectValue("name", String.valueOf(AccountStatusCode.ROLE_NAME_EXIST), "角色名已存在");
     }
 }

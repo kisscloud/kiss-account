@@ -5,6 +5,7 @@ import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Client;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.UpdateClientModulesInput;
+import com.kiss.account.status.AccountStatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -39,33 +40,33 @@ public class ClientModulesValidator implements Validator {
     public void validateClientId (Integer id,Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("clientId","","客户端id不能为空");
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY),"客户端id不能为空");
         }
 
         Client client = clientDao.getClientById(id);
 
         if (client == null) {
-            errors.rejectValue("clientId","","客户端id不存在");
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EXIST),"客户端id不存在");
         }
     }
 
     public void validateClientModuleId (List<Integer> clientModules,Errors errors) {
 
         if (clientModules == null || clientModules.size() == 0) {
-            errors.rejectValue("moduleIds","","模块id不能为空");
+            errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_NOT_EMPTY),"模块id不能为空");
             return;
         }
 
         for (Integer moduleId : clientModules) {
             if (moduleId == null) {
-                errors.rejectValue("moduleIds","","模块id不能为空");
+                errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_NOT_EMPTY),"模块id不能为空");
                 return;
             }
 
             PermissionModule permissionModule = permissionDao.getPermissionModuleById(moduleId);
 
             if (permissionModule == null) {
-                errors.rejectValue("moduleIds","","部分模块id不存在");
+                errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_NOT_EXIST),"模块id不存在");
                 return;
             }
         }
