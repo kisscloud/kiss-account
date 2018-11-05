@@ -344,20 +344,19 @@ public class AccountController implements AccountClient {
     }
 
     @Override
-    public ResultOutput get() {
+    public ResultOutput validateAccount(@Validated @RequestBody ValidateAccountInput validateAccountInput) {
 
-//        String message = messageSource.getMessage("accounts.status1", null, new Locale("zh-CN"));
+        Account account = accountDao.getAccountById(validateAccountInput.getId());
 
-//        try {
-//            System.out.println(new String(message.getBytes("iso-8859-1"),"utf-8"));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        if (account == null) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
+        }
 
-        try {
-            System.out.println(codeUtil.getEnumsMessage("accounts.status", "1"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        String salt = account.getSalt();
+        String passwordLegal = account.getPassword();
+
+        if (!passwordLegal.equals(CryptoUtil.hmacSHA256(validateAccountInput.getPassword(), salt))) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 
         return ResultOutputUtil.success();

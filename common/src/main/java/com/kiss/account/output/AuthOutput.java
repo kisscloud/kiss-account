@@ -8,6 +8,6 @@ import java.util.List;
 public class AuthOutput {
     private String accessToken;
     private Long expiredAt;
-    private String name;
+    private String username;
     private List<String> permissions;
 }

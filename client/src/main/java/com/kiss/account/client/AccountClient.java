@@ -44,6 +44,6 @@ public interface AccountClient {
     @GetMapping("/accounts/valid/count")
     ResultOutput getValidAccountsCount();
 
-    @GetMapping("/get")
-    ResultOutput get();
+    @PostMapping("/account/validated")
+    ResultOutput validateAccount(@RequestBody ValidateAccountInput validateAccountInput);
 }

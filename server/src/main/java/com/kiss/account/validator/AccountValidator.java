@@ -6,6 +6,7 @@ import com.kiss.account.input.UpdateAccountInput;
 import com.kiss.account.input.UpdateAccountStatusInput;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
+import com.kiss.account.input.ValidateAccountInput;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,8 @@ public class AccountValidator implements Validator {
 
         return clazz.equals(CreateAccountInput.class)
                 || clazz.equals(UpdateAccountInput.class)
-                || clazz.equals(UpdateAccountStatusInput.class);
+                || clazz.equals(UpdateAccountStatusInput.class)
+                || clazz.equals(ValidateAccountInput.class);
     }
 
     @Override
@@ -58,6 +60,10 @@ public class AccountValidator implements Validator {
         } else if (UpdateAccountStatusInput.class.isInstance(target)) {
             UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
             validateStatus(updateAccountStatusInput.getStatus(), errors);
+        } else if (ValidateAccountInput.class.isInstance(target)) {
+            ValidateAccountInput validateAccountInput = (ValidateAccountInput) target;
+            validateId(validateAccountInput.getId(),errors);
+            validatePassword(validateAccountInput.getPassword(),errors);
         } else {
             errors.rejectValue("data", "", "数据绑定错误");
         }
@@ -182,6 +188,13 @@ public class AccountValidator implements Validator {
 
         if (status == null) {
             errors.rejectValue("status", "", "用户状态不能为空");
+        }
+    }
+
+    public void validateId(Integer id,Errors errors) {
+
+        if (id == null) {
+            errors.rejectValue("id","","用户id不能为空");
         }
     }
 }
