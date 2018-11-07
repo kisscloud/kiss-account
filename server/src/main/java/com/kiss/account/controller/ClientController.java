@@ -16,6 +16,7 @@ import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
+import com.kiss.account.utils.LdapUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.StringUtil;
 import com.kiss.account.validator.ClientValidator;
@@ -179,7 +180,7 @@ public class ClientController implements ClientClient {
         }
 
         Account account = accountDao.getAccountById(guestId);
-        String encryptPassword = CryptoUtil.hmacSHA256(getClientSecretInput.getPassword(), account.getSalt());
+        String encryptPassword = LdapUtil.ssha(getClientSecretInput.getPassword(), account.getSalt());
 
         if (!encryptPassword.equals(account.getPassword())) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);

@@ -241,7 +241,7 @@ public class AccountController implements AccountClient {
 
         Guest guest = ThreadLocalUtil.getGuest();
         String salt = CryptoUtil.salt();
-        String password = CryptoUtil.hmacSHA256(accountDefaultPassword, salt);
+        String password = LdapUtil.ssha(accountDefaultPassword, salt);
         Account account = accountDao.getAccountById(id);
         Account oldValue = account;
 
@@ -355,7 +355,7 @@ public class AccountController implements AccountClient {
         String salt = account.getSalt();
         String passwordLegal = account.getPassword();
 
-        if (!passwordLegal.equals(CryptoUtil.hmacSHA256(validateAccountInput.getPassword(), salt))) {
+        if (!passwordLegal.equals(LdapUtil.ssha(validateAccountInput.getPassword(), salt))) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 

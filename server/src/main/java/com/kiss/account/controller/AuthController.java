@@ -8,6 +8,7 @@ import com.kiss.account.input.LoginInput;
 import com.kiss.account.output.AuthOutput;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.CryptoUtil;
+import com.kiss.account.utils.LdapUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,7 +62,7 @@ public class AuthController implements AuthClient {
         String salt = account.getSalt();
         String passwordLegal = account.getPassword();
 
-        if (!passwordLegal.equals(CryptoUtil.hmacSHA256(password, salt))) {
+        if (!passwordLegal.equals(LdapUtil.ssha(password, salt))) {
             return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_PASSWORD_ERROR);
         }
 
