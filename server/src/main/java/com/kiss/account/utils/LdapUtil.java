@@ -19,7 +19,7 @@ public class LdapUtil {
 
             byte[] hashPlusSalt = new byte[hash.length + saltBytes.length];
             System.arraycopy(hash, 0, hashPlusSalt, 0, hash.length);
-            System.arraycopy(salt, 0, hashPlusSalt, hash.length, saltBytes.length);
+            System.arraycopy(saltBytes, 0, hashPlusSalt, hash.length, saltBytes.length);
 
             return "{ssha}" + Base64.getEncoder().encodeToString(hashPlusSalt);
         } catch (NoSuchAlgorithmException e) {
