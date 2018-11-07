@@ -80,7 +80,7 @@ public class AccountController implements AccountClient {
         BeanUtils.copyProperties(createAccountInput, account);
 
         String salt = CryptoUtil.salt();
-        String password = CryptoUtil.hmacSHA256(createAccountInput.getPassword(), salt);
+        String password = LdapUtil.ssha(createAccountInput.getPassword(),salt);
 
         account.setStatus(1);
         account.setSalt(salt);
@@ -96,7 +96,7 @@ public class AccountController implements AccountClient {
             accountEntry.setUid(account.getUsername());
             accountEntry.setName(account.getName());
             accountEntry.setUsername(account.getUsername());
-            accountEntry.setPassword(account.getPassword());
+            accountEntry.setPassword("{ssha}" + account.getPassword());
             accountEntry.setEmail(account.getEmail());
             accountEntry.setMobile(account.getMobile());
             accountEntryDao.save(accountEntry);
