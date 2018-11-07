@@ -21,7 +21,7 @@ public class LdapUtil {
             System.arraycopy(hash, 0, hashPlusSalt, 0, hash.length);
             System.arraycopy(salt, 0, hashPlusSalt, hash.length, saltBytes.length);
 
-            return Base64.getEncoder().encodeToString(hashPlusSalt);
+            return "{ssha}" + Base64.getEncoder().encodeToString(hashPlusSalt);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return password;
