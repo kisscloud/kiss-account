@@ -22,7 +22,9 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void createAccount(Account account) throws ResultException {
-
+        if (account.getType() == null) {
+            account.setType(2);
+        }
         accountMapper.createAccount(account);
     }
 

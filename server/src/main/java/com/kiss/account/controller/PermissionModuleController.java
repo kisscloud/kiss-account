@@ -39,9 +39,12 @@ public class PermissionModuleController implements PermissionModuleClient {
     @Autowired
     private OperationLogService operationLogService;
 
+    @Autowired
+    private PermissionModuleValidator permissionModuleValidator;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.setValidator(new PermissionModuleValidator());
+        binder.setValidator(permissionModuleValidator);
     }
 
     /**
@@ -66,7 +69,7 @@ public class PermissionModuleController implements PermissionModuleClient {
         permissionDao.createPermissionModule(permissionModule);
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
-        operationLogService.saveOperationLog(guest,null,permissionModule,"id",OperationTargetType.TYPE_PERMISSION_MODULE);
+        operationLogService.saveOperationLog(guest, null, permissionModule, "id", OperationTargetType.TYPE_PERMISSION_MODULE);
 
         return ResultOutputUtil.success(permissionModuleOutput);
     }
@@ -143,7 +146,7 @@ public class PermissionModuleController implements PermissionModuleClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
         }
 
-        operationLogService.saveOperationLog(guest,oldValue,null,"id",OperationTargetType.TYPE_PERMISSION_MODULE);
+        operationLogService.saveOperationLog(guest, oldValue, null, "id", OperationTargetType.TYPE_PERMISSION_MODULE);
 
         return ResultOutputUtil.success();
     }

@@ -6,19 +6,18 @@ import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import utils.ApplicationUtil;
 
+@Component
 public class PermissionModuleValidator implements Validator {
 
+    @Autowired
     private PermissionDao permissionDao;
 
     private PermissionModule permissionModule;
-
-    public PermissionModuleValidator() {
-        permissionDao = (PermissionDao) ApplicationUtil.getBean(PermissionDao.class);
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {

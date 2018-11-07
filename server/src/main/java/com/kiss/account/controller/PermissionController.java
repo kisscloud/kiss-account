@@ -92,7 +92,7 @@ public class PermissionController implements PermissionClient {
         permissionOutput.setTypeText(codeUtil.getEnumsMessage("permissions.type", String.valueOf(permissionOutput.getType())));
         permissionOutput.setStatusText(codeUtil.getEnumsMessage("permissions.status", String.valueOf(permissionOutput.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
-        operationLogService.saveOperationLog(guest,null,permission,"id",OperationTargetType.TYPE_PERMISSION);
+        operationLogService.saveOperationLog(guest, null, permission, "id", OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -139,7 +139,7 @@ public class PermissionController implements PermissionClient {
         permissionOutput.setTypeText(codeUtil.getEnumsMessage("permissions.type", String.valueOf(permission.getType())));
         permissionOutput.setStatusText(codeUtil.getEnumsMessage("permissions.status", String.valueOf(permission.getStatus())));
         permissionOutput.setModuleName(permissionModule.getName());
-        operationLogService.saveOperationLog(guest,oldPermission,permission,"id",OperationTargetType.TYPE_PERMISSION);
+        operationLogService.saveOperationLog(guest, oldPermission, permission, "id", OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success(permissionOutput);
     }
@@ -156,7 +156,7 @@ public class PermissionController implements PermissionClient {
             return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_FAILED);
         }
 
-        operationLogService.saveOperationLog(guest,oldPermission,null,"id",OperationTargetType.TYPE_PERMISSION);
+        operationLogService.saveOperationLog(guest, oldPermission, null, "id", OperationTargetType.TYPE_PERMISSION);
 
         return ResultOutputUtil.success();
     }
