@@ -7,8 +7,8 @@
 <mapper namespace="com.kiss.account.mapper.AccountMapper">
 
     <insert id="createAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.kiss.account.entity.Account">
-        insert into accounts(name, username, email, mobile, password, salt, remark, groupId, status, operatorId, operatorName, operatorIp)
-        values(#{name}, #{username}, #{email}, #{mobile}, #{password}, #{salt}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
+        insert into accounts(name, username, email, mobile, password, salt, type, remark, groupId, status, operatorId, operatorName, operatorIp)
+        values(#{name}, #{username}, #{email}, #{mobile}, #{password}, #{salt}, #{type}, #{remark}, #{groupId}, #{status}, #{operatorId}, #{operatorName}, #{operatorIp});
     </insert>
 
     <select id="getAccountOutputById" parameterType="java.lang.Integer" resultType="com.kiss.account.output.AccountOutput">
