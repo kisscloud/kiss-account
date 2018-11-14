@@ -1,13 +1,11 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.AuthClient;
-import com.kiss.account.dao.ClientModuleDao;
-import com.kiss.account.dao.impl.AccountDaoImpl;
+import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.input.LoginInput;
 import com.kiss.account.output.AuthOutput;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.LdapUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import io.swagger.annotations.Api;
@@ -15,14 +13,12 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 import utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,10 +28,7 @@ import java.util.Map;
 public class AuthController implements AuthClient {
 
     @Autowired
-    private AccountDaoImpl accountDao;
-
-    @Autowired
-    private ClientModuleDao clientModuleDao;
+    private AccountDao accountDao;
 
     @Autowired
     HttpServletRequest request;
@@ -99,7 +92,7 @@ public class AuthController implements AuthClient {
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));
         authOutput.setUsername(account.getUsername());
         authOutput.setPermissions(permissions);
-
+        authOutput.setName(account.getName());
         return ResultOutputUtil.success(authOutput);
     }
 }

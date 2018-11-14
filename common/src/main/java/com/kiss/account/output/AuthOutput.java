@@ -10,5 +10,6 @@ public class AuthOutput {
     private Long expiredAt;
     private String username;
     private Integer accountId;
+    private String name;
     private List<String> permissions;
 }
