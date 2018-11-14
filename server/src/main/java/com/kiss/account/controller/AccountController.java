@@ -89,6 +89,7 @@ public class AccountController implements AccountClient {
         account.setOperatorId(guest.getId());
         account.setOperatorIp(guest.getIp());
         account.setOperatorName(guest.getName());
+        account.setType(2);
         accountDao.createAccount(account);
 
         if (ldapConfig.enabled) {

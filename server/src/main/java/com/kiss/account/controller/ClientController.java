@@ -245,6 +245,7 @@ public class ClientController implements ClientClient {
         authOutput.setAccessToken(token);
         authOutput.setExpiredAt(expiredAt);
         authOutput.setUsername(account.getUsername());
+        authOutput.setAccountId(account.getId());
         authOutput.setPermissions(clientPermissions);
 
         return ResultOutputUtil.success(authOutput);
