@@ -92,7 +92,6 @@ public class AuthController implements AuthClient {
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));
         authOutput.setUsername(account.getUsername());
         authOutput.setPermissions(permissions);
-        authOutput.setName(account.getName());
         return ResultOutputUtil.success(authOutput);
     }
 }

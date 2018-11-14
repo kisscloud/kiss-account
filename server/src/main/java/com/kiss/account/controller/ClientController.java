@@ -247,6 +247,7 @@ public class ClientController implements ClientClient {
         authOutput.setUsername(account.getUsername());
         authOutput.setAccountId(account.getId());
         authOutput.setPermissions(clientPermissions);
+        authOutput.setName(account.getName());
 
         return ResultOutputUtil.success(authOutput);
     }
