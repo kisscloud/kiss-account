@@ -2,10 +2,7 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.ClientDao;
 import com.kiss.account.entity.Client;
-import com.kiss.account.input.ClientAuthorizationInput;
-import com.kiss.account.input.CreateClientInput;
-import com.kiss.account.input.GetClientSecretInput;
-import com.kiss.account.input.UpdateClientInput;
+import com.kiss.account.input.*;
 import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,8 @@ public class ClientValidator implements Validator {
         return clazz.equals(CreateClientInput.class)
                 || clazz.equals(UpdateClientInput.class)
                 || clazz.equals(GetClientSecretInput.class)
-                || clazz.equals(ClientAuthorizationInput.class);
+                || clazz.equals(ClientAuthorizationInput.class)
+                || clazz.equals(ClientAccountInput.class);
     }
 
     @Override
@@ -37,14 +35,18 @@ public class ClientValidator implements Validator {
             validateClientStatus(clientInput.getStatus(), errors);
         } else if (UpdateClientInput.class.isInstance(target)) {
             UpdateClientInput updateClientInput = (UpdateClientInput) target;
-            validateClientId(updateClientInput.getId(), errors);
+            validateId(updateClientInput.getId(), errors);
             validateClientName(updateClientInput.getClientName(), errors);
             validateClientStatus(updateClientInput.getStatus(), errors);
         } else if (GetClientSecretInput.class.isInstance(target)) {
             GetClientSecretInput getClientSecretInput = (GetClientSecretInput) target;
-            validateClientId(getClientSecretInput.getId(), errors);
+            validateId(getClientSecretInput.getId(), errors);
         } else if (ClientAuthorizationInput.class.isInstance(target)) {
 
+        } else if (ClientAccountInput.class.isInstance(target)) {
+            ClientAccountInput clientAccountInput = (ClientAccountInput) target;
+            validateAccountName(clientAccountInput.getAccountName(),errors);
+            validateClientId(clientAccountInput.getClientId(),errors);
         } else {
             errors.rejectValue("data", "", "数据格式错误");
         }
@@ -64,7 +66,7 @@ public class ClientValidator implements Validator {
         }
     }
 
-    public void validateClientId(Integer id, Errors errors) {
+    public void validateId(Integer id, Errors errors) {
 
         if (id == null) {
             errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY), "客户端id不能为空");
@@ -74,6 +76,26 @@ public class ClientValidator implements Validator {
 
         if (clientOutput == null) {
             errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EXIST), "客户端id不存在");
+        }
+    }
+
+    public void validateAccountName(String accountName,Errors errors) {
+
+        if (StringUtils.isEmpty(accountName)) {
+            errors.rejectValue("accountName",String.valueOf(AccountStatusCode.ACCOUNT_NAME_NOT_EMPTY),"账户名不能为空");
+        }
+    }
+
+    public void validateClientId(String clientId,Errors errors) {
+
+        if (StringUtils.isEmpty(clientId)) {
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY),"客户端id不能为空");
+        }
+
+        Client client = clientDao.getClientByClientId(clientId);
+
+        if (client == null) {
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_IS_NOT_EXIST),"客户端不存在");
         }
     }
 }

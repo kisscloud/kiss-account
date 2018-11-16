@@ -1,9 +1,11 @@
 package com.kiss.account.mapper;
 
+import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ClientMapper {
@@ -55,4 +57,11 @@ public interface ClientMapper {
      * @return
      */
     Client getClientByClientId(String clientId);
+
+    /**
+     * 根据客户端id跟账户名模糊查询所有账户
+     * @param params
+     * @return
+     */
+    List<Account> getClientAccounts(Map params);
 }

@@ -1,5 +1,6 @@
 package com.kiss.account.dao;
 
+import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
 import java.util.List;
 
@@ -52,4 +53,12 @@ public interface ClientDao {
      * @return
      */
     Client getClientByClientId(String clientId);
+
+    /**
+     * 根据客户端id跟账户名模糊查询所有账户
+     * @param code
+     * @param name
+     * @return
+     */
+    List<Account> getClientAccounts(String code, String name);
 }

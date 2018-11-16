@@ -6,16 +6,13 @@ import com.kiss.account.dao.ClientDao;
 import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.Client;
-import com.kiss.account.input.ClientAuthorizationInput;
-import com.kiss.account.input.CreateClientInput;
-import com.kiss.account.input.GetClientSecretInput;
-import com.kiss.account.input.UpdateClientInput;
+import com.kiss.account.input.*;
 import com.kiss.account.output.AuthOutput;
+import com.kiss.account.output.ClientAccountOutput;
 import com.kiss.account.output.ClientOutput;
 import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.CryptoUtil;
 import com.kiss.account.utils.LdapUtil;
 import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.utils.StringUtil;
@@ -23,7 +20,6 @@ import com.kiss.account.validator.ClientValidator;
 import entity.Guest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.BeanCopyUtil;
 import utils.GuestUtil;
 import utils.JwtUtil;
 import utils.ThreadLocalUtil;
@@ -250,5 +247,18 @@ public class ClientController implements ClientClient {
         authOutput.setName(account.getName());
 
         return ResultOutputUtil.success(authOutput);
+    }
+
+    @Override
+    public ResultOutput getClientAccounts(@Validated @RequestBody ClientAccountInput clientAccountInput) {
+
+        String clientId = clientAccountInput.getClientId();
+        String accountName = clientAccountInput.getAccountName();
+        String code = "authorization@" + clientId;
+        String name = accountName + "%";
+        List<Account> accounts = clientDao.getClientAccounts(code,name);
+        List<ClientAccountOutput> clientAccounts = (List) BeanCopyUtil.copyList(accounts,ClientAccountOutput.class);
+
+        return ResultOutputUtil.success(clientAccounts);
     }
 }

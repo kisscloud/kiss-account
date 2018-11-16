@@ -1,10 +1,7 @@
 package com.kiss.account.client;
 
 
-import com.kiss.account.input.ClientAuthorizationInput;
-import com.kiss.account.input.CreateClientInput;
-import com.kiss.account.input.GetClientSecretInput;
-import com.kiss.account.input.UpdateClientInput;
+import com.kiss.account.input.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import output.ResultOutput;
@@ -32,4 +29,7 @@ public interface ClientClient {
 
     @PostMapping("/client/authorization")
     ResultOutput ClientAuthorization(@Validated @RequestBody ClientAuthorizationInput clientAuthorizationInput);
+
+    @PostMapping("/client/accounts")
+    ResultOutput getClientAccounts(@Validated @RequestBody ClientAccountInput clientAccountInput);
 }

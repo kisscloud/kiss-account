@@ -49,4 +49,15 @@
     <select id="getClientByClientId" parameterType="java.lang.String" resultType="com.kiss.account.entity.Client">
         select * from clients where clientId = #{clientId};
     </select>
+    
+    <select id="getClientAccounts" parameterType="java.util.Map" resultType="com.kiss.account.entity.Account">
+        select ac.name,ac.id from permissions per
+        left join rolepermissions rp
+        on per.id = rp.permissionId
+        left join accountroles ar
+        on rp.roleId = ar.roleId
+        left join accounts ac
+        on ar.accountId = ac.id
+        where per.code = #{code} and ac.name is not null and ac.name like #{name};
+    </select>
 </mapper>
