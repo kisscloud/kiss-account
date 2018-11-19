@@ -1,6 +1,8 @@
 package com.kiss.account.validator;
 
+import com.kiss.account.dao.AuthorizationTargetDao;
 import com.kiss.account.dao.ClientDao;
+import com.kiss.account.entity.AuthorizationTarget;
 import com.kiss.account.entity.Client;
 import com.kiss.account.input.*;
 import com.kiss.account.status.AccountStatusCode;
@@ -16,6 +18,9 @@ public class ClientValidator implements Validator {
     @Autowired
     private ClientDao clientDao;
 
+    @Autowired
+    private AuthorizationTargetDao authorizationTargetDao;
+
     @Override
     public boolean supports(Class<?> clazz) {
 
@@ -23,7 +28,8 @@ public class ClientValidator implements Validator {
                 || clazz.equals(UpdateClientInput.class)
                 || clazz.equals(GetClientSecretInput.class)
                 || clazz.equals(ClientAuthorizationInput.class)
-                || clazz.equals(ClientAccountInput.class);
+                || clazz.equals(ClientAccountInput.class)
+                || clazz.equals(AuthorizationTargetInput.class);
     }
 
     @Override
@@ -47,6 +53,13 @@ public class ClientValidator implements Validator {
             ClientAccountInput clientAccountInput = (ClientAccountInput) target;
             validateAccountName(clientAccountInput.getAccountName(),errors);
             validateClientId(clientAccountInput.getClientId(),errors);
+        } else if (AuthorizationTargetInput.class.isInstance(target)) {
+            AuthorizationTargetInput authorizationTargetInput = (AuthorizationTargetInput) target;
+            boolean idVal = validateId(authorizationTargetInput.getClientId(),errors);
+
+            if (idVal) {
+                validateIp(authorizationTargetInput.getClientId(),authorizationTargetInput.getIp(),errors);
+            }
         } else {
             errors.rejectValue("data", "", "数据格式错误");
         }
@@ -66,17 +79,21 @@ public class ClientValidator implements Validator {
         }
     }
 
-    public void validateId(Integer id, Errors errors) {
+    public boolean validateId(Integer id, Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY), "客户端id不能为空");
+            errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_IS_EMPTY), "客户端id不能为空");
+            return false;
         }
 
         Client clientOutput = clientDao.getClientById(id);
 
         if (clientOutput == null) {
             errors.rejectValue("clientID", String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EXIST), "客户端id不存在");
+            return false;
         }
+
+        return true;
     }
 
     public void validateAccountName(String accountName,Errors errors) {
@@ -89,13 +106,27 @@ public class ClientValidator implements Validator {
     public void validateClientId(String clientId,Errors errors) {
 
         if (StringUtils.isEmpty(clientId)) {
-            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY),"客户端id不能为空");
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_IS_EMPTY),"客户端id不能为空");
         }
 
         Client client = clientDao.getClientByClientId(clientId);
 
         if (client == null) {
             errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_IS_NOT_EXIST),"客户端不存在");
+        }
+    }
+
+    public void  validateIp(Integer clientId,String ip,Errors errors) {
+
+        if (StringUtils.isEmpty(ip)) {
+            errors.rejectValue("ip",String.valueOf(AccountStatusCode.CLIENT_AUTHORIZATION_TARGET_IP_IS_EMPTY),"授权对象ip为空");
+            return;
+        }
+
+        AuthorizationTarget authorizationTarget = authorizationTargetDao.getAuthorizationTargetsByClientIdAndIp(clientId,ip);
+
+        if (authorizationTarget != null) {
+            errors.rejectValue("ip",String.valueOf(AccountStatusCode.CLIENT_AUTHORIZATION_TARGET_IP_IS_EXIST),"授权对象ip已存在");
         }
     }
 }

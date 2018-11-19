@@ -40,7 +40,7 @@ public class ClientModulesValidator implements Validator {
     public void validateClientId (Integer id,Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_NOT_EMPTY),"客户端id不能为空");
+            errors.rejectValue("clientId",String.valueOf(AccountStatusCode.CLIENT_ID_IS_EMPTY),"客户端id不能为空");
         }
 
         Client client = clientDao.getClientById(id);

@@ -32,4 +32,10 @@ public interface ClientClient {
 
     @PostMapping("/client/accounts")
     ResultOutput getClientAccounts(@Validated @RequestBody ClientAccountInput clientAccountInput);
+
+    @PostMapping("/client/authorization/target")
+    ResultOutput createClientAuthorizationTarget(@Validated @RequestBody AuthorizationTargetInput authorizationTargetInput);
+
+    @GetMapping("/client/authorization/target")
+    ResultOutput getClientAuthorizationTarget(@RequestParam("clientId") Integer clientId);
 }

@@ -72,10 +72,14 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer CLIENT_SECRET_ERROR = 8006;
     public static final Integer CLIENT_AUTHORIZATION_NOT_ENOUGH = 8006;
     public static final Integer CLIENT_AUTHORIZATION_EXPIRED = 8007;
-    public static final Integer CLIENT_ID_NOT_EMPTY = 8008;
+    public static final Integer CLIENT_ID_IS_EMPTY = 8008;
     public static final Integer CLIENT_ID_NOT_EXIST = 8009;
     public static final Integer CLIENT_NAME_NOT_EMPTY = 8010;
     public static final Integer CLIENT_STATUS_NOT_EMPTY = 8011;
+    public static final Integer CLIENT_AUTHORIZATION_TARGET_IP_IS_EMPTY = 8012;
+    public static final Integer CLIENT_AUTHORIZATION_TARGET_IP_IS_EXIST = 8013;
+    public static final Integer CREATE_CLIENT_AUTHORIZATION_TARGET_FAILED = 8014;
+
 
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 9001;
     public static final Integer CLIENT_MODULEID_NOT_EXIST = 9002;

@@ -2,12 +2,15 @@ package com.kiss.account.controller;
 
 import com.kiss.account.client.ClientClient;
 import com.kiss.account.dao.AccountDao;
+import com.kiss.account.dao.AuthorizationTargetDao;
 import com.kiss.account.dao.ClientDao;
 import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.Account;
+import com.kiss.account.entity.AuthorizationTarget;
 import com.kiss.account.entity.Client;
 import com.kiss.account.input.*;
 import com.kiss.account.output.AuthOutput;
+import com.kiss.account.output.AuthorizationTargetOutput;
 import com.kiss.account.output.ClientAccountOutput;
 import com.kiss.account.output.ClientOutput;
 import com.kiss.account.service.OperationLogService;
@@ -54,6 +57,9 @@ public class ClientController implements ClientClient {
 
     @Autowired
     private ClientModuleDao clientModuleDao;
+
+    @Autowired
+    private AuthorizationTargetDao authorizationTargetDao;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -260,5 +266,29 @@ public class ClientController implements ClientClient {
         List<ClientAccountOutput> clientAccounts = (List) BeanCopyUtil.copyList(accounts,ClientAccountOutput.class);
 
         return ResultOutputUtil.success(clientAccounts);
+    }
+
+    @Override
+    public ResultOutput createClientAuthorizationTarget(@Validated @RequestBody AuthorizationTargetInput authorizationTargetInput) {
+
+        AuthorizationTarget authorizationTarget = BeanCopyUtil.copy(authorizationTargetInput,AuthorizationTarget.class);
+        Integer count = authorizationTargetDao.createAuthorizationTarget(authorizationTarget);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_AUTHORIZATION_TARGET_FAILED);
+        }
+
+        AuthorizationTargetOutput authorizationTargetOutput = BeanCopyUtil.copy(authorizationTarget,AuthorizationTargetOutput.class,BeanCopyUtil.defaultFieldNames);
+
+        return ResultOutputUtil.success(authorizationTargetOutput);
+    }
+
+    @Override
+    public ResultOutput getClientAuthorizationTarget(@RequestParam("clientId") Integer clientId) {
+
+        List<AuthorizationTarget> authorizationTargets = authorizationTargetDao.getAuthorizationTargetsByClientId(clientId);
+        List<AuthorizationTargetOutput> authorizationTargetOutputs = BeanCopyUtil.copyList(authorizationTargets,AuthorizationTargetOutput.class,BeanCopyUtil.defaultFieldNames);
+
+        return ResultOutputUtil.success(authorizationTargetOutputs);
     }
 }
