@@ -79,6 +79,12 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer CLIENT_AUTHORIZATION_TARGET_IP_IS_EMPTY = 8012;
     public static final Integer CLIENT_AUTHORIZATION_TARGET_IP_IS_EXIST = 8013;
     public static final Integer CREATE_CLIENT_AUTHORIZATION_TARGET_FAILED = 8014;
+    public static final Integer CREATE_CLIENT_WEBHOOK_FAILED = 8015;
+    public static final Integer DELETE_CLIENT_WEBHOOK_FAILED = 8016;
+    public static final Integer UPDATE_CLIENT_WEBHOOK_FAILED = 8017;
+    public static final Integer CLIENT_WEBHOOK_NOT_EXIST = 8018;
+    public static final Integer CLIENT_WEBHOOK_URL_IS_EMPTY = 8019;
+    public static final Integer CLIENT_WEBHOOK_ID_IS_EMPTY = 8020;
 
 
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 9001;

@@ -11,4 +11,6 @@ public class OperationTargetType {
     public static final Integer TYPE_ROLE_PERMISSIONS = 7;
     public static final Integer TYPE_CLIENT = 8;
     public static final Integer TYPE_CLIENT_MODULES = 9;
+    public static final Integer TYPE_webhook = 10;
+
 }

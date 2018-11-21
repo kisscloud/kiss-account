@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 定义一个映射配置文件的根节点 -->
+<!-- namespace 属性用来定义配置命名空间， 主要进行 session 级别的缓存管理 -->
+<!-- namespace 默认使用当前操作实体类的全路径 -->
+<mapper namespace="com.kiss.account.mapper.WebHookMapper">
+    
+    <insert id="createWebHook" parameterType="com.kiss.account.entity.WebHook" useGeneratedKeys="true" keyProperty="id">
+        insert into webhooks (clientId,url,operatorId,operatorName)
+        value
+        (#{clientId},#{url},#{operatorId},#{operatorName})
+    </insert>
+    
+    <delete id="deleteWebHook" parameterType="java.lang.Integer">
+        delete from webhooks where id = #{id}
+    </delete>
+
+    <update id="updateWebHook" parameterType="com.kiss.account.entity.WebHook">
+        update webhooks
+        set
+        url = #{url}
+        where id = #{id}
+    </update>
+
+    <select id="getWebHooks" parameterType="com.kiss.account.entity.WebHook" resultType="com.kiss.account.entity.WebHook">
+        select * from webhooks
+        where 1=1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="clientId != null">
+            and clientId = #{clientId}
+        </if>
+    </select>
+</mapper>

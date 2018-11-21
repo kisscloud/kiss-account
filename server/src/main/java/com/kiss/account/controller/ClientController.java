@@ -1,20 +1,11 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.ClientClient;
-import com.kiss.account.dao.AccountDao;
-import com.kiss.account.dao.AuthorizationTargetDao;
-import com.kiss.account.dao.ClientDao;
-import com.kiss.account.dao.ClientModuleDao;
-import com.kiss.account.entity.Account;
-import com.kiss.account.entity.AuthorizationTarget;
-import com.kiss.account.entity.Client;
+import com.kiss.account.dao.*;
+import com.kiss.account.entity.*;
 import com.kiss.account.input.*;
-import com.kiss.account.output.AuthOutput;
-import com.kiss.account.output.AuthorizationTargetOutput;
-import com.kiss.account.output.ClientAccountOutput;
-import com.kiss.account.output.ClientOutput;
+import com.kiss.account.output.*;
 import com.kiss.account.service.OperationLogService;
-import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
 import com.kiss.account.utils.LdapUtil;
 import com.kiss.account.utils.ResultOutputUtil;
@@ -60,6 +51,9 @@ public class ClientController implements ClientClient {
 
     @Autowired
     private AuthorizationTargetDao authorizationTargetDao;
+
+    @Autowired
+    private WebHookDao webHookDao;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -241,7 +235,7 @@ public class ClientController implements ClientClient {
         }
 
         //生成token
-        String token = JwtUtil.getToken(account.getId(), account.getUsername(),expired * 1000);
+        String token = JwtUtil.getToken(account.getId(), account.getUsername(),account.getName(),expired * 1000);
         Long expiredAt = new Date(System.currentTimeMillis() + expired * 1000).getTime();
 
         AuthOutput authOutput = new AuthOutput();
@@ -290,5 +284,77 @@ public class ClientController implements ClientClient {
         List<AuthorizationTargetOutput> authorizationTargetOutputs = BeanCopyUtil.copyList(authorizationTargets,AuthorizationTargetOutput.class,BeanCopyUtil.defaultFieldNames);
 
         return ResultOutputUtil.success(authorizationTargetOutputs);
+    }
+
+    @Override
+    public ResultOutput createWebHook(@Validated @RequestBody CreateWebHookInput webHookInput) {
+
+        WebHook webHook = BeanCopyUtil.copy(webHookInput,WebHook.class);
+        Guest guest = ThreadLocalUtil.getGuest();
+        webHook.setOperatorId(guest.getId());
+        webHook.setOperatorName(guest.getName());
+        Integer count = webHookDao.createWebHook(webHook);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_WEBHOOK_FAILED);
+        }
+
+        operationLogService.saveOperationLog(guest, null, webHook, "id", OperationTargetType.TYPE_webhook);
+        WebHookOutput webHookOutput = BeanCopyUtil.copy(webHook,WebHookOutput.class,BeanCopyUtil.defaultFieldNames);
+
+        return ResultOutputUtil.success(webHookOutput);
+    }
+
+    @Override
+    public ResultOutput deleteWebHook(@RequestParam("id") Integer id) {
+
+        WebHook webHook = new WebHook(id);
+        List<WebHook> olds = webHookDao.getWebHooks(webHook);
+
+        if (olds == null || olds.size() == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.CLIENT_WEBHOOK_NOT_EXIST);
+        }
+
+        Integer count = webHookDao.deleteWebHook(id);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.DELETE_CLIENT_WEBHOOK_FAILED);
+        }
+
+        operationLogService.saveOperationLog(ThreadLocalUtil.getGuest(), olds.get(0),null , "id", OperationTargetType.TYPE_webhook);
+
+        return ResultOutputUtil.success();
+    }
+
+    @Override
+    public ResultOutput updateWebHook(@Validated @RequestBody UpdateWebHookInput updateWebHookInput) {
+
+        WebHook webHook = BeanCopyUtil.copy(updateWebHookInput,WebHook.class);
+        List<WebHook> olds = webHookDao.getWebHooks(webHook);
+        Integer count = webHookDao.updateWebHook(webHook);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.UPDATE_CLIENT_WEBHOOK_FAILED);
+        }
+
+        Guest guest = ThreadLocalUtil.getGuest();
+        webHook.setOperatorId(guest.getId());
+        webHook.setOperatorName(guest.getName());
+        operationLogService.saveOperationLog(guest, olds.get(0),webHook , "id", OperationTargetType.TYPE_webhook);
+        WebHookOutput webHookOutput = BeanCopyUtil.copy(webHook,WebHookOutput.class,BeanCopyUtil.defaultFieldNames);
+
+        return ResultOutputUtil.success(webHookOutput);
+    }
+
+    @Override
+    public ResultOutput getWebHook(@RequestParam("clientId") Integer clientId, Integer id) {
+
+        WebHook webHook = new WebHook();
+        webHook.setId(id);
+        webHook.setClientId(clientId);
+        List<WebHook> webHooks = webHookDao.getWebHooks(webHook);
+        List<WebHookOutput> webHookOutputs = BeanCopyUtil.copyList(webHooks,WebHookOutput.class,BeanCopyUtil.defaultFieldNames);
+
+        return ResultOutputUtil.success(webHookOutputs);
     }
 }

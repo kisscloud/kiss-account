@@ -34,7 +34,7 @@ public class OperationLogServiceImpl implements OperationLogService {
                 field.setAccessible(true);
                 operationLog.setTargetId(Integer.parseInt(field.get(before).toString()));
                 operationLog.setBeforeValue(JSON.toJSONString(before));
-                operationLog.setAfterValue("");
+                operationLog.setAfterValue(after == null ? "" : JSON.toJSONString(after));
             }
         } catch (Exception e) {
             e.printStackTrace();

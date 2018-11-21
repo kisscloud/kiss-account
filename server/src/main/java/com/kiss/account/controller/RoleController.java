@@ -70,7 +70,7 @@ public class RoleController implements RoleClient {
         Role role = new Role();
         BeanUtils.copyProperties(createRoleInput, role);
         role.setOperatorId(guest.getId());
-        role.setOperatorName(guest.getName());
+        role.setOperatorName(guest.getUsername());
         role.setOperatorIp(guest.getIp());
         roleDao.createRole(role);
         RoleOutput roleOutput = new RoleOutput();
@@ -94,7 +94,7 @@ public class RoleController implements RoleClient {
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(bindPermissionToRoleInput.getRoleId());
             rolePermission.setOperatorId(guest.getId());
-            rolePermission.setOperatorName(guest.getName());
+            rolePermission.setOperatorName(guest.getUsername());
             rolePermission.setOperatorIp(guest.getIp());
             rolePermission.setPermissionId(dataPermission.getPermissionId());
             rolePermission.setLimitDescription(dataPermission.getLimitDescription());
@@ -195,7 +195,7 @@ public class RoleController implements RoleClient {
             AccountRole accountRoles = new AccountRole();
             accountRoles.setOperatorId(guest.getId());
             accountRoles.setOperatorIp(guest.getIp());
-            accountRoles.setOperatorName(guest.getName());
+            accountRoles.setOperatorName(guest.getUsername());
             accountRoles.setAccountId(accountId);
             accountRoles.setRoleId(bindAccountsToRoleInput.getId());
             accountRolesList.add(accountRoles);
@@ -227,7 +227,7 @@ public class RoleController implements RoleClient {
         Guest guest = ThreadLocalUtil.getGuest();
         Role role = new Role();
         BeanUtils.copyProperties(updateRoleInput, role);
-        role.setOperatorName(guest.getName());
+        role.setOperatorName(guest.getUsername());
         role.setOperatorIp(guest.getIp());
         role.setOperatorId(guest.getId());
         Integer count = roleDao.updateRole(role);

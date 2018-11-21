@@ -38,5 +38,6 @@
         <mapper resource="mapper/ClientMapper.xml"/>
         <mapper resource="mapper/ClientModuleMapper.xml"/>
         <mapper resource="mapper/AuthorizationTargetMapper.xml"/>
+        <mapper resource="mapper/WebHookMapper.xml"/>
     </mappers>
 </configuration>

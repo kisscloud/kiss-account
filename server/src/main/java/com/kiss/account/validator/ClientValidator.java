@@ -2,15 +2,20 @@ package com.kiss.account.validator;
 
 import com.kiss.account.dao.AuthorizationTargetDao;
 import com.kiss.account.dao.ClientDao;
+import com.kiss.account.dao.WebHookDao;
 import com.kiss.account.entity.AuthorizationTarget;
 import com.kiss.account.entity.Client;
+import com.kiss.account.entity.WebHook;
 import com.kiss.account.input.*;
 import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.util.List;
 
 @Component
 public class ClientValidator implements Validator {
@@ -21,6 +26,9 @@ public class ClientValidator implements Validator {
     @Autowired
     private AuthorizationTargetDao authorizationTargetDao;
 
+    @Autowired
+    private WebHookDao webHookDao;
+
     @Override
     public boolean supports(Class<?> clazz) {
 
@@ -29,7 +37,9 @@ public class ClientValidator implements Validator {
                 || clazz.equals(GetClientSecretInput.class)
                 || clazz.equals(ClientAuthorizationInput.class)
                 || clazz.equals(ClientAccountInput.class)
-                || clazz.equals(AuthorizationTargetInput.class);
+                || clazz.equals(AuthorizationTargetInput.class)
+                || clazz.equals(CreateWebHookInput.class)
+                || clazz.equals(UpdateWebHookInput.class);
     }
 
     @Override
@@ -60,6 +70,14 @@ public class ClientValidator implements Validator {
             if (idVal) {
                 validateIp(authorizationTargetInput.getClientId(),authorizationTargetInput.getIp(),errors);
             }
+        } else if (CreateWebHookInput.class.isInstance(target)) {
+            CreateWebHookInput createWebHookInput = (CreateWebHookInput) target;
+            validateId(createWebHookInput.getClientId(),errors);
+            validateUrl(createWebHookInput.getUrl(),errors);
+        } else if (UpdateWebHookInput.class.isInstance(target)) {
+            UpdateWebHookInput updateWebHookInput = (UpdateWebHookInput) target;
+            validateWebhookId(updateWebHookInput.getId(),errors);
+            validateUrl(updateWebHookInput.getUrl(),errors);
         } else {
             errors.rejectValue("data", "", "数据格式错误");
         }
@@ -127,6 +145,28 @@ public class ClientValidator implements Validator {
 
         if (authorizationTarget != null) {
             errors.rejectValue("ip",String.valueOf(AccountStatusCode.CLIENT_AUTHORIZATION_TARGET_IP_IS_EXIST),"授权对象ip已存在");
+        }
+    }
+
+    public void validateUrl(String url,Errors errors) {
+
+        if (StringUtils.isEmpty(url)) {
+            errors.rejectValue("url",String.valueOf(AccountStatusCode.CLIENT_WEBHOOK_URL_IS_EMPTY));
+        }
+    }
+
+    public void validateWebhookId(Integer id,Errors errors) {
+
+        if (id == null) {
+            errors.rejectValue("id",String.valueOf(AccountStatusCode.CLIENT_WEBHOOK_ID_IS_EMPTY));
+            return;
+        }
+
+        WebHook webHook = new WebHook(id);
+        List<WebHook> webHooks = webHookDao.getWebHooks(webHook);
+
+        if (webHooks == null || webHooks.size() == 0) {
+            errors.rejectValue("id",String.valueOf(AccountStatusCode.CLIENT_WEBHOOK_NOT_EXIST));
         }
     }
 }

@@ -86,7 +86,7 @@ public class AuthController implements AuthClient {
         }
 
         //生成token
-        Map<String, Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername());
+        Map<String, Object> authMap = JwtUtil.getToken(account.getId(), account.getUsername(),account.getName());
         AuthOutput authOutput = new AuthOutput();
         authOutput.setAccessToken(authMap.get("token").toString());
         authOutput.setExpiredAt(Long.valueOf(authMap.get("expiredAt").toString()));

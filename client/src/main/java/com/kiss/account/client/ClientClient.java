@@ -38,4 +38,16 @@ public interface ClientClient {
 
     @GetMapping("/client/authorization/target")
     ResultOutput getClientAuthorizationTarget(@RequestParam("clientId") Integer clientId);
+
+    @PostMapping("/client/webhook")
+    ResultOutput createWebHook(@Validated @RequestBody CreateWebHookInput webHookInput);
+
+    @DeleteMapping("/client/webhook")
+    ResultOutput deleteWebHook(@RequestParam("id") Integer id);
+
+    @PutMapping("/client/webhook")
+    ResultOutput updateWebHook(@Validated @RequestBody UpdateWebHookInput updateWebHookInput);
+
+    @GetMapping("/client/webhook")
+    ResultOutput getWebHook(@RequestParam("clientId") Integer clientId,Integer id);
 }
