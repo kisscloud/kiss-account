@@ -8,4 +8,6 @@ public class ClientAccountOutput {
     private Integer id;
 
     private String name;
+
+    private String username;
 }

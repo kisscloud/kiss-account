@@ -257,7 +257,7 @@ public class ClientController implements ClientClient {
         String code = "authorization@" + clientId;
         String name = accountName + "%";
         List<Account> accounts = clientDao.getClientAccounts(code,name);
-        List<ClientAccountOutput> clientAccounts = (List) BeanCopyUtil.copyList(accounts,ClientAccountOutput.class);
+        List<ClientAccountOutput> clientAccounts = BeanCopyUtil.copyList(accounts,ClientAccountOutput.class);
 
         return ResultOutputUtil.success(clientAccounts);
     }
