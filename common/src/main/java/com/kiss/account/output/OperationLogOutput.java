@@ -17,6 +17,8 @@ public class OperationLogOutput {
 
     private Integer targetType;
 
+    private String targetText;
+
     private Integer targetId;
 
     private String beforeValue;
