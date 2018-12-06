@@ -30,7 +30,8 @@ public class AccountValidator implements Validator {
                 || clazz.equals(UpdateAccountInput.class)
                 || clazz.equals(UpdateAccountStatusInput.class)
                 || clazz.equals(ValidateAccountInput.class)
-                || clazz.equals(UpdateAccountPasswordInput.class);
+                || clazz.equals(UpdateAccountPasswordInput.class)
+                || clazz.equals(CreateRootAccountInput.class);
     }
 
     @Override
@@ -58,23 +59,24 @@ public class AccountValidator implements Validator {
             validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
             validateGroupId(updateAccountInput.getGroupId(), errors);
         } else if (UpdateAccountStatusInput.class.isInstance(target)) {
-
             UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
             validateStatus(updateAccountStatusInput.getStatus(), errors);
         } else if (ValidateAccountInput.class.isInstance(target)) {
-
             ValidateAccountInput validateAccountInput = (ValidateAccountInput) target;
             validateId(validateAccountInput.getId(), errors);
             validatePassword(validateAccountInput.getPassword(), errors);
         } else if (UpdateAccountPasswordInput.class.isInstance(target)) {
-
             UpdateAccountPasswordInput updateAccountPasswordInput = (UpdateAccountPasswordInput) target;
             validateId(updateAccountPasswordInput.getId(), errors);
             validateOldPassword(updateAccountPasswordInput.getId(),updateAccountPasswordInput.getOldPassword(), errors);
             validateNewPassword(updateAccountPasswordInput.getNewPassword(), errors);
-
-        } else {
-            errors.rejectValue("data", String.valueOf(AccountStatusCode.DATA_BIND_ERROR));
+        } else if (CreateRootAccountInput.class.isInstance(target)) {
+            CreateRootAccountInput createRootAccountInput = (CreateRootAccountInput) target;
+            validateName(null, createRootAccountInput.getName(), errors);
+            validateUsername(null, createRootAccountInput.getUsername(), errors);
+            validateEmail(null, createRootAccountInput.getEmail(), errors);
+            validateMobile(null, createRootAccountInput.getMobile(), errors);
+            validatePassword(createRootAccountInput.getPassword(), errors);
         }
 
     }

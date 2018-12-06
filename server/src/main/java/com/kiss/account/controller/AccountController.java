@@ -139,7 +139,7 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "创建超级管理员")
-    public ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput) {
+    public ResultOutput createRoot(@Validated @RequestBody CreateRootAccountInput createRootAccountInput) {
 
         Integer count = accountDao.getRootsCount();
 
@@ -148,15 +148,15 @@ public class AccountController implements AccountClient {
         }
 
         Account account = new Account();
-        BeanUtils.copyProperties(createAccountInput, account);
+        BeanUtils.copyProperties(createRootAccountInput, account);
 
         String salt = CryptoUtil.salt();
-        String password = LdapUtil.ssha(createAccountInput.getPassword(), salt);
+        String password = LdapUtil.ssha(createRootAccountInput.getPassword(), salt);
 
         account.setStatus(1);
         account.setSalt(salt);
         account.setPassword(password);
-        account.setName(createAccountInput.getName());
+        account.setName(createRootAccountInput.getName());
         account.setType(1);
         accountDao.createAccount(account);
 
