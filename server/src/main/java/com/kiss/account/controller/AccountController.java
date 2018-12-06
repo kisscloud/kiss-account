@@ -118,39 +118,6 @@ public class AccountController implements AccountClient {
     }
 
     @Override
-    @ApiOperation(value = "绑定账户角色")
-    @Transactional
-    @Deprecated
-    public ResultOutput<List<AccountRoleOutput>> bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput) {
-
-        Guest guest = ThreadLocalUtil.getGuest();
-        List<Integer> roles = bindRoleToAccountInput.getRoleId();
-        List<AccountRole> accountRolesList = new ArrayList<>();
-
-        for (Integer roleId : roles) {
-            AccountRole accountRoles = new AccountRole();
-            accountRoles.setOperatorId(guest.getId());
-            accountRoles.setOperatorIp(guest.getIp());
-            accountRoles.setOperatorName(guest.getName());
-            accountRoles.setAccountId(bindRoleToAccountInput.getAccountId());
-            accountRoles.setRoleId(roleId);
-            accountRolesList.add(accountRoles);
-        }
-
-        accountDao.deleteAccountRolesByAccountId(bindRoleToAccountInput.getAccountId());
-        accountDao.bindRolesToAccount(accountRolesList);
-        List<AccountRoleOutput> accountRoleOutputs = new ArrayList<>();
-
-        for (AccountRole accountRole : accountRolesList) {
-            AccountRoleOutput accountRoleOutput = new AccountRoleOutput();
-            BeanUtils.copyProperties(accountRole, accountRoleOutput);
-            accountRoleOutputs.add(accountRoleOutput);
-        }
-
-        return ResultOutputUtil.success(accountRoleOutputs);
-    }
-
-    @Override
     @ApiOperation(value = "获取账户列表")
     public ResultOutput<GetAccountsOutput> getAccounts(String page, String size) {
 
@@ -345,6 +312,7 @@ public class AccountController implements AccountClient {
     }
 
     @Override
+    @ApiOperation(value = "账户校验")
     public ResultOutput validateAccount(@Validated @RequestBody ValidateAccountInput validateAccountInput) {
 
         Account account = accountDao.getAccountById(validateAccountInput.getId());

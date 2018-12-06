@@ -250,6 +250,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取客户端相关账户")
     public ResultOutput getClientAccounts(@Validated @RequestBody ClientAccountInput clientAccountInput) {
 
         String clientId = clientAccountInput.getClientId();
@@ -263,6 +264,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "客户端授权")
     public ResultOutput createClientAuthorizationTarget(@Validated @RequestBody AuthorizationTargetInput authorizationTargetInput) {
 
         AuthorizationTarget authorizationTarget = BeanCopyUtil.copy(authorizationTargetInput,AuthorizationTarget.class);
@@ -278,6 +280,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "客户端检查")
     public ResultOutput getClientAuthorizationTarget(@RequestParam("clientId") Integer clientId) {
 
         List<AuthorizationTarget> authorizationTargets = authorizationTargetDao.getAuthorizationTargetsByClientId(clientId);
@@ -287,6 +290,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "创建回调地址")
     public ResultOutput createWebHook(@Validated @RequestBody CreateWebHookInput webHookInput) {
 
         WebHook webHook = BeanCopyUtil.copy(webHookInput,WebHook.class);
@@ -306,6 +310,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "删除回调地址")
     public ResultOutput deleteWebHook(@RequestParam("id") Integer id) {
 
         WebHook webHook = new WebHook(id);
@@ -327,6 +332,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "更新回调地址")
     public ResultOutput updateWebHook(@Validated @RequestBody UpdateWebHookInput updateWebHookInput) {
 
         WebHook webHook = BeanCopyUtil.copy(updateWebHookInput,WebHook.class);
@@ -347,6 +353,7 @@ public class ClientController implements ClientClient {
     }
 
     @Override
+    @ApiOperation(value = "获取回调地址")
     public ResultOutput getWebHook(@RequestParam("clientId") Integer clientId, Integer id) {
 
         WebHook webHook = new WebHook();

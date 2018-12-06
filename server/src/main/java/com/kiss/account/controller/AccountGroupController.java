@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@Api(tags = "Account", description = "账户相关接口")
+@Api(tags = "Group", description = "部门相关接口")
 public class AccountGroupController implements AccountGroupClient {
 
     @Autowired
@@ -156,6 +156,7 @@ public class AccountGroupController implements AccountGroupClient {
     }
 
     @Override
+    @ApiOperation(value = "获取部门数")
     public ResultOutput getAccountGroupsCount() {
 
         Integer count = accountGroupDao.getAccountGroupCount();

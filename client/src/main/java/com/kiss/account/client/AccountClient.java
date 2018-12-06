@@ -17,9 +17,6 @@ public interface AccountClient {
     @PutMapping("/account")
     ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;
 
-    @PostMapping("/account/roles")
-    ResultOutput bindAccountRoles(@Validated @RequestBody BindRoleToAccountInput bindRoleToAccountInput);
-
     @GetMapping("/accounts")
     ResultOutput<GetAccountsOutput> getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
 
