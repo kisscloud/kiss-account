@@ -35,7 +35,7 @@ public class AccountFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         InnerFilterChain preFilterChain = new InnerFilterChain();
 
-        if (!httpServletRequest.getRequestURI().contains("/login") && !httpServletRequest.getRequestURI().contains("/client/authorization")) {
+        if (!httpServletRequest.getRequestURI().contains("/login") && !httpServletRequest.getRequestURI().contains("/client/authorization") && !httpServletRequest.getRequestURI().contains("/root/check") && !httpServletRequest.getRequestURI().contains("/root")) {
             GuestFilter userInfoFilter = new GuestFilter();
             preFilterChain.addFilter(userInfoFilter);
         }
