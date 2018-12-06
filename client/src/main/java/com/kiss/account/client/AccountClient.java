@@ -15,10 +15,10 @@ public interface AccountClient {
     ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
 
     @GetMapping("/root/check")
-    ResultOutput checkRoot() throws InvalidNameException;
+    ResultOutput checkRoot();
 
     @PostMapping("/root")
-    ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
+    ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput);
 
     @PutMapping("/account")
     ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;

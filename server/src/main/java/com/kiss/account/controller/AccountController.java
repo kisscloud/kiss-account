@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.JwtUtil;
 import utils.ThreadLocalUtil;
 
 import javax.naming.InvalidNameException;
@@ -122,7 +123,7 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "检查超级管理员是否存在")
-    public ResultOutput checkRoot() throws InvalidNameException {
+    public ResultOutput checkRoot() {
 
         Integer count = accountDao.getRootsCount();
         Map<String,Object> params = new HashMap<>();
