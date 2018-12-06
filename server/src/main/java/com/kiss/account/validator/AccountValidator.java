@@ -1,12 +1,9 @@
 package com.kiss.account.validator;
 
 import com.kiss.account.dao.AccountGroupDao;
-import com.kiss.account.input.CreateAccountInput;
-import com.kiss.account.input.UpdateAccountInput;
-import com.kiss.account.input.UpdateAccountStatusInput;
+import com.kiss.account.input.*;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
-import com.kiss.account.input.ValidateAccountInput;
 import com.kiss.account.status.AccountStatusCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,8 @@ public class AccountValidator implements Validator {
         return clazz.equals(CreateAccountInput.class)
                 || clazz.equals(UpdateAccountInput.class)
                 || clazz.equals(UpdateAccountStatusInput.class)
-                || clazz.equals(ValidateAccountInput.class);
+                || clazz.equals(ValidateAccountInput.class)
+                || clazz.equals(UpdateAccountPasswordInput.class);
     }
 
     @Override
@@ -59,14 +57,23 @@ public class AccountValidator implements Validator {
             validateMobile(updateAccountInput.getId(), updateAccountInput.getMobile(), errors);
             validateGroupId(updateAccountInput.getGroupId(), errors);
         } else if (UpdateAccountStatusInput.class.isInstance(target)) {
+
             UpdateAccountStatusInput updateAccountStatusInput = (UpdateAccountStatusInput) target;
             validateStatus(updateAccountStatusInput.getStatus(), errors);
         } else if (ValidateAccountInput.class.isInstance(target)) {
+
             ValidateAccountInput validateAccountInput = (ValidateAccountInput) target;
-            validateId(validateAccountInput.getId(),errors);
-            validatePassword(validateAccountInput.getPassword(),errors);
+            validateId(validateAccountInput.getId(), errors);
+            validatePassword(validateAccountInput.getPassword(), errors);
+        } else if (UpdateAccountPasswordInput.class.isInstance(target)) {
+
+            UpdateAccountPasswordInput updateAccountPasswordInput = (UpdateAccountPasswordInput) target;
+            validateId(updateAccountPasswordInput.getId(), errors);
+            validateOldPassword(updateAccountPasswordInput.getOldPassword(), errors);
+            validateNewPassword(updateAccountPasswordInput.getNewPassword(), errors);
+
         } else {
-            errors.rejectValue("data", String.valueOf(AccountStatusCode.DATA_BIND_ERROR), "数据绑定错误");
+            errors.rejectValue("data", String.valueOf(AccountStatusCode.DATA_BIND_ERROR));
         }
 
     }
@@ -76,14 +83,14 @@ public class AccountValidator implements Validator {
         account = accountDao.getAccountById(id);
 
         if (account == null) {
-            errors.rejectValue("id", String.valueOf(AccountStatusCode.ACCOUNT_NOT_EXIST), "账户不存在");
+            errors.rejectValue("id", String.valueOf(AccountStatusCode.ACCOUNT_NOT_EXIST));
         }
     }
 
     private void validateUsername(Integer id, String username, Errors errors) {
 
         if (StringUtils.isEmpty(username)) {
-            errors.rejectValue("username", String.valueOf(AccountStatusCode.ACCOUNT_USERNAME_NOT_EMPTY), "用户名不能为空");
+            errors.rejectValue("username", String.valueOf(AccountStatusCode.ACCOUNT_USERNAME_NOT_EMPTY));
         }
 
         Account findAccount = accountDao.getAccountByUsername(username);
@@ -96,14 +103,14 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("username", String.valueOf(AccountStatusCode.ACCOUNT_USERNAME_EXIST), "用户名已存在");
+        errors.rejectValue("username", String.valueOf(AccountStatusCode.ACCOUNT_USERNAME_EXIST));
     }
 
     private void validateName(Integer id, String name, Errors errors) {
 
         if (StringUtils.isEmpty(name)) {
 
-            errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_NAME_NOT_EMPTY), "姓名不能为空");
+            errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_NAME_NOT_EMPTY));
         }
 
         Account findAccount = accountDao.getAccountByName(name);
@@ -116,14 +123,14 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_NAME_EXIST), "姓名已存在");
+        errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_NAME_EXIST));
     }
 
     private void validateMobile(Integer id, String mobile, Errors errors) {
 
         if (StringUtils.isEmpty(mobile)) {
 
-            errors.rejectValue("mobile", String.valueOf(AccountStatusCode.ACCOUNT_MOBILE_NOT_EMPTY), "手机号不能为空");
+            errors.rejectValue("mobile", String.valueOf(AccountStatusCode.ACCOUNT_MOBILE_NOT_EMPTY));
         }
 
         Account findAccount = accountDao.getAccountByMobile(mobile);
@@ -136,14 +143,14 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("mobile", String.valueOf(AccountStatusCode.ACCOUNT_MOBILE_EXIST), "手机号已存在");
+        errors.rejectValue("mobile", String.valueOf(AccountStatusCode.ACCOUNT_MOBILE_EXIST));
     }
 
     private void validateEmail(Integer id, String email, Errors errors) {
 
         if (StringUtils.isEmpty(email)) {
 
-            errors.rejectValue("email", String.valueOf(AccountStatusCode.ACCOUNT_EMAIL_NOT_EMPTY), "邮箱不能为空");
+            errors.rejectValue("email", String.valueOf(AccountStatusCode.ACCOUNT_EMAIL_NOT_EMPTY));
         }
 
         Account findAccount = accountDao.getAccountByEmail(email);
@@ -156,46 +163,76 @@ public class AccountValidator implements Validator {
             return;
         }
 
-        errors.rejectValue("email", String.valueOf(AccountStatusCode.ACCOUNT_EMAIL_EXIST), "邮箱已存在");
+        errors.rejectValue("email", String.valueOf(AccountStatusCode.ACCOUNT_EMAIL_EXIST));
     }
 
     private void validateGroupId(Integer groupId, Errors errors) {
 
         if (groupId == null) {
-            errors.rejectValue("groupId", String.valueOf(AccountStatusCode.ACCOUNT_GROUPID_NOT_EMPTY), "部门不能为空");
+            errors.rejectValue("groupId", String.valueOf(AccountStatusCode.ACCOUNT_GROUPID_NOT_EMPTY));
         }
 
         if (accountGroupDao.getAccountGroupById(groupId) == null) {
-            errors.rejectValue("groupId", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_NOT_EXIST), "部门不存在");
+            errors.rejectValue("groupId", String.valueOf(AccountStatusCode.ACCOUNT_GROUP_NOT_EXIST));
         }
     }
 
     private void validatePassword(String password, Errors errors) {
 
         if (StringUtils.isEmpty(password)) {
-            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY), "密码不能为空");
+            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
         }
 
         if (password.length() < 8) {
-            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT), "密码不能小于8位");
+            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT));
         }
 
         if (password.length() > 32) {
-            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO), "密码不能大于32位");
+            errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO));
+        }
+    }
+
+    private void validateOldPassword(String password, Errors errors) {
+
+        if (StringUtils.isEmpty(password)) {
+            errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
+        }
+
+        if (password.length() < 8) {
+            errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT));
+        }
+
+        if (password.length() > 32) {
+            errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO));
+        }
+    }
+
+    private void validateNewPassword(String password, Errors errors) {
+
+        if (StringUtils.isEmpty(password)) {
+            errors.rejectValue("newPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
+        }
+
+        if (password.length() < 8) {
+            errors.rejectValue("newPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT));
+        }
+
+        if (password.length() > 32) {
+            errors.rejectValue("newPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO));
         }
     }
 
     private void validateStatus(Integer status, Errors errors) {
 
         if (status == null) {
-            errors.rejectValue("status", String.valueOf(AccountStatusCode.ACCOUNT_STATUS_NOT_EMPTY), "用户状态不能为空");
+            errors.rejectValue("status", String.valueOf(AccountStatusCode.ACCOUNT_STATUS_NOT_EMPTY));
         }
     }
 
-    public void validateId(Integer id,Errors errors) {
+    public void validateId(Integer id, Errors errors) {
 
         if (id == null) {
-            errors.rejectValue("id",String.valueOf(AccountStatusCode.ACCOUNT_ID_NOT_EMPTY),"用户id不能为空");
+            errors.rejectValue("id", String.valueOf(AccountStatusCode.ACCOUNT_ID_NOT_EMPTY));
         }
     }
 }

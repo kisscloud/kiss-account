@@ -14,6 +14,12 @@ public interface AccountClient {
     @PostMapping("/account")
     ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
 
+    @GetMapping("/root/check")
+    ResultOutput checkRoot(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
+
+    @PostMapping("/root")
+    ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
+
     @PutMapping("/account")
     ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;
 
@@ -26,8 +32,11 @@ public interface AccountClient {
     @GetMapping("/accounts/count")
     ResultOutput getAccountsCount();
 
+    @PutMapping("/account/password/reset")
+    ResultOutput resetAccountPassword(@RequestParam("id") Integer id) throws InvalidNameException;
+
     @PutMapping("/account/password")
-    ResultOutput updateAccountPassword(@RequestParam("id") Integer id) throws InvalidNameException;
+    ResultOutput updateAccountPassword(@Validated @RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException;
 
     @PutMapping("/account/status")
     ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput) throws InvalidNameException;

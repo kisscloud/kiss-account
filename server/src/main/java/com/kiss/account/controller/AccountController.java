@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
 import utils.ThreadLocalUtil;
+
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class AccountController implements AccountClient {
         BeanUtils.copyProperties(createAccountInput, account);
 
         String salt = CryptoUtil.salt();
-        String password = LdapUtil.ssha(createAccountInput.getPassword(),salt);
+        String password = LdapUtil.ssha(createAccountInput.getPassword(), salt);
 
         account.setStatus(1);
         account.setSalt(salt);
@@ -115,6 +116,18 @@ public class AccountController implements AccountClient {
         operationLogService.saveOperationLog(guest, null, account, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success(accountOutput);
+    }
+
+    @Override
+    @ApiOperation(value = "检查超级管理员是否存在")
+    public ResultOutput checkRoot(CreateAccountInput createAccountInput) throws InvalidNameException {
+        return null;
+    }
+
+    @Override
+    @ApiOperation(value = "创建超级管理员")
+    public ResultOutput createRoot(CreateAccountInput createAccountInput) throws InvalidNameException {
+        return null;
     }
 
     @Override
@@ -205,7 +218,7 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "重置账户密码")
-    public ResultOutput updateAccountPassword(Integer id) throws InvalidNameException {
+    public ResultOutput resetAccountPassword(Integer id) throws InvalidNameException {
 
         Guest guest = ThreadLocalUtil.getGuest();
         String salt = CryptoUtil.salt();
@@ -236,6 +249,43 @@ public class AccountController implements AccountClient {
 
 
         operationLogService.saveOperationLog(guest, oldValue, account, "id", OperationTargetType.TYPE_ACCOUNT);
+
+        return ResultOutputUtil.success();
+    }
+
+    @Override
+    @ApiOperation(value = "修改账户密码")
+    public ResultOutput updateAccountPassword(@RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException {
+
+//        Guest guest = ThreadLocalUtil.getGuest();
+//        String salt = CryptoUtil.salt();
+//        String password = LdapUtil.ssha(accountDefaultPassword, salt);
+//        Account account = accountDao.getAccountById(id);
+//        Account oldValue = account;
+//
+//        if (account == null) {
+//            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
+//        }
+//        account.setSalt(salt);
+//        account.setPassword(password);
+//        account.setOperatorId(guest.getId());
+//        account.setOperatorName(guest.getName());
+//        account.setOperatorIp(guest.getIp());
+//        Integer count = accountDao.updateAccountPassword(account);
+//
+//        if (count == 0) {
+//            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
+//        }
+//
+//        if (ldapConfig.enabled) {
+//            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
+//            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
+//            accountEntry.setPassword(account.getPassword());
+//            accountEntryDao.save(accountEntry);
+//        }
+//
+//
+//        operationLogService.saveOperationLog(guest, oldValue, account, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success();
     }
