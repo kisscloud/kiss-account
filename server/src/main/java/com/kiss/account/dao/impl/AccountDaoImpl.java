@@ -132,4 +132,10 @@ public class AccountDaoImpl implements AccountDao {
 
         return accountMapper.getValidAccountsCount();
     }
+
+    @Override
+    public Integer getRootsCount() {
+
+        return accountMapper.getRootsCount();
+    }
 }

@@ -5,6 +5,7 @@ import com.kiss.account.input.*;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.status.AccountStatusCode;
+import com.kiss.account.utils.LdapUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,7 +70,7 @@ public class AccountValidator implements Validator {
 
             UpdateAccountPasswordInput updateAccountPasswordInput = (UpdateAccountPasswordInput) target;
             validateId(updateAccountPasswordInput.getId(), errors);
-            validateOldPassword(updateAccountPasswordInput.getOldPassword(), errors);
+            validateOldPassword(updateAccountPasswordInput.getId(),updateAccountPasswordInput.getOldPassword(), errors);
             validateNewPassword(updateAccountPasswordInput.getNewPassword(), errors);
 
         } else {
@@ -192,7 +193,7 @@ public class AccountValidator implements Validator {
         }
     }
 
-    private void validateOldPassword(String password, Errors errors) {
+    private void validateOldPassword(Integer id,String password, Errors errors) {
 
         if (StringUtils.isEmpty(password)) {
             errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
@@ -204,6 +205,21 @@ public class AccountValidator implements Validator {
 
         if (password.length() > 32) {
             errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO));
+        }
+
+        Account account = accountDao.getAccountById(id);
+
+        if (account == null) {
+            errors.rejectValue("id",String.valueOf(AccountStatusCode.ACCOUNT_NOT_EXIST),"账户不存在");
+            return;
+        }
+
+        String exist = account.getPassword();
+        String salt = account.getSalt();
+        String entrPassword = LdapUtil.ssha(password, salt);
+
+        if (!entrPassword.equals(exist)) {
+            errors.rejectValue("oldPassword",String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_ERROR),"账户密码错误");
         }
     }
 

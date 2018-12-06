@@ -32,7 +32,9 @@ import utils.ThreadLocalUtil;
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
@@ -120,14 +122,57 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "检查超级管理员是否存在")
-    public ResultOutput checkRoot(CreateAccountInput createAccountInput) throws InvalidNameException {
-        return null;
+    public ResultOutput checkRoot() throws InvalidNameException {
+
+        Integer count = accountDao.getRootsCount();
+        Map<String,Object> params = new HashMap<>();
+
+        if (count == 0) {
+            params.put("rootExist", false);
+        } else {
+            params.put("rootExist", true);
+        }
+
+        return ResultOutputUtil.success(params);
     }
 
     @Override
     @ApiOperation(value = "创建超级管理员")
-    public ResultOutput createRoot(CreateAccountInput createAccountInput) throws InvalidNameException {
-        return null;
+    public ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput) {
+
+        Account account = new Account();
+        BeanUtils.copyProperties(createAccountInput, account);
+
+        String salt = CryptoUtil.salt();
+        String password = LdapUtil.ssha(createAccountInput.getPassword(), salt);
+
+        account.setStatus(1);
+        account.setSalt(salt);
+        account.setPassword(password);
+        account.setName(createAccountInput.getName());
+        account.setType(1);
+        accountDao.createAccount(account);
+
+        if (ldapConfig.enabled) {
+            AccountEntry accountEntry = new AccountEntry();
+            accountEntry.setUid(account.getUsername());
+            accountEntry.setName(account.getName());
+            accountEntry.setUsername(account.getUsername());
+            accountEntry.setPassword("{ssha}" + account.getPassword());
+            accountEntry.setEmail(account.getEmail());
+            accountEntry.setMobile(account.getMobile());
+            accountEntryDao.save(accountEntry);
+        }
+
+        AccountOutput accountOutput = new AccountOutput();
+        BeanUtils.copyProperties(account, accountOutput);
+
+        AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
+
+        accountOutput.setGroupName(group.getName());
+        accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
+
+        return ResultOutputUtil.success(accountOutput);
     }
 
     @Override
@@ -255,37 +300,34 @@ public class AccountController implements AccountClient {
 
     @Override
     @ApiOperation(value = "修改账户密码")
-    public ResultOutput updateAccountPassword(@RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException {
+    public ResultOutput updateAccountPassword(@Validated @RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException {
 
-//        Guest guest = ThreadLocalUtil.getGuest();
-//        String salt = CryptoUtil.salt();
-//        String password = LdapUtil.ssha(accountDefaultPassword, salt);
-//        Account account = accountDao.getAccountById(id);
-//        Account oldValue = account;
-//
-//        if (account == null) {
-//            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_NOT_EXIST);
-//        }
-//        account.setSalt(salt);
-//        account.setPassword(password);
-//        account.setOperatorId(guest.getId());
-//        account.setOperatorName(guest.getName());
-//        account.setOperatorIp(guest.getIp());
-//        Integer count = accountDao.updateAccountPassword(account);
-//
-//        if (count == 0) {
-//            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
-//        }
-//
-//        if (ldapConfig.enabled) {
-//            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
-//            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
-//            accountEntry.setPassword(account.getPassword());
-//            accountEntryDao.save(accountEntry);
-//        }
-//
-//
-//        operationLogService.saveOperationLog(guest, oldValue, account, "id", OperationTargetType.TYPE_ACCOUNT);
+        Guest guest = ThreadLocalUtil.getGuest();
+        String salt = CryptoUtil.salt();
+        String password = LdapUtil.ssha(updateAccountPasswordInput.getNewPassword(), salt);
+        Account oldValue = accountDao.getAccountById(updateAccountPasswordInput.getId());
+
+        Account account = new Account();
+        account.setId(updateAccountPasswordInput.getId());
+        account.setPassword(password);
+        account.setSalt(salt);
+        account.setOperatorId(guest.getId());
+        account.setOperatorName(guest.getName());
+        account.setOperatorIp(guest.getIp());
+        Integer count = accountDao.updateAccountPassword(account);
+
+        if (count == 0) {
+            return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_PASSWORD_FAILED);
+        }
+
+        if (ldapConfig.enabled) {
+            LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
+            AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
+            accountEntry.setPassword(account.getPassword());
+            accountEntryDao.save(accountEntry);
+        }
+
+        operationLogService.saveOperationLog(guest, oldValue, account, "id", OperationTargetType.TYPE_ACCOUNT);
 
         return ResultOutputUtil.success();
     }

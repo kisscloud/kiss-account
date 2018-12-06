@@ -155,4 +155,10 @@ public interface AccountMapper {
      * @return
      */
     Integer getValidAccountsCount();
+
+    /**
+     * 查询超级用户的个数
+     * @return
+     */
+    Integer getRootsCount();
 }

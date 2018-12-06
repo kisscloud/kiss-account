@@ -146,5 +146,9 @@ public interface AccountDao {
      */
     Integer getValidAccountsCount();
 
-
+    /**
+     * 查询超级用户个数
+     * @return
+     */
+    Integer getRootsCount();
 }
