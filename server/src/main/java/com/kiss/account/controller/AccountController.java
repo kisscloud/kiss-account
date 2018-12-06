@@ -174,9 +174,6 @@ public class AccountController implements AccountClient {
         AccountOutput accountOutput = new AccountOutput();
         BeanUtils.copyProperties(account, accountOutput);
 
-        AccountGroup group = accountGroupDao.getAccountGroupById(account.getGroupId());
-
-        accountOutput.setGroupName(group.getName());
         accountOutput.setStatusText(codeUtil.getEnumsMessage("accounts.status", String.valueOf(accountOutput.getStatus())));
 
         return ResultOutputUtil.success(accountOutput);
