@@ -21,6 +21,8 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO= 1017;
     public static final Integer ACCOUNT_STATUS_NOT_EMPTY= 1018;
     public static final Integer ACCOUNT_ID_NOT_EMPTY= 1019;
+    public static final Integer ACCOUNT_ROOT_IS_EXIST= 1020;
+
 
     public static final Integer ACCOUNT_GROUP_NAME_EXIST = 1201;
     public static final Integer PUT_ACCOUNT_GROUP_FAILED = 1202;

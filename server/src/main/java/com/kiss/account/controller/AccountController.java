@@ -141,6 +141,12 @@ public class AccountController implements AccountClient {
     @ApiOperation(value = "创建超级管理员")
     public ResultOutput createRoot(@Validated @RequestBody CreateAccountInput createAccountInput) {
 
+        Integer count = accountDao.getRootsCount();
+
+        if (count != 0) {
+            return ResultOutputUtil.error(AccountStatusCode.ACCOUNT_ROOT_IS_EXIST);
+        }
+
         Account account = new Account();
         BeanUtils.copyProperties(createAccountInput, account);
 
