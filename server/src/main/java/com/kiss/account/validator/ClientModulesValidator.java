@@ -53,13 +53,13 @@ public class ClientModulesValidator implements Validator {
     public void validateClientModuleId (List<Integer> clientModules,Errors errors) {
 
         if (clientModules == null || clientModules.size() == 0) {
-            errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_NOT_EMPTY),"模块id不能为空");
+            errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_IS_EMPTY),"模块id不能为空");
             return;
         }
 
         for (Integer moduleId : clientModules) {
             if (moduleId == null) {
-                errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_NOT_EMPTY),"模块id不能为空");
+                errors.rejectValue("moduleIds",String.valueOf(AccountStatusCode.CLIENT_MODULEID_IS_EMPTY),"模块id不能为空");
                 return;
             }
 

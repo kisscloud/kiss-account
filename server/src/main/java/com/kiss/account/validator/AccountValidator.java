@@ -94,6 +94,7 @@ public class AccountValidator implements Validator {
 
         if (StringUtils.isEmpty(username)) {
             errors.rejectValue("username", String.valueOf(AccountStatusCode.ACCOUNT_USERNAME_NOT_EMPTY));
+            return;
         }
 
         Account findAccount = accountDao.getAccountByUsername(username);
@@ -114,6 +115,7 @@ public class AccountValidator implements Validator {
         if (StringUtils.isEmpty(name)) {
 
             errors.rejectValue("name", String.valueOf(AccountStatusCode.ACCOUNT_NAME_NOT_EMPTY));
+            return;
         }
 
         Account findAccount = accountDao.getAccountByName(name);
@@ -134,6 +136,7 @@ public class AccountValidator implements Validator {
         if (StringUtils.isEmpty(mobile)) {
 
             errors.rejectValue("mobile", String.valueOf(AccountStatusCode.ACCOUNT_MOBILE_NOT_EMPTY));
+            return;
         }
 
         Account findAccount = accountDao.getAccountByMobile(mobile);
@@ -154,6 +157,7 @@ public class AccountValidator implements Validator {
         if (StringUtils.isEmpty(email)) {
 
             errors.rejectValue("email", String.valueOf(AccountStatusCode.ACCOUNT_EMAIL_NOT_EMPTY));
+            return;
         }
 
         Account findAccount = accountDao.getAccountByEmail(email);
@@ -173,6 +177,7 @@ public class AccountValidator implements Validator {
 
         if (groupId == null) {
             errors.rejectValue("groupId", String.valueOf(AccountStatusCode.ACCOUNT_GROUPID_NOT_EMPTY));
+            return;
         }
 
         if (accountGroupDao.getAccountGroupById(groupId) == null) {
@@ -184,6 +189,7 @@ public class AccountValidator implements Validator {
 
         if (StringUtils.isEmpty(password)) {
             errors.rejectValue("password", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
+            return;
         }
 
         if (password.length() < 8) {
@@ -199,6 +205,7 @@ public class AccountValidator implements Validator {
 
         if (StringUtils.isEmpty(password)) {
             errors.rejectValue("oldPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
+            return;
         }
 
         if (password.length() < 8) {
@@ -229,6 +236,7 @@ public class AccountValidator implements Validator {
 
         if (StringUtils.isEmpty(password)) {
             errors.rejectValue("newPassword", String.valueOf(AccountStatusCode.ACCOUNT_PASSWORD_NOT_EMPTY));
+            return;
         }
 
         if (password.length() < 8) {
