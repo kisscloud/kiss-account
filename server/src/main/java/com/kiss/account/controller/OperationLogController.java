@@ -21,13 +21,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "OperationLogs", description = "操作日志相关接口")
-public class OperationLogController implements OperationLogClient {
-
-    @Autowired
-    private OperationLogDao operationLogDao;
-
-    @Value("${max.log.size}")
-    private String maxLogSize;
+public class OperationLogController extends BaseController implements OperationLogClient {
 
     @Override
     @ApiOperation(value = "获取所有操作日志")

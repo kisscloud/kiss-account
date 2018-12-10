@@ -31,13 +31,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Permission", description = "权限相关接口")
-public class PermissionModuleController implements PermissionModuleClient {
-
-    @Autowired
-    private PermissionDao permissionDao;
-
-    @Autowired
-    private OperationLogService operationLogService;
+public class PermissionModuleController extends BaseController implements PermissionModuleClient {
 
     @Autowired
     private PermissionModuleValidator permissionModuleValidator;
