@@ -32,28 +32,10 @@ import java.util.*;
 
 @RestController
 @Api(tags = "Client", description = "客户端相关接口")
-public class ClientController implements ClientClient {
+public class ClientController extends BaseController implements ClientClient {
 
     @Autowired
     private ClientValidator clientValidator;
-
-    @Autowired
-    private ClientDao clientDao;
-
-    @Autowired
-    private AccountDao accountDao;
-
-    @Autowired
-    private OperationLogService operationLogService;
-
-    @Autowired
-    private ClientModuleDao clientModuleDao;
-
-    @Autowired
-    private AuthorizationTargetDao authorizationTargetDao;
-
-    @Autowired
-    private WebHookDao webHookDao;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

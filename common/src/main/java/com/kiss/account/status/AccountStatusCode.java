@@ -91,7 +91,7 @@ public class AccountStatusCode extends status.CodeEnums {
 
     public static final Integer CREATE_CLIENT_MODULE_FAILED = 9001;
     public static final Integer CLIENT_MODULEID_NOT_EXIST = 9002;
-    public static final Integer CLIENT_MODULEID_NOT_EMPTY = 9003;
+    public static final Integer CLIENT_MODULEID_IS_EMPTY = 9003;
 
     public static final Integer SERVICE_ERROR = 3001;
     public static final Integer LOGIN_STATUS_INVALID = 3002;

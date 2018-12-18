@@ -25,16 +25,10 @@ import java.util.Map;
 
 @RestController
 @Api(tags = "Auth", description = "认证相关接口")
-public class AuthController implements AuthClient {
-
-    @Autowired
-    private AccountDao accountDao;
+public class AuthController extends BaseController implements AuthClient {
 
     @Autowired
     HttpServletRequest request;
-
-    @Value("${authorization.code.expired}")
-    private String authorizationCodeExpired;
 
     @Override
     @ApiOperation(value = "用户名密码登录")

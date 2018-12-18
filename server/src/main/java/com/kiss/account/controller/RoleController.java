@@ -40,22 +40,10 @@ import utils.ThreadLocalUtil;
 
 @RestController
 @Api(tags = "Role", description = "角色相关接口")
-public class RoleController implements RoleClient {
-
-    @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
-    private AccountDao accountDao;
+public class RoleController extends BaseController implements RoleClient {
 
     @Autowired
     private RoleValidator roleValidator;
-
-    @Autowired
-    private OperationLogService operationLogService;
-
-    @Autowired
-    private OperationLogService operationLogSer;
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {

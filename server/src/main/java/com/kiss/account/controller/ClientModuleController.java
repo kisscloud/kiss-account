@@ -29,16 +29,10 @@ import java.util.List;
 
 @RestController
 @Api(tags = "ClientModule", description = "客户端模块相关接口")
-public class ClientModuleController implements ClientModuleClient {
+public class ClientModuleController extends BaseController implements ClientModuleClient {
 
     @Autowired
     private ClientModulesValidator clientModulesValidator;
-
-    @Autowired
-    private ClientModuleDao clientModulesDao;
-
-    @Autowired
-    private OperationLogService operationLogService;
 
     @InitBinder
     public void initBinder (WebDataBinder binder) {
@@ -51,8 +45,8 @@ public class ClientModuleController implements ClientModuleClient {
     public ResultOutput updateClientModules(@Validated @RequestBody UpdateClientModulesInput updateClientModulesInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
-        List<ClientModule> oldClientModules = clientModulesDao.getClientModulesByClientId(updateClientModulesInput.getClientId());
-        clientModulesDao.deleteClientModulesByClientId(updateClientModulesInput.getClientId());
+        List<ClientModule> oldClientModules = clientModuleDao.getClientModulesByClientId(updateClientModulesInput.getClientId());
+        clientModuleDao.deleteClientModulesByClientId(updateClientModulesInput.getClientId());
         List<Integer> moduleIds = updateClientModulesInput.getModuleIds();
 
         List<Integer> oldModuleIds = new ArrayList<>();
@@ -79,7 +73,7 @@ public class ClientModuleController implements ClientModuleClient {
     @ApiOperation(value = "获取客户端模块")
     public ResultOutput getClientModules(Integer clientId) {
 
-        List<ClientModule> clientModules = clientModulesDao.getClientModulesByClientId(clientId);
+        List<ClientModule> clientModules = clientModuleDao.getClientModulesByClientId(clientId);
         List<ClientModuleOutput> clientModuleOutputs = new ArrayList<>();
 
         for (ClientModule clientModule : clientModules) {
@@ -102,7 +96,7 @@ public class ClientModuleController implements ClientModuleClient {
             clientModules.add(clientModule);
         }
 
-        Integer count = clientModulesDao.createClientModules(clientModules);
+        Integer count = clientModuleDao.createClientModules(clientModules);
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_MODULE_FAILED);

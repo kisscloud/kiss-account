@@ -1,3 +1,27 @@
+# 统一账户中心
+
+## 1. 程序运行
+
+```
+$ git clone https://github.com/kisscloud/kiss-account.git
+$ cd kiss-account
+$ mvn install -Dmaven.test.skip=true
+$ mvn package -Dmaven.test.skip=true
+$ java -jar -Dspring.config.location=/opt/configs/kiss-account/application.yml /opt/apps/kiss-account/target/kiss-account-0.0.1-SNAPSHOT.jar
+
+```
+
+## 2. 配置文件
+
+编辑配置文件：
+
+```
+$ vim /opt/configs/kiss-account/application.yml
+```
+
+配置文件内容：
+
+```
 # 应用名称
 spring.application.name=kiss-account
 
@@ -10,9 +34,9 @@ eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 # 数据源配置
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.datasource.username=root
-spring.datasource.password=Helloshic7!
+spring.datasource.password=123456
 #spring.datasource.password=123456
-spring.datasource.url=jdbc:mysql://rm-j6ca5pt36q4h487712o.mysql.rds.aliyuncs.com/kiss-account?characterEncoding=utf-8&useSSL=false
+spring.datasource.jdbc-url=jdbc:mysql://.mysql.rds.aliyuncs.com/kiss-account?characterEncoding=utf-8&useSSL=false
 #spring.datasource.url=jdbc:mysql://localhost/kiss-account?characterEncoding=utf-8&useSSL=false
 
 # mybatis配置
@@ -24,7 +48,7 @@ spring.messages.basename=i18n/codes
 spring.messages.use-code-as-default-message=true
 
 # LDAP
-spring.ldap.urls=ldap://localhost:389
+spring.ldap.urls=ldap://47.100.235.203:389
 spring.ldap.username=cn=admin,dc=kisscloud,dc=io
 spring.ldap.password=kisscloud
 spring.ldap.base=dc=kisscloud,dc=io
@@ -34,5 +58,9 @@ spring.ldap.base=dc=kisscloud,dc=io
 max.accounts.size=100
 max.log.size=100
 account.default.password=123456
-authorization.code.expired=5000
-account.ldap.enable=true
+authorization.code.expired=10000
+
+# 开启 LDAP
+account.ldap.enabled=true
+account.ldap.base=o=accounts
+```

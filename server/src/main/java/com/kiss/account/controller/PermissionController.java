@@ -33,19 +33,12 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Permission", description = "权限相关接口")
-public class PermissionController implements PermissionClient {
+public class PermissionController extends BaseController implements PermissionClient {
 
-    @Autowired
-    private PermissionDao permissionDao;
+
 
     @Autowired
     private PermissionValidator permissionValidator;
-
-    @Autowired
-    private OperationLogService operationLogService;
-
-    @Autowired
-    private CodeUtil codeUtil;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

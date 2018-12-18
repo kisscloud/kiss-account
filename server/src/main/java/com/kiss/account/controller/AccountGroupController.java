@@ -30,25 +30,12 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Group", description = "部门相关接口")
-public class AccountGroupController implements AccountGroupClient {
+public class AccountGroupController extends BaseController implements AccountGroupClient {
 
-    @Autowired
-    private AccountDao accountDao;
 
-    @Autowired
-    private AccountGroupDao accountGroupDao;
 
     @Autowired
     private AccountGroupValidator accountGroupValidator;
-
-    @Autowired
-    private OperationLogService operationLogService;
-
-    @Value("${max.accounts.size}")
-    private String maxAccountsSize;
-
-    @Value("${account.default.password}")
-    private String accountDefaultPassword;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

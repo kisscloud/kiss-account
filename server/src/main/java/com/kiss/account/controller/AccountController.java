@@ -39,34 +39,14 @@ import java.util.Map;
 
 @RestController
 @Api(tags = "Account", description = "账户相关接口")
-public class AccountController implements AccountClient {
+public class AccountController extends BaseController implements AccountClient {
 
-    @Autowired
-    private AccountGroupDao accountGroupDao;
-
-    @Autowired
-    private AccountDao accountDao;
-
-    @Autowired
-    private AccountEntryDao accountEntryDao;
 
     @Autowired
     private AccountValidator accountValidator;
 
     @Autowired
-    private OperationLogService operationLogService;
-
-    @Value("${max.accounts.size}")
-    private String maxAccountsSize;
-
-    @Value("${account.default.password}")
-    private String accountDefaultPassword;
-
-    @Autowired
     private LdapConfig ldapConfig;
-
-    @Autowired
-    private CodeUtil codeUtil;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
