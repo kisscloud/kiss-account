@@ -35,9 +35,8 @@ eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.datasource.username=root
 spring.datasource.password=123456
-#spring.datasource.password=123456
-spring.datasource.jdbc-url=jdbc:mysql://.mysql.rds.aliyuncs.com/kiss-account?characterEncoding=utf-8&useSSL=false
-#spring.datasource.url=jdbc:mysql://localhost/kiss-account?characterEncoding=utf-8&useSSL=false
+spring.datasource.jdbc-url=jdbc:mysql://mysql.rds.aliyuncs.com/kiss-account?characterEncoding=utf-8&useSSL=false
+
 
 # mybatis配置
 mybatis.config-location=classpath:mybatis-config.xml
