@@ -64,3 +64,7 @@ authorization.code.expired=10000
 account.ldap.enabled=true
 account.ldap.base=o=accounts
 ```
+
+## 3. 导入数据库
+
+导入 kiss-account.sql 即可，在配好图形化界面第一次启动时，会检查是否存在超级管理员并引导创建。
