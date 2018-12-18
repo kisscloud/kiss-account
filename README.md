@@ -3,7 +3,7 @@
 ## 1. 程序运行
 
 ```
-$ git clone github.com/kisscloud/kiss-account.git
+$ git clone https://github.com/kisscloud/kiss-account.git
 $ cd kiss-account
 $ mvn install -Dmaven.test.skip=true
 $ mvn package -Dmaven.test.skip=true
