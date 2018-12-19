@@ -1,4 +1,4 @@
-- [1. 介绍](readme.md)
+- [1. 介绍](README.md)
 - [2. 安装](javascript:;)
   - [2.1 安装 LDAP](ldap.md)
   - [2.2 程序启动](install.md)
