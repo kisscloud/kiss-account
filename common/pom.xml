@@ -12,13 +12,6 @@
     <artifactId>kiss-account-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>http://47.100.229.84:8081/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <build>
         <plugins>
             <plugin>
