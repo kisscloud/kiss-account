@@ -337,6 +337,7 @@ public class AccountController extends BaseController implements AccountClient {
 
         if (ldapConfig.enabled && account.getStatus().equals(1)) {
             AccountEntry accountEntry = new AccountEntry();
+            account = accountDao.getAccountById(account.getId());
             accountEntry.setUid(account.getUsername());
             accountEntry.setName(account.getName());
             accountEntry.setUsername(account.getUsername());
