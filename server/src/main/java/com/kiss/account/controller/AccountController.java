@@ -106,7 +106,7 @@ public class AccountController extends BaseController implements AccountClient {
     public ResultOutput checkRoot() {
 
         Integer count = accountDao.getRootsCount();
-        Map<String,Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
 
         if (count == 0) {
             params.put("rootExist", false);
@@ -332,6 +332,17 @@ public class AccountController extends BaseController implements AccountClient {
 
         if (count == 0) {
             return ResultOutputUtil.error(AccountStatusCode.PUT_ACCOUNT_STATUS_FAILED);
+        }
+
+        if (ldapConfig.enabled && account.getStatus().equals(1)) {
+            AccountEntry accountEntry = new AccountEntry();
+            accountEntry.setUid(account.getUsername());
+            accountEntry.setName(account.getName());
+            accountEntry.setUsername(account.getUsername());
+            accountEntry.setPassword("{ssha}" + account.getPassword());
+            accountEntry.setEmail(account.getEmail());
+            accountEntry.setMobile(account.getMobile());
+            accountEntryDao.save(accountEntry);
         }
 
         if (ldapConfig.enabled && account.getStatus().equals(2)) {
