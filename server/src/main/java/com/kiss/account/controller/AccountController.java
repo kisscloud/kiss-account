@@ -348,6 +348,7 @@ public class AccountController extends BaseController implements AccountClient {
         }
 
         if (ldapConfig.enabled && account.getStatus().equals(2)) {
+            account = accountDao.getAccountById(account.getId());
             LdapName accountEntryId = new LdapName(String.format("uid=%s,o=accounts", account.getUsername()));
             AccountEntry accountEntry = accountEntryDao.findById(accountEntryId).get();
             accountEntryDao.delete(accountEntry);
