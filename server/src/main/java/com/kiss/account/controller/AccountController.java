@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import output.ResultOutput;
+import utils.BeanCopyUtil;
 import utils.JwtUtil;
 import utils.ThreadLocalUtil;
 
@@ -416,5 +417,15 @@ public class AccountController extends BaseController implements AccountClient {
         }
 
         return ResultOutputUtil.success();
+    }
+
+    @Override
+    @ApiOperation(value = "查询账户名称")
+    public ResultOutput getAccountById(Integer id) {
+
+        Account account = accountDao.getAccountById(id);
+        AccountOutput accountOutput = BeanCopyUtil.copy(account,AccountOutput.class);
+
+        return ResultOutputUtil.success(accountOutput);
     }
 }

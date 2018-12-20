@@ -52,4 +52,7 @@ public interface AccountClient {
 
     @PostMapping("/account/validated")
     ResultOutput validateAccount(@RequestBody ValidateAccountInput validateAccountInput);
+
+    @GetMapping("/account/name")
+    ResultOutput getAccountById(@RequestParam("id") Integer id);
 }
