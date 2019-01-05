@@ -1,26 +1,28 @@
 package com.kiss.account.client;
 
 import com.kiss.account.input.*;
+import com.kiss.account.output.AccountGroupOutput;
 import org.springframework.web.bind.annotation.*;
-import output.ResultOutput;
+
+import java.util.List;
 
 @RequestMapping
 public interface AccountGroupClient {
     @PostMapping("/account/group")
-    ResultOutput createAccountGroup(CreateAccountGroupInput createAccountGroupInput);
+    AccountGroupOutput createAccountGroup(CreateAccountGroupInput createAccountGroupInput);
 
     @GetMapping("/groups")
-    ResultOutput getGroups();
+    List<AccountGroupOutput> getGroups();
 
     @GetMapping("/group")
-    ResultOutput getGroup(Integer id);
+    AccountGroupOutput getGroup(Integer id);
 
     @DeleteMapping("/group")
-    ResultOutput deleteGroup(@RequestParam("id") Integer id);
+    void deleteGroup(@RequestParam("id") Integer id);
 
     @PutMapping("/account/group")
-    ResultOutput updateAccountGroup(UpdateAccountGroupInput updateAccountGroupInput);
+    AccountGroupOutput updateAccountGroup(UpdateAccountGroupInput updateAccountGroupInput);
 
     @GetMapping("/account/groups/count")
-    ResultOutput getAccountGroupsCount();
+    Integer getAccountGroupsCount();
 }

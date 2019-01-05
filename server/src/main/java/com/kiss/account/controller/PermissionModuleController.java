@@ -1,18 +1,16 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.PermissionModuleClient;
-import com.kiss.account.dao.PermissionDao;
 import com.kiss.account.entity.Permission;
 import com.kiss.account.entity.PermissionModule;
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.output.PermissionModuleOutput;
-import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.PermissionModuleValidator;
 import entity.Guest;
+import exception.StatusException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import output.ResultOutput;
 import utils.ThreadLocalUtil;
 
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ public class PermissionModuleController extends BaseController implements Permis
      */
     @Override
     @ApiOperation(value = "创建权限模块")
-    public ResultOutput<PermissionModuleOutput> createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
+    public PermissionModuleOutput createPermissionModule(@Validated @RequestBody CreatePermissionModuleInput permissionModuleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
         PermissionModule permissionModule = new PermissionModule();
@@ -65,12 +62,12 @@ public class PermissionModuleController extends BaseController implements Permis
         BeanUtils.copyProperties(permissionModule, permissionModuleOutput);
         operationLogService.saveOperationLog(guest, null, permissionModule, "id", OperationTargetType.TYPE_PERMISSION_MODULE);
 
-        return ResultOutputUtil.success(permissionModuleOutput);
+        return permissionModuleOutput;
     }
 
     @Override
     @ApiOperation(value = "获取权限模块列表")
-    public ResultOutput<List<PermissionModuleOutput>> getPermissionModules() {
+    public List<PermissionModuleOutput> getPermissionModules() {
 
         List<PermissionModule> permissionModules = permissionDao.getPermissionModules();
         List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
@@ -81,12 +78,12 @@ public class PermissionModuleController extends BaseController implements Permis
             permissionModuleOutputs.add(permissionModuleOutput);
         }
 
-        return ResultOutputUtil.success(permissionModuleOutputs);
+        return permissionModuleOutputs;
     }
 
     @Override
     @ApiOperation(value = "获取权限模块列表")
-    public ResultOutput<List<PermissionModuleOutput>> getBindPermissionModules() {
+    public List<PermissionModuleOutput> getBindPermissionModules() {
 
         List<PermissionModule> permissionModules = permissionDao.getBindPermissionModules();
         List<PermissionModuleOutput> permissionModuleOutputs = new ArrayList<>();
@@ -97,12 +94,12 @@ public class PermissionModuleController extends BaseController implements Permis
             permissionModuleOutputs.add(permissionModuleOutput);
         }
 
-        return ResultOutputUtil.success(permissionModuleOutputs);
+        return permissionModuleOutputs;
     }
 
     @Override
     @ApiOperation(value = "更新权限模块")
-    public ResultOutput<PermissionModuleOutput> updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput updatePermissionModuleInput) {
+    public PermissionModuleOutput updatePermissionModule(@Validated @RequestBody UpdatePermissionModuleInput updatePermissionModuleInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
         PermissionModuleOutput permissionModuleOutput = new PermissionModuleOutput();
@@ -110,26 +107,26 @@ public class PermissionModuleController extends BaseController implements Permis
         Integer count = permissionDao.updatePermissionModule(permissionModuleOutput);
 
         if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PUT_PERMISSION_MODULE_FAILD);
+            throw new StatusException(AccountStatusCode.PUT_PERMISSION_MODULE_FAILD);
         }
 
-        return ResultOutputUtil.success(permissionModuleOutput);
+        return permissionModuleOutput;
     }
 
     @Override
     @ApiOperation(value = "删除权限模块")
-    public ResultOutput deletePermissionModule(@RequestParam("id") Integer id) {
+    public void deletePermissionModule(@RequestParam("id") Integer id) {
 
         List<Permission> permissions = permissionDao.getPermissionByModuleId(id);
 
         if (permissions != null && permissions.size() != 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
+            throw new StatusException(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
         }
 
         List<PermissionModule> permissionModules = permissionDao.getPermissionModuleChildrenByParentId(id);
 
         if (permissionModules != null && permissionModules.size() != 0) {
-            return ResultOutputUtil.error(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
+            throw new StatusException(AccountStatusCode.PERMISSION_MODULE_NOT_EMPTY);
         }
 
         Guest guest = ThreadLocalUtil.getGuest();
@@ -137,11 +134,10 @@ public class PermissionModuleController extends BaseController implements Permis
         Integer count = permissionDao.deletePermissionModuleById(id);
 
         if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
+            throw new StatusException(AccountStatusCode.DELETE_PERMISSION_MODULE_FAILED);
         }
 
         operationLogService.saveOperationLog(guest, oldValue, null, "id", OperationTargetType.TYPE_PERMISSION_MODULE);
 
-        return ResultOutputUtil.success();
     }
 }

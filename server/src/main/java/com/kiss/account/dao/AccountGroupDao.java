@@ -1,7 +1,7 @@
 package com.kiss.account.dao;
 
 import com.kiss.account.entity.AccountGroup;
-import com.kiss.account.exception.ResultException;
+
 import java.util.List;
 
 public interface AccountGroupDao {
@@ -10,9 +10,8 @@ public interface AccountGroupDao {
      * 创建部门
      *
      * @param accountGroup AccountGroup
-     * @throws ResultException ResultException
      */
-    void createAccountGroup(AccountGroup accountGroup) throws ResultException;
+    void createAccountGroup(AccountGroup accountGroup);
 
     /**
      * 根据部门的名字查询部门

@@ -2,7 +2,6 @@ package com.kiss.account.controller;
 
 import com.kiss.account.dao.*;
 import com.kiss.account.service.OperationLogService;
-import com.kiss.account.utils.CodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,9 +32,6 @@ public class BaseController {
 
     @Autowired
     protected OperationLogService operationLogService;
-
-    @Autowired
-    protected CodeUtil codeUtil;
 
     @Autowired
     protected ClientDao clientDao;

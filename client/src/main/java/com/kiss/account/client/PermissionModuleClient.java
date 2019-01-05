@@ -2,24 +2,26 @@ package com.kiss.account.client;
 
 import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionModuleInput;
+import com.kiss.account.output.PermissionModuleOutput;
 import org.springframework.web.bind.annotation.*;
-import output.ResultOutput;
+
+import java.util.List;
 
 @RequestMapping
 public interface PermissionModuleClient {
 
     @PostMapping("/permission/module")
-    ResultOutput createPermissionModule(CreatePermissionModuleInput permissionModuleInput);
+    PermissionModuleOutput createPermissionModule(CreatePermissionModuleInput permissionModuleInput);
 
     @GetMapping("/permission/modules")
-    ResultOutput getPermissionModules();
+    List<PermissionModuleOutput>  getPermissionModules();
 
     @GetMapping("/bind/permission/modules")
-    ResultOutput getBindPermissionModules();
+    List<PermissionModuleOutput> getBindPermissionModules();
 
     @PutMapping("/permission/module")
-    ResultOutput updatePermissionModule(UpdatePermissionModuleInput updatePermissionModuleInput);
+    PermissionModuleOutput updatePermissionModule(UpdatePermissionModuleInput updatePermissionModuleInput);
 
     @DeleteMapping("/permission/module")
-    ResultOutput deletePermissionModule(@RequestParam("id") Integer id);
+    void deletePermissionModule(@RequestParam("id") Integer id);
 }

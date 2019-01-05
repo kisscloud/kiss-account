@@ -1,7 +1,10 @@
 package com.kiss.account.status;
 
-public class AccountStatusCode extends status.CodeEnums {
+import enums.StatusCodeEnums;
 
+public class AccountStatusCode extends StatusCodeEnums {
+
+    public static final Integer PARAMETER_ERROR = 8001;
     public static final Integer ACCOUNT_NOT_EXIST = 1001;
     public static final Integer PUT_ACCOUNT_FAILED = 1002;
     public static final Integer ACCOUNT_PASSWORD_ERROR = 1003;
@@ -17,11 +20,11 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer ACCOUNT_EMAIL_EXIST = 1013;
     public static final Integer ACCOUNT_GROUPID_NOT_EMPTY = 1014;
     public static final Integer ACCOUNT_PASSWORD_NOT_EMPTY = 1015;
-    public static final Integer ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT= 1016;
-    public static final Integer ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO= 1017;
-    public static final Integer ACCOUNT_STATUS_NOT_EMPTY= 1018;
-    public static final Integer ACCOUNT_ID_NOT_EMPTY= 1019;
-    public static final Integer ACCOUNT_ROOT_IS_EXIST= 1020;
+    public static final Integer ACCOUNT_PASSWORD_SIZE_NOT_LESS_THAN_EIGHT = 1016;
+    public static final Integer ACCOUNT_PASSWORD_SIZE_NOT_MORE_THAN_THIRTY_TWO = 1017;
+    public static final Integer ACCOUNT_STATUS_NOT_EMPTY = 1018;
+    public static final Integer ACCOUNT_ID_NOT_EMPTY = 1019;
+    public static final Integer ACCOUNT_ROOT_IS_EXIST = 1020;
 
 
     public static final Integer ACCOUNT_GROUP_NAME_EXIST = 1201;
@@ -51,7 +54,6 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer PERMISSION_TYPE_ERROR = 5010;
 
 
-
     public static final Integer PUT_PERMISSION_MODULE_FAILD = 6001;
     public static final Integer DELETE_PERMISSION_MODULE_FAILED = 6002;
     public static final Integer PERMISSION_MODULE_NOT_EMPTY = 6003;
@@ -60,7 +62,6 @@ public class AccountStatusCode extends status.CodeEnums {
     public static final Integer PERMISSION_MODULE_PARENT_NOT_EXIST = 6006;
     public static final Integer PERMISSION_MODULE_NAME_NOT_EMPTY = 6007;
     public static final Integer PERMISSION_MODULE_NAME_EXIST = 6008;
-
 
 
     public static final Integer ROLE_DATA_PERMISSION_PATTERN_ERROR = 7001;

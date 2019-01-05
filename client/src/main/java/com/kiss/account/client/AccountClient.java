@@ -1,58 +1,60 @@
 package com.kiss.account.client;
 
 import com.kiss.account.input.*;
+import com.kiss.account.output.AccountOutput;
 import com.kiss.account.output.GetAccountsOutput;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import output.ResultOutput;
 
 import javax.naming.InvalidNameException;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping
 public interface AccountClient {
 
     @PostMapping("/account")
-    ResultOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
+    AccountOutput createAccount(@Validated @RequestBody CreateAccountInput createAccountInput) throws InvalidNameException;
 
     @GetMapping("/root/check")
-    ResultOutput checkRoot();
+    Map<String, Object> checkRoot();
 
     @PostMapping("/root")
-    ResultOutput createRoot(@Validated @RequestBody CreateRootAccountInput createRootAccountInput);
+    AccountOutput createRoot(@Validated @RequestBody CreateRootAccountInput createRootAccountInput);
 
     @PutMapping("/account")
-    ResultOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;
+    AccountOutput updateAccount(@Validated @RequestBody UpdateAccountInput updateAccountInput) throws InvalidNameException;
 
     @GetMapping("/accounts")
-    ResultOutput<GetAccountsOutput> getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
+    GetAccountsOutput getAccounts(@RequestParam("page") String page, @RequestParam("size") String size);
 
     @GetMapping("/account")
-    ResultOutput getAccount(String id);
+    AccountOutput getAccount(String id);
 
     @GetMapping("/accounts/count")
-    ResultOutput getAccountsCount();
+    Integer getAccountsCount();
 
     @PutMapping("/account/password/reset")
-    ResultOutput resetAccountPassword(@RequestParam("id") Integer id) throws InvalidNameException;
+    void resetAccountPassword(@RequestParam("id") Integer id) throws InvalidNameException;
 
     @PutMapping("/account/password")
-    ResultOutput updateAccountPassword(@Validated @RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException;
+    void updateAccountPassword(@Validated @RequestBody UpdateAccountPasswordInput updateAccountPasswordInput) throws InvalidNameException;
 
     @PutMapping("/account/status")
-    ResultOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput) throws InvalidNameException;
+    AccountOutput updateAccountStatus(@Validated @RequestBody UpdateAccountStatusInput updateAccountStatusInput) throws InvalidNameException;
 
     @RequestMapping(value = "/account/permissions", method = RequestMethod.GET)
-    ResultOutput getAccountPermissions(@RequestParam("id") Integer id);
+    List<String> getAccountPermissions(@RequestParam("id") Integer id);
 
     @RequestMapping(value = "/account/permissions/dataScope", method = RequestMethod.GET)
-    ResultOutput getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code);
+    List<String> getAccountPermissionDataScope(@RequestParam("id") Integer id, @RequestParam("code") String code);
 
     @GetMapping("/accounts/valid/count")
-    ResultOutput getValidAccountsCount();
+    Integer getValidAccountsCount();
 
     @PostMapping("/account/validated")
-    ResultOutput validateAccount(@RequestBody ValidateAccountInput validateAccountInput);
+    void validateAccount(@RequestBody ValidateAccountInput validateAccountInput);
 
     @GetMapping("/account/name")
-    ResultOutput getAccountById(@RequestParam("id") Integer id);
+    AccountOutput getAccountById(@RequestParam("id") Integer id);
 }

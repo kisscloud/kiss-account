@@ -1,8 +1,9 @@
 package com.kiss.account.filter;
 
-import com.kiss.account.utils.CodeUtil;
+import com.kiss.account.utils.LangUtil;
 import filter.GuestFilter;
 import filter.InnerFilterChain;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -18,13 +19,13 @@ import java.io.IOException;
 @WebFilter(filterName = "responseFilter", urlPatterns = "/*")
 public class AccountFilter implements Filter {
 
-    private CodeUtil codeUtil;
+    private LangUtil langUtil;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext servletContext = filterConfig.getServletContext();
         WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-        codeUtil = context.getBean(CodeUtil.class);
+        langUtil = context.getBean(LangUtil.class);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class AccountFilter implements Filter {
         preFilterChain.doFilter(httpServletRequest, httpServletResponse, preFilterChain);
         chain.doFilter(httpServletRequest, responseWrapper);
         InnerFilterChain suffixFilterChain = new InnerFilterChain();
-        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper, codeUtil));
+        suffixFilterChain.addFilter(new ResponseFilter(responseWrapper, langUtil));
         suffixFilterChain.doFilter(httpServletRequest, httpServletResponse, suffixFilterChain);
         ThreadLocalUtil.remove();
     }

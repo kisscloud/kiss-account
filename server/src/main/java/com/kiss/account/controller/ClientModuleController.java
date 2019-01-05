@@ -1,16 +1,14 @@
 package com.kiss.account.controller;
 
 import com.kiss.account.client.ClientModuleClient;
-import com.kiss.account.dao.ClientModuleDao;
 import com.kiss.account.entity.ClientModule;
 import com.kiss.account.input.UpdateClientModulesInput;
 import com.kiss.account.output.ClientModuleOutput;
-import com.kiss.account.service.OperationLogService;
 import com.kiss.account.entity.OperationTargetType;
 import com.kiss.account.status.AccountStatusCode;
-import com.kiss.account.utils.ResultOutputUtil;
 import com.kiss.account.validator.ClientModulesValidator;
 import entity.Guest;
+import exception.StatusException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import output.ResultOutput;
 import utils.ThreadLocalUtil;
 
 import java.util.ArrayList;
@@ -35,14 +32,14 @@ public class ClientModuleController extends BaseController implements ClientModu
     private ClientModulesValidator clientModulesValidator;
 
     @InitBinder
-    public void initBinder (WebDataBinder binder) {
+    public void initBinder(WebDataBinder binder) {
 
         binder.setValidator(clientModulesValidator);
     }
 
     @Override
     @ApiOperation(value = "更新客户端模块")
-    public ResultOutput updateClientModules(@Validated @RequestBody UpdateClientModulesInput updateClientModulesInput) {
+    public List<ClientModuleOutput> updateClientModules(@Validated @RequestBody UpdateClientModulesInput updateClientModulesInput) {
 
         Guest guest = ThreadLocalUtil.getGuest();
         List<ClientModule> oldClientModules = clientModuleDao.getClientModulesByClientId(updateClientModulesInput.getClientId());
@@ -57,35 +54,33 @@ public class ClientModuleController extends BaseController implements ClientModu
             }
         }
 
-        ResultOutput resultOutput = addClientModules(moduleIds,updateClientModulesInput.getClientId());
+        List<ClientModuleOutput> clientModuleOutputs = addClientModules(moduleIds, updateClientModulesInput.getClientId());
 
-        if (resultOutput.getCode() == 200) {
-            UpdateClientModulesInput oldUpdateClientModulesInput = new UpdateClientModulesInput();
-            oldUpdateClientModulesInput.setClientId(updateClientModulesInput.getClientId());
-            oldUpdateClientModulesInput.setModuleIds(oldModuleIds);
-            operationLogService.saveOperationLog(guest,oldUpdateClientModulesInput,updateClientModulesInput,"clientId",OperationTargetType.TYPE_CLIENT_MODULES);
-        }
+        UpdateClientModulesInput oldUpdateClientModulesInput = new UpdateClientModulesInput();
+        oldUpdateClientModulesInput.setClientId(updateClientModulesInput.getClientId());
+        oldUpdateClientModulesInput.setModuleIds(oldModuleIds);
+        operationLogService.saveOperationLog(guest, oldUpdateClientModulesInput, updateClientModulesInput, "clientId", OperationTargetType.TYPE_CLIENT_MODULES);
 
-        return resultOutput;
+        return clientModuleOutputs;
     }
 
     @Override
     @ApiOperation(value = "获取客户端模块")
-    public ResultOutput getClientModules(Integer clientId) {
+    public List<ClientModuleOutput> getClientModules(Integer clientId) {
 
         List<ClientModule> clientModules = clientModuleDao.getClientModulesByClientId(clientId);
         List<ClientModuleOutput> clientModuleOutputs = new ArrayList<>();
 
         for (ClientModule clientModule : clientModules) {
             ClientModuleOutput clientModuleOutput = new ClientModuleOutput();
-            BeanUtils.copyProperties(clientModule,clientModuleOutput);
+            BeanUtils.copyProperties(clientModule, clientModuleOutput);
             clientModuleOutputs.add(clientModuleOutput);
         }
 
-        return ResultOutputUtil.success(clientModuleOutputs);
+        return clientModuleOutputs;
     }
 
-    public ResultOutput addClientModules (List<Integer> moduleIds,Integer clientId) {
+    public List<ClientModuleOutput> addClientModules(List<Integer> moduleIds, Integer clientId) {
 
         List<ClientModule> clientModules = new ArrayList<>();
 
@@ -99,17 +94,17 @@ public class ClientModuleController extends BaseController implements ClientModu
         Integer count = clientModuleDao.createClientModules(clientModules);
 
         if (count == 0) {
-            return ResultOutputUtil.error(AccountStatusCode.CREATE_CLIENT_MODULE_FAILED);
+            throw new StatusException(AccountStatusCode.CREATE_CLIENT_MODULE_FAILED);
         }
 
         List<ClientModuleOutput> clientModuleOutputs = new ArrayList<>();
 
         for (ClientModule clientModule : clientModules) {
             ClientModuleOutput clientModuleOutput = new ClientModuleOutput();
-            BeanUtils.copyProperties(clientModule,clientModuleOutput);
+            BeanUtils.copyProperties(clientModule, clientModuleOutput);
             clientModuleOutputs.add(clientModuleOutput);
         }
 
-        return ResultOutputUtil.success(clientModuleOutputs);
+        return clientModuleOutputs;
     }
 }

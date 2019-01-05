@@ -3,11 +3,9 @@ package com.kiss.account.dao.impl;
 import com.kiss.account.dao.AccountDao;
 import com.kiss.account.entity.Account;
 import com.kiss.account.entity.AccountRole;
-import com.kiss.account.exception.ResultException;
 import com.kiss.account.mapper.AccountMapper;
 import com.kiss.account.output.AccountOutput;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class AccountDaoImpl implements AccountDao {
     private AccountMapper accountMapper;
 
     @Override
-    public void createAccount(Account account) throws ResultException {
+    public void createAccount(Account account)  {
         if (account.getType() == null) {
             account.setType(2);
         }

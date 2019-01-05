@@ -2,14 +2,10 @@ package com.kiss.account.client;
 
 
 import com.kiss.account.input.CreatePermissionInput;
-import com.kiss.account.input.CreatePermissionModuleInput;
 import com.kiss.account.input.UpdatePermissionInput;
-import com.kiss.account.input.UpdatePermissionModuleInput;
 import com.kiss.account.output.BindPermissionOutput;
-import com.kiss.account.output.PermissionModuleOutput;
 import com.kiss.account.output.PermissionOutput;
 import org.springframework.web.bind.annotation.*;
-import output.ResultOutput;
 
 import java.util.List;
 
@@ -17,20 +13,20 @@ import java.util.List;
 public interface PermissionClient {
 
     @PostMapping("/permission")
-    ResultOutput createPermission(CreatePermissionInput createPermissionInput) throws NoSuchFieldException, IllegalAccessException;
+    PermissionOutput createPermission(CreatePermissionInput createPermissionInput) throws NoSuchFieldException, IllegalAccessException;
 
     @GetMapping("/permissions")
-    ResultOutput<List<PermissionOutput>> getPermissions();
+    List<PermissionOutput> getPermissions();
 
     @GetMapping("/bind/permissions")
-    ResultOutput<List<BindPermissionOutput>> getbindPermissions();
+    List<BindPermissionOutput> getbindPermissions();
 
     @PutMapping("/permission")
-    ResultOutput<PermissionOutput> updatePermission(UpdatePermissionInput updatePermissionInput);
+    PermissionOutput updatePermission(UpdatePermissionInput updatePermissionInput);
 
     @DeleteMapping("/permission")
-    ResultOutput deletePermission(@RequestParam("id") Integer id);
+    void deletePermission(@RequestParam("id") Integer id);
 
     @GetMapping("/permission/valid/count")
-    ResultOutput getValidPermissionsCount();
+    Integer getValidPermissionsCount();
 }
